@@ -1,0 +1,20 @@
+# JetBrains IDE
+.idea
+
+# VS Code
+.history
+.vscode
+
+# OSX
+.DS_Store
+
+# VIM
+*.swp
+*.un~
+
+# Enviroments
+*.env
+Makefile
+
+# SpaceVim
+.SpaceVim.d
