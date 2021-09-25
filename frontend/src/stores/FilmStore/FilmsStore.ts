@@ -1,7 +1,7 @@
 import { makeObservable, observable } from "mobx";
 import { filmsApiService } from "apiServices";
+import { IFilmDto } from "shared/dtos/FilmDto";
 import FilmModel from "./FilmModel";
-import { IFilmDto } from "../../shared/dtos/FilmDto";
 
 class FilmsStore {
   constructor() {

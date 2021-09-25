@@ -1,6 +1,8 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import filmsStore from "stores/FilmStore/FilmsStore";
 import { observer } from "mobx-react";
+import { Button, DatePicker, Input, List } from "antd";
+import moment, { Moment } from "moment";
 
 function Films() {
   useEffect(() => {
@@ -23,47 +25,38 @@ function Films() {
   const onChangeDirector = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDirector(event.target.value);
   };
-  const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(new Date(event.target.value));
+  const onChangeDate = (value: Moment | null, dateString: string) => {
+    setDate(new Date(dateString));
   };
-
-  // eslint-disable-next-line no-console
-  console.log(date.toISOString());
 
   return (
     <>
+      <h1>Films</h1>
+      <h2>New film</h2>
       <form onSubmit={handleSubmit}>
-        New film <br />
-        name :
-        <input required value={name} onChange={onChangeName} /> <br />
-        director :
-        <input required value={director} onChange={onChangeDirector} /> <br />
-        date :
-        <input
-          required
-          type="date"
-          value={date.toISOString().split("T")[0]}
-          onChange={onChangeDate}
+        <Input placeholder="Title" value={name} onChange={onChangeName} />
+        <Input
+          placeholder="Director"
+          value={director}
+          onChange={onChangeDirector}
         />
-        <br />
-        <input type="submit" value="Add film" />
+        <DatePicker onChange={onChangeDate} />
+        <Button type="primary" htmlType="submit">
+          Add film
+        </Button>
       </form>
-      <br />
-      All Films <br />
-      {filmsStore.films.length > 0 ? (
-        filmsStore.films.map((f) => (
-          <>
-            name : {f?.name}
-            <br />
-            director : {f?.director}
-            <br />
-            date : {f.releaseDate?.toDateString()}
-            <br />
-          </>
-        ))
-      ) : (
-        <>Loading</>
-      )}
+      <List
+        itemLayout="horizontal"
+        dataSource={filmsStore.films}
+        loading={!filmsStore.films}
+        renderItem={(film) => (
+          <List.Item key={film.id}>
+            <List.Item.Meta title={<b>{film.name} </b>} />
+            director: {film.director} <p />
+            release date: {moment(film.releaseDate).format("DD/MM/YYYY")}
+          </List.Item>
+        )}
+      />
     </>
   );
 }

@@ -10,11 +10,14 @@ class FilmModel {
     });
 
     this.name = filmDto.name;
+    this.id = filmDto.id;
     this.director = filmDto.director;
     this.releaseDate = new Date(filmDto.releaseDate);
   }
 
   public name: string | null = null;
+
+  public id: number | null = null;
 
   public director: string | null = null;
 
