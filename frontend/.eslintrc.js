@@ -27,6 +27,12 @@ module.exports = {
     },
   },
   rules: {
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
     "no-use-before-define": "off",
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",
