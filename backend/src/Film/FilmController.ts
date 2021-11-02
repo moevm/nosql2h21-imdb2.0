@@ -1,5 +1,5 @@
 import express from "express";
-import filmService from "Film/FilmService";
+import { filmService } from "Film/FilmService";
 
 class FilmController {
   static async getFilms(

@@ -1,19 +1,25 @@
 import { Schema, model, Document, Model } from "mongoose";
 
 interface IFilm {
-  name: string;
-  director: string;
-  releaseDate: string;
+  filmId: string;
+  title: string;
+  isAdult: boolean;
+  releaseYear: string;
+  duration: number;
+  genres: [string];
+  poster: string;
 }
 
 const FilmSchema = new Schema<IFilm, Model<IFilm>, IFilm>({
-  name: { type: String, required: true },
-  director: { type: String, required: true },
-  releaseDate: { type: String, required: true },
+  filmId: { type: String, required: true },
+  title: { type: String, required: true },
+  isAdult: { type: Boolean, required: true },
+  releaseYear: { type: String, required: true },
+  duration: { type: Number, required: true },
+  genres: { type: [String], required: true },
+  poster: { type: String, required: true },
 });
 
 export type FilmModelType = IFilm & Document;
 
-const Film = model<FilmModelType>("Film", FilmSchema);
-
-export default Film;
+export const FilmsMongoCollection = model<FilmModelType>("Films", FilmSchema);

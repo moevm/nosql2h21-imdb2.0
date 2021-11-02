@@ -1,26 +1,37 @@
 import { FilmModelType } from "Film/FilmModel";
 
 export interface IFilmDto {
-  id: number;
-  name: string;
-  director: string;
-  releaseDate: string;
+  filmId: string;
+  title: string;
+  isAdult: boolean;
+  releaseYear: string;
+  duration: number;
+  genres: [string];
+  poster: string;
 }
 
-class FilmDto implements IFilmDto {
+export class FilmDto implements IFilmDto {
   constructor(model: FilmModelType) {
-    this.id = model.id;
-    this.name = model.name;
-    this.director = model.director;
-    this.releaseDate = model.releaseDate;
+    this.filmId = model.filmId;
+    this.title = model.title;
+    this.isAdult = model.isAdult;
+    this.releaseYear = model.releaseYear;
+    this.duration = model.duration;
+    this.genres = model.genres;
+    this.poster = model.poster;
   }
 
-  id: number;
+  filmId: string;
 
-  name: string;
+  title: string;
 
-  director: string;
+  isAdult: boolean;
 
-  releaseDate: string;
+  releaseYear: string;
+
+  duration: number;
+
+  genres: [string];
+
+  poster: string;
 }
-export default FilmDto;
