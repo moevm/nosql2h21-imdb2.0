@@ -5,9 +5,11 @@ module.exports = {
     jest: true,
   },
   extends: [
+    "airbnb-base",
+    "prettier",
     "plugin:react/recommended",
-    "airbnb",
     "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -17,7 +19,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "prettier"],
   settings: {
     "import/resolver": {
       node: {
@@ -51,5 +53,11 @@ module.exports = {
         tsx: "never",
       },
     ],
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
   },
 };
