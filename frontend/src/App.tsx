@@ -1,16 +1,23 @@
 import React from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
 import Router from "router/Router";
-import "./App.css";
+import "./App.scss";
+import { Layout } from "antd";
+import Header from "components/Header";
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Router />
+        <Layout className="layout">
+          <Header />
+          <Layout.Content className="content">
+            <Router />
+          </Layout.Content>
+        </Layout>
       </Switch>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

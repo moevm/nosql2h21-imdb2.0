@@ -1,0 +1,7 @@
+@import '~antd/dist/antd.dark.css';
+@import "styles/constants.scss";
+
+.content {
+    padding: $content-padding;
+    min-height: calc(100vh - #{$header-height});
+}
