@@ -7,6 +7,9 @@ class FilmsApiService extends HTTPService {
     super(ApiPaths.Films);
   }
 
+  // for mock requests
+  private check = true;
+
   public getFilms(): Promise<Array<IFilmDto>> {
     return this.GET("");
   }
@@ -17,6 +20,40 @@ class FilmsApiService extends HTTPService {
 
   public postFilm(film: Omit<IFilmDto, "id">): Promise<IFilmDto> {
     return this.POST("", film);
+  }
+
+  public getMockFilms(): Promise<Array<IFilmDto>> {
+    this.check = false;
+    const films = [
+      {
+        title: "Film1",
+        isAdult: true,
+        releaseYear: 2019,
+        duration: 132,
+        genres: ["drama", "crime", "thriller"],
+        poster: null,
+      },
+      {
+        title: "Film2",
+        isAdult: false,
+        releaseYear: 2009,
+        duration: 172,
+        genres: ["comedy", "crime", "historical"],
+        poster: null,
+      },
+      {
+        title: "Film3",
+        isAdult: false,
+        releaseYear: 2005,
+        duration: 140,
+        genres: ["thriller", "horror"],
+        poster: null,
+      },
+    ];
+
+    return new Promise((resolve: any) => {
+      setTimeout(() => resolve(films), 1000);
+    });
   }
 }
 

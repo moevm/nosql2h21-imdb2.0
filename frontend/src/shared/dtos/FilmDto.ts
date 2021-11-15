@@ -1,6 +1,9 @@
 export interface IFilmDto {
   id: number;
-  name: string;
-  director: string;
-  releaseDate: string;
+  title: string;
+  isAdult: boolean;
+  releaseYear: number;
+  duration: number;
+  genres: Array<string>;
+  poster: string | null;
 }

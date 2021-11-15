@@ -7,18 +7,27 @@ class FilmsStore {
   constructor() {
     makeObservable(this, {
       films: observable,
+      isFetching: observable,
     });
   }
 
   public films: Array<FilmModel> = [];
 
+  public isFetching = false;
+
   public async getAllFilms(): Promise<void> {
     try {
-      const filmDtos = await filmsApiService.getFilms();
+      this.isFetching = true;
+
+      this.films = [];
+
+      const filmDtos = await filmsApiService.getMockFilms();
 
       this.films = filmDtos.map((f) => new FilmModel(f));
     } catch (err) {
       // ignore
+    } finally {
+      this.isFetching = false;
     }
   }
 

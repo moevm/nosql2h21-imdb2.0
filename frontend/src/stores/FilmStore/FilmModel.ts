@@ -4,24 +4,37 @@ import { IFilmDto } from "shared/dtos/FilmDto";
 class FilmModel {
   constructor(filmDto: IFilmDto) {
     makeObservable(this, {
-      name: observable,
-      director: observable,
-      releaseDate: observable,
+      id: observable,
+      title: observable,
+      duration: observable,
+      isAdult: observable,
+      genres: observable,
+      releaseYear: observable,
+      poster: observable,
     });
 
-    this.name = filmDto.name;
+    this.title = filmDto.title;
     this.id = filmDto.id;
-    this.director = filmDto.director;
-    this.releaseDate = new Date(filmDto.releaseDate);
+    this.genres = filmDto.genres;
+    this.duration = filmDto.duration;
+    this.poster = filmDto.poster;
+    this.isAdult = filmDto.isAdult;
+    this.releaseYear = filmDto.releaseYear;
   }
 
-  public name: string | null = null;
+  public title: string | null = null;
 
   public id: number | null = null;
 
-  public director: string | null = null;
+  public duration: number | null = null;
 
-  public releaseDate: Date | null = null;
+  public isAdult: boolean | null = null;
+
+  public genres: Array<string> = [];
+
+  public releaseYear: number | null = null;
+
+  public poster: string | null = null;
 }
 
 export default FilmModel;
