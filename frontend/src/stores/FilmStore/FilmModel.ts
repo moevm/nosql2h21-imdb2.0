@@ -1,8 +1,8 @@
 import { makeObservable, observable } from "mobx";
-import { IFilmDto } from "shared/dtos/FilmDto";
+import { IFilmDto, IFullFilmDto, IProfession } from "shared/dtos/FilmDto";
 
 class FilmModel {
-  constructor(filmDto: IFilmDto) {
+  constructor(filmDto: IFilmDto | IFullFilmDto) {
     makeObservable(this, {
       id: observable,
       title: observable,
@@ -11,6 +11,7 @@ class FilmModel {
       genres: observable,
       releaseYear: observable,
       poster: observable,
+      professions: observable,
     });
 
     this.title = filmDto.title;
@@ -20,6 +21,10 @@ class FilmModel {
     this.poster = filmDto.poster;
     this.isAdult = filmDto.isAdult;
     this.releaseYear = filmDto.releaseYear;
+
+    if ("professions" in filmDto) {
+      this.professions = filmDto.professions;
+    }
   }
 
   public title: string | null = null;
@@ -35,6 +40,8 @@ class FilmModel {
   public releaseYear: number | null = null;
 
   public poster: string | null = null;
+
+  public professions: Array<IProfession> = [];
 }
 
 export default FilmModel;

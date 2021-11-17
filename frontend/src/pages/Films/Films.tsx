@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Table, Tag } from "antd";
+import FilmModel from "../../stores/FilmStore/FilmModel";
+import FilmCard from "./FilmCard/FilmCard";
 
 const Films = () => {
   useEffect(() => {
@@ -13,7 +15,15 @@ const Films = () => {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      render: (text: string) => <a>{text}</a>,
+      render: (text: string, record: FilmModel) => (
+        <a
+          onClick={() => {
+            if (record.id !== null) filmsStore.openFilmCard(record.id);
+          }}
+        >
+          {text}
+        </a>
+      ),
     },
     {
       title: "Certificate",
@@ -54,11 +64,14 @@ const Films = () => {
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={filmsStore.films}
-      loading={filmsStore.isFetching}
-    />
+    <>
+      <FilmCard />
+      <Table
+        columns={columns}
+        dataSource={filmsStore.films}
+        loading={filmsStore.isFetching}
+      />
+    </>
   );
 };
 
