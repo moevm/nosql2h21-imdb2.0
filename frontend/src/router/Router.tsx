@@ -2,6 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 import Films from "pages/Films";
 import UiRoutes from "shared/constants/uiRoutes";
+import Names from "../pages/Names/Names";
 
 const Router: React.FC = () => {
   return (
@@ -10,7 +11,7 @@ const Router: React.FC = () => {
         <Films />
       </Route>
       <Route path={UiRoutes.Names}>
-        <div>Names</div>
+        <Names />
       </Route>
       <Route path={UiRoutes.DbControl}>
         <div>DB Control</div>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import filmsStore from "stores/FilmStore/FilmsStore";
+import { filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Table, Tag } from "antd";
 

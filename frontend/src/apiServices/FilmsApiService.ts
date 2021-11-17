@@ -26,6 +26,7 @@ class FilmsApiService extends HTTPService {
     this.check = false;
     const films = [
       {
+        id: 1,
         title: "Film1",
         isAdult: true,
         releaseYear: 2019,
@@ -34,6 +35,7 @@ class FilmsApiService extends HTTPService {
         poster: null,
       },
       {
+        id: 2,
         title: "Film2",
         isAdult: false,
         releaseYear: 2009,
@@ -42,6 +44,7 @@ class FilmsApiService extends HTTPService {
         poster: null,
       },
       {
+        id: 3,
         title: "Film3",
         isAdult: false,
         releaseYear: 2005,
@@ -51,7 +54,7 @@ class FilmsApiService extends HTTPService {
       },
     ];
 
-    return new Promise((resolve: any) => {
+    return new Promise((resolve) => {
       setTimeout(() => resolve(films), 1000);
     });
   }
