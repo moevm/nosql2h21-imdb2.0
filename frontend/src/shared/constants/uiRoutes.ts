@@ -1,5 +1,5 @@
 enum UiRoutes {
-  Films = "/",
+  Films = "/films",
   Names = "/names",
   DbControl = "/db_control",
   Statistics = "/statistics",

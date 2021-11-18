@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import Films from "pages/Films";
 import UiRoutes from "shared/constants/uiRoutes";
 import Names from "../pages/Names/Names";
@@ -7,7 +7,7 @@ import Names from "../pages/Names/Names";
 const Router: React.FC = () => {
   return (
     <>
-      <Route exact path={UiRoutes.Films}>
+      <Route path={UiRoutes.Films}>
         <Films />
       </Route>
       <Route path={UiRoutes.Names}>
@@ -19,6 +19,8 @@ const Router: React.FC = () => {
       <Route path={UiRoutes.Statistics}>
         <div>Statistics</div>
       </Route>
+      <Redirect exact from="/" to={UiRoutes.Films} />
+      <Redirect exact from="*" to={UiRoutes.Films} />
     </>
   );
 };
