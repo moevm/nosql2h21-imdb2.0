@@ -1,5 +1,11 @@
-import { makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { IFilmDto, IFullFilmDto, IProfession } from "shared/dtos/FilmDto";
+
+export enum Professions {
+  Actor = "Actor",
+  Director = "Director",
+  Writer = "Writer",
+}
 
 class FilmModel {
   constructor(filmDto: IFilmDto | IFullFilmDto) {
@@ -12,6 +18,8 @@ class FilmModel {
       releaseYear: observable,
       poster: observable,
       professions: observable,
+
+      getNamesByProfession: action,
     });
 
     this.title = filmDto.title;
@@ -42,6 +50,14 @@ class FilmModel {
   public poster: string | null = null;
 
   public professions: Array<IProfession> = [];
+
+  public getNamesByProfession(
+    profession: Professions
+  ): Array<Omit<IProfession, "category">> {
+    return this.professions
+      .filter((el) => el.category === profession)
+      .map((pr) => ({ character: pr.character, name: pr.name }));
+  }
 }
 
 export default FilmModel;

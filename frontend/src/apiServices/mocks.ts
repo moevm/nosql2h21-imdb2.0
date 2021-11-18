@@ -37,23 +37,38 @@ const getMockFilm = (id: number): IFullFilmDto => {
     ...film!,
     professions: [
       {
-        movie: "some_movie1",
+        name: "Jack",
         category: "Actor",
         character: "character1",
       },
       {
-        movie: "some_movie3",
+        name: "Bob",
         category: "Actor",
         character: "character2",
       },
       {
-        movie: "some_movie4",
+        name: "Teodor",
         category: "Actor",
         character: "character3",
       },
       {
-        movie: "some_movie69",
+        name: "Steven",
         category: "Writer",
+        character: null,
+      },
+      {
+        name: "Some",
+        category: "Director",
+        character: null,
+      },
+      {
+        name: "Garry Oldman",
+        category: "Director",
+        character: null,
+      },
+      {
+        name: "Henry Ford",
+        category: "Director",
         character: null,
       },
     ],

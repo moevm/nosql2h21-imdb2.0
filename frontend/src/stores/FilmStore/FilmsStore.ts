@@ -9,6 +9,7 @@ class FilmsStore {
       films: observable,
       isFetching: observable,
       isCardOpen: observable,
+      selectedFilm: observable,
 
       openFilmCard: action.bound,
       closeFilmCard: action.bound,
@@ -52,7 +53,9 @@ class FilmsStore {
   public async getFilmById(id: number): Promise<void> {
     try {
       this.isFetching = true;
-      this.selectedFilm = await filmsApiService.getMockFilmById(id);
+      this.selectedFilm = new FilmModel(
+        await filmsApiService.getMockFilmById(id)
+      );
     } catch (err) {
       // ignore
     } finally {
