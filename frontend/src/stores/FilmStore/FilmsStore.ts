@@ -30,7 +30,7 @@ class FilmsStore {
 
       this.films = [];
 
-      const filmDtos = await filmsApiService.getMockFilms();
+      const filmDtos = await filmsApiService.getFilms();
 
       this.films = filmDtos.map((f) => new FilmModel(f));
     } catch (err) {

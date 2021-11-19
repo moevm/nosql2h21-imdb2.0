@@ -7,6 +7,7 @@ import router from "./router";
 import { FilmsMongoCollection } from "./Film/FilmModel";
 import { WorkersMongoCollection } from "./Workers/WorkersModel";
 import { FilmsCrewMongoCollection } from "./FilmsCrew/FilmsCrewModel";
+import { films } from "./testMock";
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ app.use("/api", router);
 
 const start = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/imdb2-0", {
+    await mongoose.connect(process.env.DB_URL!, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -40,6 +41,10 @@ const start = async () => {
       { filmId: 1, workerId: 1, category: 1, characters: 1 },
       { unique: true }
     );
+
+    // for testing
+    await FilmsMongoCollection.deleteMany({});
+    await FilmsMongoCollection.insertMany(films);
 
     app.listen(PORT, () => console.log(`Server started on PORT = ${PORT}`));
   } catch (e) {

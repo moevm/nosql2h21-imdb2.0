@@ -1,0 +1,27 @@
+version: "3"
+
+volumes:
+  mongodb_volume:
+
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - DB_URL=mongodb://mongodb:27017/imdb2-0
+      - PORT=8080
+
+  client:
+    build: ./frontend
+    ports:
+      - "80:80"
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_volume:/data/db

@@ -1,7 +1,7 @@
 import { ApiPaths } from "shared/constants/ApiPaths";
 import { IFilmDto, IFullFilmDto } from "shared/dtos/FilmDto";
 import HTTPService from "./HTTPService";
-import { films, getMockFilm } from "./mocks";
+import { getMockFilm } from "./mocks";
 
 class FilmsApiService extends HTTPService {
   public constructor() {
@@ -23,14 +23,14 @@ class FilmsApiService extends HTTPService {
     return this.POST("", film);
   }
 
-  public getMockFilms(): Promise<Array<IFilmDto>> {
-    this.check = false;
-    const mockFilms = films;
-
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockFilms), 1000);
-    });
-  }
+  // public getFilms(): Promise<Array<IFilmDto>> {
+  //   this.check = false;
+  //   const mockFilms = films;
+  //
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => resolve(mockFilms), 1000);
+  //   });
+  // }
 
   public getMockFilmById(id: number): Promise<IFullFilmDto> {
     this.check = false;
