@@ -30,7 +30,16 @@ const films = [
   },
 ];
 
+function randomInteger(min: number, max: number): number {
+  // случайное число от min до (max+1)
+  const rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
+}
+
 const getMockFilm = (id: number): IFullFilmDto => {
+  // FIXME: for real data
+  if (id === undefined || (id < 1 && id > 3)) id = randomInteger(1, 3);
+
   const film = films.find((f) => f.id === id);
 
   return {
