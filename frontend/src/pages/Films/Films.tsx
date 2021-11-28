@@ -3,7 +3,7 @@ import { filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Table, Tag } from "antd";
 import FilmModel from "../../stores/FilmStore/FilmModel";
-import FilmCard from "./FilmCard/FilmCard";
+import FilmCard from "./FilmCard";
 
 const Films = () => {
   useEffect(() => {
@@ -29,7 +29,6 @@ const Films = () => {
       title: "Certificate",
       dataIndex: "isAdult",
       key: "isAdult",
-      render: (isAdult: boolean) => (isAdult ? "18+" : "6+"),
     },
     {
       title: "Release Year",
@@ -65,7 +64,7 @@ const Films = () => {
 
   return (
     <>
-      <FilmCard />
+      <FilmCard isEditable={filmsStore.isEditing} />
       <Table
         columns={columns}
         dataSource={filmsStore.films}

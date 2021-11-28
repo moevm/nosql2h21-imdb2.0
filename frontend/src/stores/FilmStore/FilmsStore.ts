@@ -9,16 +9,20 @@ class FilmsStore {
       films: observable,
       isFetching: observable,
       isCardOpen: observable,
+      isEditing: observable,
       selectedFilm: observable,
 
       openFilmCard: action.bound,
       closeFilmCard: action.bound,
+      setEditingMode: action.bound,
     });
   }
 
   public films: Array<FilmModel> = [];
 
   public isFetching = false;
+
+  public isEditing = false;
 
   public isCardOpen = false;
 
@@ -77,9 +81,14 @@ class FilmsStore {
     try {
       this.selectedFilm = null;
       this.isCardOpen = false;
+      this.isEditing = false;
     } catch (err) {
       // ignore
     }
+  }
+
+  public setEditingMode(isEditing: boolean) {
+    this.isEditing = isEditing;
   }
 }
 

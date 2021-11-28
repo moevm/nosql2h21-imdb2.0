@@ -1,4 +1,5 @@
 import { IFullFilmDto } from "../shared/dtos/FilmDto";
+import { ProfessionsList } from "../stores/FilmStore/FilmModel";
 
 const films = [
   {
@@ -84,4 +85,24 @@ const getMockFilm = (id: number): IFullFilmDto => {
   };
 };
 
-export { films, getMockFilm };
+const genres = ["drama", "crime", "thriller", "comedy", "historical", "horror"];
+
+const cast: ProfessionsList = {
+  Director: [
+    "Some",
+    "Garry Oldman",
+    "Henry Ford",
+    "check1",
+    "check2",
+    "check3",
+  ],
+  Writer: ["Steven", "Lolez", "writercheck"],
+  Actor: [
+    { name: "Bob", character: "character2" },
+    { name: "Jack", character: "character1" },
+    { name: "Teodor", character: "character3" },
+    { name: "Fake", character: "character_fake" },
+  ],
+};
+
+export { films, getMockFilm, genres, cast };

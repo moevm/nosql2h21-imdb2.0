@@ -2,10 +2,26 @@ import { action, makeObservable, observable } from "mobx";
 import { IFilmDto, IFullFilmDto, IProfession } from "shared/dtos/FilmDto";
 
 export enum Professions {
-  Actor = "Actor",
   Director = "Director",
   Writer = "Writer",
+  Actor = "Actor",
 }
+
+export const ProfessionArray: Array<Professions> = Object.entries(
+  Professions
+).map(([value]) => value as Professions);
+
+type ProfessionsListWithoutActor = Record<
+  Exclude<Professions, Professions.Actor>,
+  Array<string>
+>;
+
+type ActorType = Record<
+  Professions.Actor,
+  Array<Omit<IProfession, "category">>
+>;
+
+export type ProfessionsList = ProfessionsListWithoutActor & ActorType;
 
 class FilmModel {
   constructor(filmDto: IFilmDto | IFullFilmDto) {
@@ -27,7 +43,7 @@ class FilmModel {
     this.genres = filmDto.genres;
     this.duration = filmDto.duration;
     this.poster = filmDto.poster;
-    this.isAdult = filmDto.isAdult;
+    this.isAdult = filmDto.isAdult ? "18+" : "6+";
     this.releaseYear = filmDto.releaseYear;
 
     if ("professions" in filmDto) {
@@ -41,7 +57,7 @@ class FilmModel {
 
   public duration: number | null = null;
 
-  public isAdult: boolean | null = null;
+  public isAdult: string | null = null;
 
   public genres: Array<string> = [];
 
