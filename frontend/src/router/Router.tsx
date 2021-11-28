@@ -3,6 +3,7 @@ import { Redirect, Route } from "react-router-dom";
 import Films from "pages/Films";
 import UiRoutes from "shared/constants/uiRoutes";
 import Names from "../pages/Names/Names";
+import DataBaseControlMenu from "../pages/DataBaseControlMenu/DataBaseControlMenu";
 
 const Router: React.FC = () => {
   return (
@@ -14,7 +15,7 @@ const Router: React.FC = () => {
         <Names />
       </Route>
       <Route path={UiRoutes.DbControl}>
-        <div>DB Control</div>
+        <DataBaseControlMenu />
       </Route>
       <Route path={UiRoutes.Statistics}>
         <div>Statistics</div>

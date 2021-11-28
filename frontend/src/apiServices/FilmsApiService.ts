@@ -1,19 +1,14 @@
 import { ApiPaths } from "shared/constants/ApiPaths";
 import { IFilmDto, IFullFilmDto } from "shared/dtos/FilmDto";
 import HTTPService from "./HTTPService";
-import { getMockFilm } from "./mocks";
+import { getMockFilm, films } from "./mocks";
 
 class FilmsApiService extends HTTPService {
   public constructor() {
     super(ApiPaths.Films);
   }
 
-  // for mock requests
-  private check = true;
-
-  public getFilms(): Promise<Array<IFilmDto>> {
-    return this.GET("");
-  }
+  private isMock = process.env.NODE_ENV === "development";
 
   public updateFilm(film: IFilmDto): Promise<IFilmDto> {
     return this.PUT("", film);
@@ -24,16 +19,22 @@ class FilmsApiService extends HTTPService {
   }
 
   // public getFilms(): Promise<Array<IFilmDto>> {
-  //   this.check = false;
-  //   const mockFilms = films;
-  //
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => resolve(mockFilms), 1000);
-  //   });
+  //   return this.GET("");
   // }
 
+  public getFilms(): Promise<Array<IFilmDto>> {
+    if (!this.isMock) return this.GET("");
+
+    const mockFilms = films;
+
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(mockFilms), 1000);
+    });
+  }
+
   public getMockFilmById(id: number): Promise<IFullFilmDto> {
-    this.check = false;
+    // TODO: add real request - film by id
+    if (!this.isMock) return this.GET("");
     const mockFilm = getMockFilm(id);
 
     return new Promise((resolve) => {
