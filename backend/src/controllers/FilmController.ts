@@ -1,8 +1,8 @@
 import express from "express";
-import { filmService } from "Film/FilmService";
+import { filmService } from "service/FilmService";
 
-class FilmController {
-  static async getFilms(
+export class FilmController {
+  static async getFilmsOverview(
     req: express.Request,
     res: express.Response
     // next: express.NextFunction
@@ -18,10 +18,9 @@ class FilmController {
     }
   }
 
-  static async postFilm(req: express.Request, res: express.Response) {
+  static async getFilmById(req: express.Request, res: express.Response) {
     try {
-      const film = await filmService.postFilm(req.body);
-
+      const film = await filmService.getFilmById(req.params.id);
       res.json(film);
     } catch (err) {
       if (err instanceof Error) {
@@ -30,9 +29,9 @@ class FilmController {
     }
   }
 
-  static async deleteFilm(req: express.Request, res: express.Response) {
+  static async postFilm(req: express.Request, res: express.Response) {
     try {
-      const film = await filmService.deleteFilm(req.body.id);
+      const film = await filmService.postFilm(req.body);
 
       res.json(film);
     } catch (err) {
@@ -54,5 +53,3 @@ class FilmController {
     }
   }
 }
-
-export default FilmController;
