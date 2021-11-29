@@ -1,7 +1,7 @@
 import { Schema, model, Document, Model } from "mongoose";
 
 interface IFilm {
-  filmId: string;
+  _id: Schema.Types.ObjectId;
   title: string;
   isAdult: boolean;
   releaseYear: string;
@@ -11,13 +11,13 @@ interface IFilm {
 }
 
 const FilmSchema = new Schema<IFilm, Model<IFilm>, IFilm>({
-  filmId: { type: String, required: true },
+  _id: { type: Schema.Types.ObjectId, required: true },
   title: { type: String, required: true },
   isAdult: { type: Boolean, required: true },
   releaseYear: { type: String, required: true },
   duration: { type: Number, required: true },
   genres: { type: [String], required: true },
-  poster: { type: String, required: true },
+  poster: { type: String, required: false },
 });
 
 export type FilmModelType = IFilm & Document;

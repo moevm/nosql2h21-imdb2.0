@@ -11,7 +11,7 @@ const FilmCrewSchema = new Schema<IFilmCrew, Model<IFilmCrew>, IFilmCrew>({
   filmId: { type: String, required: true },
   workerId: { type: String, required: true },
   category: { type: String, required: true },
-  characters: { type: String, required: true },
+  characters: { type: String, required: false },
 });
 
 export type FilmsCrewModelType = IFilmCrew & Document;
