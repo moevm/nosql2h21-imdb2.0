@@ -11,10 +11,12 @@ class FilmsStore {
       isCardOpen: observable,
       isEditing: observable,
       selectedFilm: observable,
+      canSubmitForm: observable,
 
       openFilmCard: action.bound,
       closeFilmCard: action.bound,
       setEditingMode: action.bound,
+      setCanSubmitForm: action.bound,
     });
   }
 
@@ -25,6 +27,8 @@ class FilmsStore {
   public isEditing = false;
 
   public isCardOpen = false;
+
+  public canSubmitForm = false;
 
   public selectedFilm: FilmModel | null = null;
 
@@ -89,6 +93,10 @@ class FilmsStore {
 
   public setEditingMode(isEditing: boolean) {
     this.isEditing = isEditing;
+  }
+
+  public setCanSubmitForm(canSubmit: boolean) {
+    this.canSubmitForm = canSubmit;
   }
 }
 

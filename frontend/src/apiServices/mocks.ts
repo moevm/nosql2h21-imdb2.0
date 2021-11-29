@@ -1,5 +1,4 @@
 import { IFullFilmDto } from "../shared/dtos/FilmDto";
-import { ProfessionsList } from "../stores/FilmStore/FilmModel";
 
 const films = [
   {
@@ -47,36 +46,43 @@ const getMockFilm = (id: number): IFullFilmDto => {
     ...film!,
     professions: [
       {
+        id: 1,
         name: "Jack",
         category: "Actor",
         character: "character1",
       },
       {
+        id: 2,
         name: "Bob",
         category: "Actor",
         character: "character2",
       },
       {
+        id: 3,
         name: "Teodor",
         category: "Actor",
         character: "character3",
       },
       {
+        id: 4,
         name: "Steven",
         category: "Writer",
         character: null,
       },
       {
+        id: 5,
         name: "Some",
         category: "Director",
         character: null,
       },
       {
+        id: 6,
         name: "Garry Oldman",
         category: "Director",
         character: null,
       },
       {
+        id: 7,
         name: "Henry Ford",
         category: "Director",
         character: null,
@@ -87,22 +93,19 @@ const getMockFilm = (id: number): IFullFilmDto => {
 
 const genres = ["drama", "crime", "thriller", "comedy", "historical", "horror"];
 
-const cast: ProfessionsList = {
-  Director: [
-    "Some",
-    "Garry Oldman",
-    "Henry Ford",
-    "check1",
-    "check2",
-    "check3",
-  ],
-  Writer: ["Steven", "Lolez", "writercheck"],
-  Actor: [
-    { name: "Bob", character: "character2" },
-    { name: "Jack", character: "character1" },
-    { name: "Teodor", character: "character3" },
-    { name: "Fake", character: "character_fake" },
-  ],
-};
-
+const cast: Array<{ name: string; id: number }> = [
+  { name: "Some", id: 5 },
+  { name: "Garry Oldman", id: 6 },
+  { name: "Henry Ford", id: 7 },
+  { name: "check1", id: 8 },
+  { name: "check2", id: 9 },
+  { name: "check3", id: 10 },
+  { name: "Steven", id: 4 },
+  { name: "Lolez", id: 11 },
+  { name: "writercheck", id: 12 },
+  { name: "Bob", id: 2 },
+  { name: "Jack", id: 1 },
+  { name: "Teodor", id: 3 },
+  { name: "Fake", id: 13 },
+];
 export { films, getMockFilm, genres, cast };

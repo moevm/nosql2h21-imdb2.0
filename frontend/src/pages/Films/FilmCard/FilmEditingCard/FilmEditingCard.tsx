@@ -7,75 +7,47 @@ import {
   Divider,
   Drawer,
   Form,
+  FormInstance,
   Input,
   Row,
   Select,
   Space,
 } from "antd";
 import shiningPoster from "static/test/shiningPoster.png";
-import { ProfessionArray, Professions } from "stores/FilmStore/FilmModel";
 import { toJS } from "mobx";
-import { cast, genres } from "apiServices/mocks";
+import { genres } from "apiServices/mocks";
 import filmsToFormFilms from "utils/filmsToFormFilms";
+import parseCast from "utils/castParsing";
 import styles from "./FilmEditingCard.module.scss";
+import Cast from "./Cast/Cast";
 
 const FilmEditingCard = () => {
   if (filmsStore.selectedFilm === null) {
     return null;
   }
 
-  const films = filmsToFormFilms(toJS(filmsStore.selectedFilm));
+  const [films, professions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
 
-  const renderCast = () => {
-    return (
-      <>
-        {ProfessionArray.map((e) => {
-          if (e === Professions.Actor) return null;
+  const [infoForm] = Form.useForm();
+  const [castForm] = Form.useForm();
 
-          return (
-            <>
-              <Divider />
-              <Form.Item
-                key={e}
-                name={e}
-                label={e}
-                rules={[
-                  {
-                    required: true,
-                    message: `Pls write ${e}`,
-                  },
-                ]}
-              >
-                <Select
-                  showSearch
-                  mode="multiple"
-                  placeholder={e}
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option?.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                  filterSort={(optionA, optionB) =>
-                    optionA.children
-                      .toLowerCase()
-                      .localeCompare(optionB.children.toLowerCase())
-                  }
-                >
-                  {cast[e].map((d) => {
-                    return (
-                      <Select.Option value={d} key={d}>
-                        {d}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
-            </>
-          );
-        })}
-      </>
-    );
+  const haveErrors = (form: FormInstance) => {
+    return form.getFieldsError().find((e) => e.errors.length > 0) !== undefined;
+  };
+
+  const onOk = () => {
+    if (haveErrors(castForm) || haveErrors(infoForm)) {
+      return;
+    }
+
+    const cast = castForm.getFieldsValue();
+    const answer = parseCast(cast);
+    const movieInfo = infoForm.getFieldsValue();
+    const result = { ...movieInfo, professions: [...answer] };
+
+    // console.log(result);
+
+    // TODO: submit form and do request
   };
 
   return (
@@ -87,110 +59,84 @@ const FilmEditingCard = () => {
       width={800}
       extra={
         <Space>
-          <Button>Save</Button>
+          <Button
+            onClick={onOk}
+            disabled={!filmsStore.canSubmitForm}
+            type="primary"
+          >
+            Save
+          </Button>
           <Button onClick={() => filmsStore.setEditingMode(false)}>
             Cancel
           </Button>
-          <Button danger>Delete</Button>
         </Space>
       }
     >
-      <Form initialValues={films}>
-        <Row>
-          <Col span={12}>
-            <img
-              src={shiningPoster}
-              alt="poster"
-              className={styles.imageWrapper}
-            />
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="releaseYear"
-              hasFeedback
-              label="Year"
-              rules={[
-                { required: true, message: "Please enter release year!" },
-              ]}
-            >
-              <Input placeholder="Release year" />
-            </Form.Item>
-            <Form.Item
-              name="isAdult"
-              label="Certificate"
-              rules={[{ required: true, message: "Please enter certificate!" }]}
-            >
-              <Select placeholder="Certificate">
-                <Select.Option value={"18+"}>18+</Select.Option>
-                <Select.Option value={"6+"}>6+</Select.Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              name="genres"
-              label="Genres"
-              rules={[{ required: true, message: "Please select genres!" }]}
-            >
-              <Select
-                mode="multiple"
-                placeholder="Genres"
-                style={{ width: "100%" }}
+      <Form.Provider
+        onFormChange={() => {
+          if (haveErrors(castForm) || haveErrors(infoForm)) {
+            filmsStore.setCanSubmitForm(false);
+          } else {
+            filmsStore.setCanSubmitForm(true);
+          }
+        }}
+      >
+        <Form initialValues={films} form={infoForm}>
+          <Row>
+            <Col span={12}>
+              <img
+                src={shiningPoster}
+                alt="poster"
+                className={styles.imageWrapper}
+              />
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="releaseYear"
+                hasFeedback
+                label="Year"
+                rules={[
+                  { required: true, message: "Please enter release year!" },
+                ]}
               >
-                {genres.map((g) => (
-                  <Select.Option value={g} key={g}>
-                    {g}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
+                <Input placeholder="Release year" />
+              </Form.Item>
+              <Form.Item
+                name="isAdult"
+                label="Certificate"
+                rules={[
+                  { required: true, message: "Please enter certificate!" },
+                ]}
+              >
+                <Select placeholder="Certificate">
+                  <Select.Option value={"18+"}>18+</Select.Option>
+                  <Select.Option value={"6+"}>6+</Select.Option>
+                </Select>
+              </Form.Item>
 
-        {renderCast()}
-
-        <Divider />
-
-        <Row gutter={[8, 8]}>
-          {films.Actor.map((e) => {
-            return (
-              <React.Fragment key={e.name}>
-                <Col span={12}>
-                  <Select
-                    showSearch
-                    placeholder="Actor"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      option?.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    }
-                    filterSort={(optionA, optionB) =>
-                      optionA.children
-                        .toLowerCase()
-                        .localeCompare(optionB.children.toLowerCase())
-                    }
-                    defaultValue={e.name}
-                  >
-                    {cast.Actor.map((a) => {
-                      return (
-                        <Select.Option value={a.name} key={a.name}>
-                          {a.name}
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-                </Col>
-                <Col span={12}>
-                  <Input
-                    placeholder="Character"
-                    defaultValue={e.character || ""}
-                  />
-                </Col>
-              </React.Fragment>
-            );
-          })}
-        </Row>
-      </Form>
+              <Form.Item
+                name="genres"
+                label="Genres"
+                rules={[{ required: true, message: "Please select genres!" }]}
+              >
+                <Select
+                  mode="multiple"
+                  placeholder="Genres"
+                  style={{ width: "100%" }}
+                >
+                  {genres.map((g) => (
+                    <Select.Option value={g} key={g}>
+                      {g}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Divider />
+        </Form>
+        <Cast professions={professions} castForm={castForm} />
+      </Form.Provider>
     </Drawer>
   );
 };

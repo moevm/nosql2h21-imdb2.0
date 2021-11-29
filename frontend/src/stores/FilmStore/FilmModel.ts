@@ -13,10 +13,10 @@ export const ProfessionArray: Array<Professions> = Object.entries(
 
 type ProfessionsListWithoutActor = Record<
   Exclude<Professions, Professions.Actor>,
-  Array<string>
+  Array<Omit<IProfession, "category" | "character">>
 >;
 
-type ActorType = Record<
+export type ActorType = Record<
   Professions.Actor,
   Array<Omit<IProfession, "category">>
 >;
@@ -72,7 +72,7 @@ class FilmModel {
   ): Array<Omit<IProfession, "category">> {
     return this.professions
       .filter((el) => el.category === profession)
-      .map((pr) => ({ character: pr.character, name: pr.name }));
+      .map((pr) => ({ character: pr.character, name: pr.name, id: pr.id }));
   }
 }
 
