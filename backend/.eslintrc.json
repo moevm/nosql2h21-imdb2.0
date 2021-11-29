@@ -34,6 +34,10 @@
                 "ts": "never"
             }
         ],
+        "no-unused-vars": "off",
+        "no-underscore-dangle": "off",
+        "no-useless-constructor": "off",
+        "no-empty-function": "off",
         "import/prefer-default-export": "off",
         "class-methods-use-this": "off",
         "import/no-unresolved": "off",
