@@ -4,9 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import router from "./router";
-import { FilmsMongoCollection } from "./Film/FilmModel";
-import { WorkersMongoCollection } from "./Workers/WorkersModel";
-import { FilmsCrewMongoCollection } from "./FilmsCrew/FilmsCrewModel";
+import { FilmsMongoCollection } from "./models/mongoose/FilmModel";
+import { FilmsCrewMongoCollection } from "./models/mongoose/FilmsCrewModel";
 import { films } from "./testMock";
 
 dotenv.config();
@@ -27,18 +26,8 @@ const start = async () => {
       useUnifiedTopology: true,
     });
 
-    await FilmsMongoCollection.collection.createIndex(
-      { filmId: 1 },
-      { unique: true }
-    );
-
-    await WorkersMongoCollection.collection.createIndex(
-      { workerId: 1 },
-      { unique: true }
-    );
-
     await FilmsCrewMongoCollection.collection.createIndex(
-      { filmId: 1, workerId: 1, category: 1, characters: 1 },
+      { filmId: 1, workerId: 1, category: 1, character: 1 },
       { unique: true }
     );
 
