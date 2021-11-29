@@ -6,7 +6,7 @@ import FilmModel, {
 const filmsToFormFilms = (
   films: FilmModel
 ): [
-  Omit<FilmModel, "professions" | "getNamesByProfession">,
+  Omit<FilmModel, "professions" | "getNamesByProfession" | "setNewPoster">,
   ProfessionsList
 ] => {
   const formProfessions: ProfessionsList = {
@@ -31,7 +31,8 @@ const filmsToFormFilms = (
       return { name: el.name, character: el.character, id: el.id };
     });
 
-  const { professions, getNamesByProfession, ...formFilms } = films;
+  const { professions, getNamesByProfession, setNewPoster, ...formFilms } =
+    films;
 
   return [{ ...formFilms }, { ...formProfessions }];
 };

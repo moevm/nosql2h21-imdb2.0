@@ -2,10 +2,10 @@ import React from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Button, Col, Divider, Drawer, Row, Space } from "antd";
-import shiningPoster from "static/test/shiningPoster.png";
 import { Professions } from "stores/FilmStore/FilmModel";
 import DescriptionItem from "components/DescriptionItem";
 import Block from "components/Block";
+import noImage from "static/no_image.svg";
 import styles from "./FilmStaticCard.module.scss";
 
 const FilmStaticCard = () => {
@@ -49,11 +49,16 @@ const FilmStaticCard = () => {
       <Row>
         <Col span={12}>
           <img
-            src={shiningPoster}
+            src={
+              filmsStore.selectedFilm.poster === null
+                ? noImage
+                : filmsStore.selectedFilm.poster
+            }
             alt="poster"
             className={styles.imageWrapper}
           />
         </Col>
+
         <Col span={12}>
           <DescriptionItem
             title="Year"

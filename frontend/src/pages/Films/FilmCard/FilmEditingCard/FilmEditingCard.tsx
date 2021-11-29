@@ -13,13 +13,14 @@ import {
   Select,
   Space,
 } from "antd";
-import shiningPoster from "static/test/shiningPoster.png";
+import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { genres } from "apiServices/mocks";
 import filmsToFormFilms from "utils/filmsToFormFilms";
 import parseCast from "utils/castParsing";
 import styles from "./FilmEditingCard.module.scss";
-import Cast from "./Cast/Cast";
+import Cast from "./Cast";
+import ModalMovieForm from "./ModalMovieForm/ModalMovieForm";
 
 const FilmEditingCard = () => {
   if (filmsStore.selectedFilm === null) {
@@ -30,6 +31,7 @@ const FilmEditingCard = () => {
 
   const [infoForm] = Form.useForm();
   const [castForm] = Form.useForm();
+  const [urlForm] = Form.useForm<{ poster: string | null }>();
 
   const haveErrors = (form: FormInstance) => {
     return form.getFieldsError().find((e) => e.errors.length > 0) !== undefined;
@@ -43,11 +45,30 @@ const FilmEditingCard = () => {
     const cast = castForm.getFieldsValue();
     const answer = parseCast(cast);
     const movieInfo = infoForm.getFieldsValue();
-    const result = { ...movieInfo, professions: [...answer] };
+    const result = {
+      ...movieInfo,
+      professions: [...answer],
+      poster: filmsStore.selectedFilm?.newPoster,
+    };
 
-    // console.log(result);
+    console.log(result);
 
     // TODO: submit form and do request
+  };
+
+  const openModalUrlForm = () => {
+    filmsStore.setIsImageFormOpen(true);
+  };
+
+  const closeModalUrlForm = () => {
+    filmsStore.setIsImageFormOpen(false);
+  };
+
+  const onSetImageUrl = () => {
+    if (haveErrors(urlForm)) return;
+    filmsStore.selectedFilm?.setNewPoster(urlForm.getFieldsValue().poster);
+    filmsStore.setCanSubmitForm(true);
+    closeModalUrlForm();
   };
 
   return (
@@ -66,12 +87,24 @@ const FilmEditingCard = () => {
           >
             Save
           </Button>
-          <Button onClick={() => filmsStore.setEditingMode(false)}>
+          <Button
+            onClick={() => {
+              filmsStore.setEditingMode(false);
+              filmsStore.selectedFilm?.setNewPoster(null);
+            }}
+          >
             Cancel
           </Button>
         </Space>
       }
     >
+      <ModalMovieForm
+        visible={filmsStore.isImageFormOpen}
+        onOk={onSetImageUrl}
+        onCancel={closeModalUrlForm}
+        defaultValue={{ poster: films.poster }}
+        form={urlForm}
+      />
       <Form.Provider
         onFormChange={() => {
           if (haveErrors(castForm) || haveErrors(infoForm)) {
@@ -85,9 +118,10 @@ const FilmEditingCard = () => {
           <Row>
             <Col span={12}>
               <img
-                src={shiningPoster}
+                src={films.newPoster === null ? noImage : films.newPoster}
                 alt="poster"
                 className={styles.imageWrapper}
+                onClick={openModalUrlForm}
               />
             </Col>
             <Col span={12}>

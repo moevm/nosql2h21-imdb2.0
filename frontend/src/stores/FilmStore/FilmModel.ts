@@ -33,9 +33,11 @@ class FilmModel {
       genres: observable,
       releaseYear: observable,
       poster: observable,
+      newPoster: observable,
       professions: observable,
 
       getNamesByProfession: action,
+      setNewPoster: action.bound,
     });
 
     this.title = filmDto.title;
@@ -43,6 +45,7 @@ class FilmModel {
     this.genres = filmDto.genres;
     this.duration = filmDto.duration;
     this.poster = filmDto.poster;
+    this.newPoster = filmDto.poster;
     this.isAdult = filmDto.isAdult ? "18+" : "6+";
     this.releaseYear = filmDto.releaseYear;
 
@@ -65,6 +68,8 @@ class FilmModel {
 
   public poster: string | null = null;
 
+  public newPoster: string | null = null;
+
   public professions: Array<IProfession> = [];
 
   public getNamesByProfession(
@@ -73,6 +78,10 @@ class FilmModel {
     return this.professions
       .filter((el) => el.category === profession)
       .map((pr) => ({ character: pr.character, name: pr.name, id: pr.id }));
+  }
+
+  public setNewPoster(poster: string | null): void {
+    this.newPoster = poster;
   }
 }
 
