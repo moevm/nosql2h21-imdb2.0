@@ -11,7 +11,7 @@ interface IFilm {
 }
 
 const FilmSchema = new Schema<IFilm, Model<IFilm>, IFilm>({
-  _id: { type: Schema.Types.ObjectId, required: true },
+  _id: { type: Schema.Types.ObjectId },
   title: { type: String, required: true },
   isAdult: { type: Boolean, required: true },
   releaseYear: { type: String, required: true },

@@ -5,7 +5,7 @@ import { WorkersController } from "../controllers/WorkersController";
 const router = Router();
 
 router.get("/films/overview", FilmController.getFilmsOverview);
-router.get("films/:id", FilmController.getFilmById);
+router.get("/films/:id", FilmController.getFilmById);
 router.post("/films", FilmController.postFilm);
 router.put("/films", FilmController.updateFilm);
 

@@ -1,5 +1,6 @@
 import { FilmsMongoCollection } from "models/mongoose/FilmModel";
 import { FilmShortInfoDto } from "models/dto/FilmShortInfoDto";
+import mongoose from "mongoose";
 import { filmDtoMapper } from "../models/mapper/FilmDtoMapper";
 import { FilmFullInfoDto } from "../models/dto/FilmFullInfoDto";
 import { FilmsCrewMongoCollection } from "../models/mongoose/FilmsCrewModel";
@@ -13,15 +14,16 @@ class FilmService {
     return films.map((f) => filmDtoMapper.mapToShortFilmInfoDto(f));
   }
 
-  public async getFilmById(id: String): Promise<FilmFullInfoDto> {
-    const film = await FilmsMongoCollection.findById(id);
+  public async getFilmById(id: string): Promise<FilmFullInfoDto> {
+    const objId = mongoose.Types.ObjectId(id);
+    const film = await FilmsMongoCollection.findById(objId);
 
     if (film == null) {
       throw new Error(`No film with id = ${id}`);
     }
 
     const filmWorkers = await FilmsCrewMongoCollection.find({
-      filmId: id,
+      filmId: objId,
     });
 
     const filmCrewInfo = (

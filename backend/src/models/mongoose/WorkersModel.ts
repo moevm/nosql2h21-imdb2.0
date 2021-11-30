@@ -10,7 +10,7 @@ interface IWorker {
 
 const WorkerSchema = new Schema<IWorker, Model<IWorker>, IWorker>(
   {
-    _id: { type: Schema.Types.ObjectId, required: true },
+    _id: { type: Schema.Types.ObjectId },
     name: { type: String, required: true },
     birthYear: { type: String, required: true },
     deathYear: { type: String, required: true },
