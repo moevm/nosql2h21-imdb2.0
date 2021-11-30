@@ -1,7 +1,7 @@
 import React from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
-import { Button, Col, Divider, Drawer, Row, Space } from "antd";
+import { Col, Divider, Row } from "antd";
 import { Professions } from "stores/FilmStore/FilmModel";
 import DescriptionItem from "components/DescriptionItem";
 import Block from "components/Block";
@@ -34,18 +34,7 @@ const FilmStaticCard = () => {
   };
 
   return (
-    <Drawer
-      title={filmsStore.selectedFilm.title}
-      placement="right"
-      onClose={filmsStore.closeFilmCard}
-      visible={filmsStore.isCardOpen}
-      width={800}
-      extra={
-        <Space>
-          <Button onClick={() => filmsStore.setEditingMode(true)}>Edit</Button>
-        </Space>
-      }
-    >
+    <>
       <Row>
         <Col span={12}>
           <img
@@ -116,7 +105,7 @@ const FilmStaticCard = () => {
           </>
         }
       />
-    </Drawer>
+    </>
   );
 };
 

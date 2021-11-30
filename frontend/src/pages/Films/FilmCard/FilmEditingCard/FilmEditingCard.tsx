@@ -1,60 +1,29 @@
 import React from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
-import {
-  Button,
-  Col,
-  Divider,
-  Drawer,
-  Form,
-  FormInstance,
-  Input,
-  Row,
-  Select,
-  Space,
-} from "antd";
+import { Col, Divider, Form, FormInstance, Input, Row, Select } from "antd";
 import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { genres } from "apiServices/mocks";
 import filmsToFormFilms from "utils/filmsToFormFilms";
-import parseCast from "utils/castParsing";
+import { haveErrors } from "utils/isFormHaveErrors";
 import styles from "./FilmEditingCard.module.scss";
 import Cast from "./Cast";
 import ModalMovieForm from "./ModalMovieForm/ModalMovieForm";
 
-const FilmEditingCard = () => {
+interface IProps {
+  infoForm: FormInstance;
+  castForm: FormInstance;
+}
+
+const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
   if (filmsStore.selectedFilm === null) {
     return null;
   }
 
   const [films, professions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
 
-  const [infoForm] = Form.useForm();
-  const [castForm] = Form.useForm();
   const [urlForm] = Form.useForm<{ poster: string | null }>();
-
-  const haveErrors = (form: FormInstance) => {
-    return form.getFieldsError().find((e) => e.errors.length > 0) !== undefined;
-  };
-
-  const onOk = () => {
-    if (haveErrors(castForm) || haveErrors(infoForm)) {
-      return;
-    }
-
-    const cast = castForm.getFieldsValue();
-    const answer = parseCast(cast);
-    const movieInfo = infoForm.getFieldsValue();
-    const result = {
-      ...movieInfo,
-      professions: [...answer],
-      poster: filmsStore.selectedFilm?.newPoster,
-    };
-
-    console.log(result);
-
-    // TODO: submit form and do request
-  };
 
   const openModalUrlForm = () => {
     filmsStore.setIsImageFormOpen(true);
@@ -72,32 +41,7 @@ const FilmEditingCard = () => {
   };
 
   return (
-    <Drawer
-      title={filmsStore.selectedFilm.title}
-      placement="right"
-      onClose={filmsStore.closeFilmCard}
-      visible={filmsStore.isCardOpen}
-      width={800}
-      extra={
-        <Space>
-          <Button
-            onClick={onOk}
-            disabled={!filmsStore.canSubmitForm}
-            type="primary"
-          >
-            Save
-          </Button>
-          <Button
-            onClick={() => {
-              filmsStore.setEditingMode(false);
-              filmsStore.selectedFilm?.setNewPoster(null);
-            }}
-          >
-            Cancel
-          </Button>
-        </Space>
-      }
-    >
+    <>
       <ModalMovieForm
         visible={filmsStore.isImageFormOpen}
         onOk={onSetImageUrl}
@@ -171,7 +115,7 @@ const FilmEditingCard = () => {
         </Form>
         <Cast professions={professions} castForm={castForm} />
       </Form.Provider>
-    </Drawer>
+    </>
   );
 };
 

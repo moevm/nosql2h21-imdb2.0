@@ -64,12 +64,12 @@ const Films = () => {
 
   return (
     <>
-      <FilmCard isEditable={filmsStore.isEditing} />
       <Table
         columns={columns}
         dataSource={filmsStore.films}
         loading={filmsStore.isFetching}
       />
+      <FilmCard isEditable={filmsStore.isEditing} />
     </>
   );
 };
