@@ -90,7 +90,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
         return <>{renderActor(e)}</>;
       })}
       {newActorForm}
-      <Button onClick={onAddNewActor}>Add</Button>
+      <Button onClick={onAddNewActor}>Add new actor</Button>
     </>
   );
 };

@@ -69,7 +69,7 @@ const Films = () => {
         dataSource={filmsStore.films}
         loading={filmsStore.isFetching}
       />
-      <FilmCard isEditable={filmsStore.isEditing} />
+      <FilmCard />
     </>
   );
 };

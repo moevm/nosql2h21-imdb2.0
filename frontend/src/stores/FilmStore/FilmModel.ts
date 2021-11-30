@@ -5,6 +5,8 @@ export enum Professions {
   Director = "Director",
   Writer = "Writer",
   Actor = "Actor",
+  Producer = "Producer",
+  Composer = "Composer",
 }
 
 export const ProfessionArray: Array<Professions> = Object.entries(

@@ -4,20 +4,17 @@ import { Button, Drawer, Form, Space } from "antd";
 import { filmsStore } from "stores";
 import parseCast from "utils/castParsing";
 import { haveErrors } from "utils/isFormHaveErrors";
+import { observer } from "mobx-react";
 import FilmEditingCard from "./FilmEditingCard/FilmEditingCard";
 import FilmStaticCard from "./FilmStaticCard";
 
-interface IProps {
-  isEditable: boolean;
-}
+const FilmCard = () => {
+  const [infoForm] = Form.useForm();
+  const [castForm] = Form.useForm();
 
-const FilmCard: React.FC<IProps> = ({ isEditable }) => {
   if (filmsStore.selectedFilm === null) {
     return null;
   }
-
-  const [infoForm] = Form.useForm();
-  const [castForm] = Form.useForm();
 
   const onSubmit = () => {
     if (haveErrors(castForm) || haveErrors(infoForm)) {
@@ -25,11 +22,11 @@ const FilmCard: React.FC<IProps> = ({ isEditable }) => {
     }
 
     const cast = castForm.getFieldsValue();
-    const answer = parseCast(cast);
+    const professions = parseCast(cast);
     const movieInfo = infoForm.getFieldsValue();
     const result = {
       ...movieInfo,
-      professions: [...answer],
+      professions: [...professions],
       poster: filmsStore.selectedFilm?.newPoster,
       id: filmsStore.selectedFilm?.id,
     };
@@ -76,7 +73,7 @@ const FilmCard: React.FC<IProps> = ({ isEditable }) => {
         </>
       }
     >
-      {isEditable ? (
+      {filmsStore.isEditing ? (
         <FilmEditingCard castForm={castForm} infoForm={infoForm} />
       ) : (
         <FilmStaticCard />
@@ -85,4 +82,4 @@ const FilmCard: React.FC<IProps> = ({ isEditable }) => {
   );
 };
 
-export default FilmCard;
+export default observer(FilmCard);

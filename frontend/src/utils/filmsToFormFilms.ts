@@ -13,6 +13,8 @@ const filmsToFormFilms = (
     Director: [],
     Writer: [],
     Actor: [],
+    Producer: [],
+    Composer: [],
   };
 
   // eslint-disable-next-line guard-for-in,no-restricted-syntax

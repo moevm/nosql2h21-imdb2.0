@@ -1,5 +1,5 @@
-import React from "react";
-import { Divider, Form, FormInstance, Select } from "antd";
+import React, { useState } from "react";
+import { Button, Col, Divider, Form, FormInstance, Row, Select } from "antd";
 
 import {
   ProfessionArray,
@@ -7,6 +7,7 @@ import {
   ProfessionsList,
 } from "stores/FilmStore/FilmModel";
 import { cast } from "apiServices/mocks";
+import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import Actors from "./Actors";
 
 interface IProps {
@@ -15,28 +16,98 @@ interface IProps {
 }
 
 const Cast: React.FC<IProps> = ({ professions, castForm }) => {
-  const renderCast = () => {
+  const [selectedProfession, setSelectedProfession] = useState<Professions>();
+  const [deletedProfessions, setDeletedProfessions] = useState<Professions[]>(
+    getDeletedProfessions(professions)
+  );
+
+  const onSelectProfessionChange = (value: Professions) => {
+    setSelectedProfession(value);
+  };
+
+  const renderProfession = (
+    profession: Professions,
+    initialNames: number[]
+  ) => {
+    return (
+      <Form.Item
+        key={profession}
+        name={profession}
+        label={profession}
+        rules={
+          profession === Professions.Writer ||
+          profession === Professions.Director
+            ? [
+                {
+                  required: true,
+                  message: `Pls write ${profession}`,
+                },
+              ]
+            : undefined
+        }
+        initialValue={initialNames}
+      >
+        <Select
+          showSearch
+          mode="multiple"
+          placeholder={profession}
+          optionFilterProp="children"
+          filterOption={(input, option) =>
+            option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          filterSort={(optionA, optionB) =>
+            optionA.children
+              .toLowerCase()
+              .localeCompare(optionB.children.toLowerCase())
+          }
+        >
+          {cast.map((d) => {
+            return (
+              <Select.Option value={d.id} key={d.id}>
+                {d.name}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      </Form.Item>
+    );
+  };
+
+  const onAddNewProfession = () => {
+    if (selectedProfession === undefined) return;
+
+    setDeletedProfessions(
+      deletedProfessions.filter((p) => p !== selectedProfession)
+    );
+  };
+
+  const renderCast = (): React.ReactNode => {
     return (
       <>
         {ProfessionArray.map((e) => {
           if (e === Professions.Actor) return null;
-          return (
-            <Form.Item
-              key={e}
-              name={e}
-              label={e}
-              rules={[
-                {
-                  required: true,
-                  message: `Pls write ${e}`,
-                },
-              ]}
-              initialValue={professions[e].map((p) => p.id)}
-            >
+          if (deletedProfessions.includes(e)) return null;
+
+          const nameIdArray = professions[e].map((p) => p.id);
+
+          return renderProfession(e, nameIdArray);
+        })}
+      </>
+    );
+  };
+
+  return (
+    <Form name="cast" form={castForm}>
+      {renderCast()}
+      {deletedProfessions.length > 0 && (
+        <>
+          <Divider />
+          <Row>
+            <Col span={12}>
               <Select
+                onChange={onSelectProfessionChange}
                 showSearch
-                mode="multiple"
-                placeholder={e}
+                placeholder={"Select profession"}
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option?.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -48,24 +119,26 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
                     .localeCompare(optionB.children.toLowerCase())
                 }
               >
-                {cast.map((d) => {
+                {deletedProfessions.map((p) => {
                   return (
-                    <Select.Option value={d.id} key={d.id}>
-                      {d.name}
+                    <Select.Option value={p} key={p}>
+                      {p}
                     </Select.Option>
                   );
                 })}
               </Select>
-            </Form.Item>
-          );
-        })}
-      </>
-    );
-  };
-
-  return (
-    <Form name="cast" form={castForm}>
-      {renderCast()}
+            </Col>
+            <Col>
+              <Button
+                onClick={onAddNewProfession}
+                disabled={selectedProfession === undefined}
+              >
+                Add new profession
+              </Button>
+            </Col>
+          </Row>
+        </>
+      )}
       <Divider />
       Actors:
       <p />
