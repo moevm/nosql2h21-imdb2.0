@@ -26,7 +26,7 @@ export type ActorType = Record<
 export type ProfessionsList = ProfessionsListWithoutActor & ActorType;
 
 class FilmModel {
-  constructor(filmDto: IFilmDto | IFullFilmDto) {
+  constructor(filmDto?: IFilmDto | IFullFilmDto) {
     makeObservable(this, {
       id: observable,
       title: observable,
@@ -42,16 +42,16 @@ class FilmModel {
       setNewPoster: action.bound,
     });
 
-    this.title = filmDto.title;
-    this.id = filmDto.id;
-    this.genres = filmDto.genres;
-    this.duration = filmDto.duration;
-    this.poster = filmDto.poster;
-    this.newPoster = filmDto.poster;
-    this.isAdult = filmDto.isAdult ? "18+" : "6+";
-    this.releaseYear = filmDto.releaseYear;
+    this.title = filmDto?.title || null;
+    this.id = filmDto?.id || null;
+    this.genres = filmDto?.genres || [];
+    this.duration = filmDto?.duration || null;
+    this.poster = filmDto?.poster || null;
+    this.newPoster = filmDto?.poster || null;
+    this.isAdult = filmDto?.isAdult ? "18+" : "6+";
+    this.releaseYear = filmDto?.releaseYear || null;
 
-    if ("professions" in filmDto) {
+    if (filmDto !== undefined && "professions" in filmDto) {
       this.professions = filmDto.professions;
     }
   }

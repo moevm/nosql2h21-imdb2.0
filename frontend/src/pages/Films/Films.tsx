@@ -1,14 +1,23 @@
 import React, { useEffect } from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
-import { Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import FilmModel from "../../stores/FilmStore/FilmModel";
 import FilmCard from "./FilmCard";
+import styles from "./Films.module.scss";
 
 const Films = () => {
   useEffect(() => {
     filmsStore.getAllFilms();
   }, []);
+
+  const onOpenFilmCard = (record: FilmModel) => {
+    if (record.id !== null) filmsStore.openFilmCard(record.id);
+  };
+
+  const onOpenNewFilmCard = () => {
+    filmsStore.openFilmCard();
+  };
 
   const columns = [
     {
@@ -16,13 +25,7 @@ const Films = () => {
       dataIndex: "title",
       key: "title",
       render: (text: string, record: FilmModel) => (
-        <a
-          onClick={() => {
-            if (record.id !== null) filmsStore.openFilmCard(record.id);
-          }}
-        >
-          {text}
-        </a>
+        <a onClick={() => onOpenFilmCard(record)}>{text}</a>
       ),
     },
     {
@@ -49,7 +52,14 @@ const Films = () => {
       },
     },
     {
-      title: "Genres",
+      title: (
+        <div className={styles.addButtonWrapper}>
+          <span>Genres</span>{" "}
+          <Button type={"primary"} onClick={onOpenNewFilmCard}>
+            Add movie
+          </Button>
+        </div>
+      ),
       key: "henres",
       dataIndex: "genres",
       render: (genres: Array<string>) => (

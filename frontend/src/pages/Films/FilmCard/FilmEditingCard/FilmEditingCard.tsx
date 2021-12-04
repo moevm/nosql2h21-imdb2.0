@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Form, FormInstance, Input, Row, Select } from "antd";
@@ -29,17 +29,33 @@ const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
     filmsStore.setIsImageFormOpen(true);
   };
 
+  useEffect(() => {
+    infoForm.resetFields();
+    castForm.resetFields();
+  }, []);
+
   const closeModalUrlForm = () => {
     filmsStore.setIsImageFormOpen(false);
+  };
+
+  const checkFormValidation = (): boolean => {
+    if (haveErrors(castForm) || haveErrors(infoForm)) {
+      filmsStore.setCanSubmitForm(false);
+      return false;
+    }
+    filmsStore.setCanSubmitForm(true);
+    return true;
   };
 
   const onSetImageUrl = () => {
     if (haveErrors(urlForm)) return;
     filmsStore.selectedFilm?.setNewPoster(urlForm.getFieldsValue().poster);
-    filmsStore.setCanSubmitForm(true);
+
+    if (checkFormValidation()) {
+      filmsStore.setCanSubmitForm(true);
+    }
     closeModalUrlForm();
   };
-
   return (
     <>
       <ModalMovieForm
@@ -49,15 +65,7 @@ const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
         defaultValue={{ poster: films.poster }}
         form={urlForm}
       />
-      <Form.Provider
-        onFormChange={() => {
-          if (haveErrors(castForm) || haveErrors(infoForm)) {
-            filmsStore.setCanSubmitForm(false);
-          } else {
-            filmsStore.setCanSubmitForm(true);
-          }
-        }}
-      >
+      <Form.Provider onFormChange={checkFormValidation}>
         <Form initialValues={films} form={infoForm}>
           <Row>
             <Col span={12}>

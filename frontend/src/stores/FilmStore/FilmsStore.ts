@@ -1,7 +1,13 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { filmsApiService } from "apiServices";
 import { IFilmDto } from "shared/dtos/FilmDto";
 import FilmModel from "./FilmModel";
+
+export enum CardMode {
+  Static = "Static",
+  Editing = "Editing",
+  Creating = "Creating",
+}
 
 class FilmsStore {
   constructor() {
@@ -9,7 +15,7 @@ class FilmsStore {
       films: observable,
       isFetching: observable,
       isCardOpen: observable,
-      isEditing: observable,
+      mode: observable,
       selectedFilm: observable,
       canSubmitForm: observable,
       isImageFormOpen: observable,
@@ -26,7 +32,7 @@ class FilmsStore {
 
   public isFetching = false;
 
-  public isEditing = false;
+  public mode = CardMode.Static;
 
   public isCardOpen = false;
 
@@ -34,7 +40,7 @@ class FilmsStore {
 
   public canSubmitForm = false;
 
-  public selectedFilm: FilmModel | null = null;
+  public selectedFilm: FilmModel = new FilmModel();
 
   public async getAllFilms(): Promise<void> {
     try {
@@ -75,7 +81,14 @@ class FilmsStore {
     }
   }
 
-  public async openFilmCard(id: number) {
+  public async openFilmCard(id?: number) {
+    if (id === undefined) {
+      runInAction(() => {
+        this.isCardOpen = true;
+      });
+      return;
+    }
+
     try {
       await this.getFilmById(id);
       if (this.selectedFilm === null) return;
@@ -87,16 +100,16 @@ class FilmsStore {
 
   public closeFilmCard() {
     try {
-      this.selectedFilm = null;
+      this.selectedFilm = new FilmModel();
       this.isCardOpen = false;
-      this.isEditing = false;
+      this.mode = CardMode.Static;
     } catch (err) {
       // ignore
     }
   }
 
-  public setEditingMode(isEditing: boolean) {
-    this.isEditing = isEditing;
+  public setEditingMode(mode: CardMode) {
+    this.mode = mode;
   }
 
   public setCanSubmitForm(canSubmit: boolean) {

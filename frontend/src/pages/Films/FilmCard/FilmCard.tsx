@@ -5,6 +5,7 @@ import { filmsStore } from "stores";
 import parseCast from "utils/castParsing";
 import { haveErrors } from "utils/isFormHaveErrors";
 import { observer } from "mobx-react";
+import { CardMode } from "stores/FilmStore/FilmsStore";
 import FilmEditingCard from "./FilmEditingCard/FilmEditingCard";
 import FilmStaticCard from "./FilmStaticCard";
 
@@ -12,16 +13,18 @@ const FilmCard = () => {
   const [infoForm] = Form.useForm();
   const [castForm] = Form.useForm();
 
-  if (filmsStore.selectedFilm === null) {
-    return null;
-  }
-
   const onCloseEditingForm = () => {
-    filmsStore.setEditingMode(false);
+    filmsStore.setEditingMode(CardMode.Static);
     filmsStore.setCanSubmitForm(false);
     filmsStore.selectedFilm?.setNewPoster(null);
-    infoForm.resetFields();
-    castForm.resetFields();
+  };
+
+  const onCloseCard = () => {
+    filmsStore.closeFilmCard();
+  };
+
+  const onOpenEditingForm = () => {
+    filmsStore.setEditingMode(CardMode.Editing);
   };
 
   const onSubmit = () => {
@@ -50,12 +53,12 @@ const FilmCard = () => {
     <Drawer
       title={filmsStore.selectedFilm.title}
       placement="right"
-      onClose={filmsStore.closeFilmCard}
+      onClose={onCloseCard}
       visible={filmsStore.isCardOpen}
       width={800}
       extra={
         <>
-          {filmsStore.isEditing ? (
+          {filmsStore.mode === CardMode.Editing && (
             <Space>
               <Button
                 onClick={onSubmit}
@@ -66,20 +69,26 @@ const FilmCard = () => {
               </Button>
               <Button onClick={onCloseEditingForm}>Cancel</Button>
             </Space>
-          ) : (
+          )}
+
+          {filmsStore.mode === CardMode.Static && (
             <Space>
-              <Button onClick={() => filmsStore.setEditingMode(true)}>
-                Edit
-              </Button>
+              <Button onClick={onOpenEditingForm}>Edit</Button>
+            </Space>
+          )}
+
+          {filmsStore.mode === CardMode.Creating && (
+            <Space>
+              <Button type="primary">Create</Button>
+              <Button>Cancel</Button>
             </Space>
           )}
         </>
       }
     >
-      {filmsStore.isEditing ? (
+      {filmsStore.mode === CardMode.Static && <FilmStaticCard />}
+      {filmsStore.mode === CardMode.Editing && (
         <FilmEditingCard castForm={castForm} infoForm={infoForm} />
-      ) : (
-        <FilmStaticCard />
       )}
     </Drawer>
   );
