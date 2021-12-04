@@ -5,6 +5,7 @@ import { Button, Table, Tag } from "antd";
 import FilmModel from "../../stores/FilmStore/FilmModel";
 import FilmCard from "./FilmCard";
 import styles from "./Films.module.scss";
+import { CardMode } from "../../stores/FilmStore/FilmsStore";
 
 const Films = () => {
   useEffect(() => {
@@ -17,6 +18,7 @@ const Films = () => {
 
   const onOpenNewFilmCard = () => {
     filmsStore.openFilmCard();
+    filmsStore.setMode(CardMode.Creating);
   };
 
   const columns = [

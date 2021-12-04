@@ -14,7 +14,7 @@ const FilmCard = () => {
   const [castForm] = Form.useForm();
 
   const onCloseEditingForm = () => {
-    filmsStore.setEditingMode(CardMode.Static);
+    filmsStore.setMode(CardMode.Static);
     filmsStore.setCanSubmitForm(false);
     filmsStore.selectedFilm?.setNewPoster(null);
   };
@@ -24,7 +24,7 @@ const FilmCard = () => {
   };
 
   const onOpenEditingForm = () => {
-    filmsStore.setEditingMode(CardMode.Editing);
+    filmsStore.setMode(CardMode.Editing);
   };
 
   const onSubmit = () => {
@@ -44,6 +44,7 @@ const FilmCard = () => {
 
     infoForm.submit();
     castForm.submit();
+
     console.log(result);
 
     // TODO: submit form and do request
@@ -79,8 +80,14 @@ const FilmCard = () => {
 
           {filmsStore.mode === CardMode.Creating && (
             <Space>
-              <Button type="primary">Create</Button>
-              <Button>Cancel</Button>
+              <Button
+                type="primary"
+                disabled={!filmsStore.canSubmitForm}
+                onClick={onSubmit}
+              >
+                Create
+              </Button>
+              <Button onClick={onCloseCard}>Cancel</Button>
             </Space>
           )}
         </>
@@ -88,6 +95,10 @@ const FilmCard = () => {
     >
       {filmsStore.mode === CardMode.Static && <FilmStaticCard />}
       {filmsStore.mode === CardMode.Editing && (
+        <FilmEditingCard castForm={castForm} infoForm={infoForm} />
+      )}
+
+      {filmsStore.mode === CardMode.Creating && (
         <FilmEditingCard castForm={castForm} infoForm={infoForm} />
       )}
     </Drawer>

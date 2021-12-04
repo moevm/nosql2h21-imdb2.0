@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Divider, Form, FormInstance, Row, Select } from "antd";
 
 import {
@@ -11,7 +11,7 @@ import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import Actors from "./Actors";
 
 interface IProps {
-  professions: ProfessionsList;
+  professions?: ProfessionsList;
   castForm: FormInstance;
 }
 
@@ -20,6 +20,13 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
   const [deletedProfessions, setDeletedProfessions] = useState<Professions[]>(
     getDeletedProfessions(professions)
   );
+
+  useEffect(() => {
+    (async () => {
+      castForm.resetFields();
+      await castForm.validateFields();
+    })();
+  }, []);
 
   const onSelectProfessionChange = (value: Professions) => {
     setSelectedProfession(value);
@@ -88,7 +95,9 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
           if (e === Professions.Actor) return null;
           if (deletedProfessions.includes(e)) return null;
 
-          const nameIdArray = professions[e].map((p) => p.id);
+          const nameIdArray = professions
+            ? professions[e].map((p) => p.id)
+            : [];
 
           return renderProfession(e, nameIdArray);
         })}
@@ -142,7 +151,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
       <Divider />
       Actors:
       <p />
-      <Actors actors={professions.Actor} />
+      <Actors actors={professions?.Actor} />
     </Form>
   );
 };

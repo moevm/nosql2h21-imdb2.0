@@ -7,6 +7,8 @@ import { toJS } from "mobx";
 import { genres } from "apiServices/mocks";
 import filmsToFormFilms from "utils/filmsToFormFilms";
 import { haveErrors } from "utils/isFormHaveErrors";
+import { CardMode } from "stores/FilmStore/FilmsStore";
+import FilmModel, { ProfessionsList } from "stores/FilmStore/FilmModel";
 import styles from "./FilmEditingCard.module.scss";
 import Cast from "./Cast";
 import ModalMovieForm from "./ModalMovieForm/ModalMovieForm";
@@ -17,11 +19,15 @@ interface IProps {
 }
 
 const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
-  if (filmsStore.selectedFilm === null) {
-    return null;
-  }
+  let films:
+    | Omit<FilmModel, "professions" | "getNamesByProfession" | "setNewPoster">
+    | undefined;
 
-  const [films, professions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
+  let professions: ProfessionsList | undefined;
+
+  if (filmsStore.mode === CardMode.Editing) {
+    [films, professions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
+  }
 
   const [urlForm] = Form.useForm<{ poster: string | null }>();
 
@@ -30,8 +36,10 @@ const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
   };
 
   useEffect(() => {
-    infoForm.resetFields();
-    castForm.resetFields();
+    (async () => {
+      infoForm.resetFields();
+      await infoForm.validateFields();
+    })();
   }, []);
 
   const closeModalUrlForm = () => {
@@ -62,7 +70,7 @@ const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
         visible={filmsStore.isImageFormOpen}
         onOk={onSetImageUrl}
         onCancel={closeModalUrlForm}
-        defaultValue={{ poster: films.poster }}
+        defaultValue={{ poster: films?.poster || null }}
         form={urlForm}
       />
       <Form.Provider onFormChange={checkFormValidation}>
@@ -70,7 +78,11 @@ const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
           <Row>
             <Col span={12}>
               <img
-                src={films.newPoster === null ? noImage : films.newPoster}
+                src={
+                  filmsStore.selectedFilm.newPoster === null
+                    ? noImage
+                    : filmsStore.selectedFilm.newPoster
+                }
                 alt="poster"
                 className={styles.imageWrapper}
                 onClick={openModalUrlForm}

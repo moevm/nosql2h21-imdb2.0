@@ -23,7 +23,7 @@ class FilmsStore {
       setIsImageFormOpen: action.bound,
       openFilmCard: action.bound,
       closeFilmCard: action.bound,
-      setEditingMode: action.bound,
+      setMode: action.bound,
       setCanSubmitForm: action.bound,
     });
   }
@@ -108,7 +108,7 @@ class FilmsStore {
     }
   }
 
-  public setEditingMode(mode: CardMode) {
+  public setMode(mode: CardMode) {
     this.mode = mode;
   }
 

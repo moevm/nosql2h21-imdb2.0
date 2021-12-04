@@ -1,4 +1,5 @@
 import FilmModel, {
+  emptyProfessionList,
   Professions,
   ProfessionsList,
 } from "stores/FilmStore/FilmModel";
@@ -9,13 +10,7 @@ const filmsToFormFilms = (
   Omit<FilmModel, "professions" | "getNamesByProfession" | "setNewPoster">,
   ProfessionsList
 ] => {
-  const formProfessions: ProfessionsList = {
-    Director: [],
-    Writer: [],
-    Actor: [],
-    Producer: [],
-    Composer: [],
-  };
+  const formProfessions: ProfessionsList = emptyProfessionList;
 
   // eslint-disable-next-line guard-for-in,no-restricted-syntax
   for (const key in formProfessions) {

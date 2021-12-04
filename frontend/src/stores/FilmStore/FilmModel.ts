@@ -25,6 +25,14 @@ export type ActorType = Record<
 
 export type ProfessionsList = ProfessionsListWithoutActor & ActorType;
 
+export const emptyProfessionList: ProfessionsList = {
+  Director: [],
+  Writer: [],
+  Actor: [],
+  Producer: [],
+  Composer: [],
+};
+
 class FilmModel {
   constructor(filmDto?: IFilmDto | IFullFilmDto) {
     makeObservable(this, {

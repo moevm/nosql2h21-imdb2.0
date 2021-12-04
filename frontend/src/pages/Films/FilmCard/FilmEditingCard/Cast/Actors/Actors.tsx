@@ -4,7 +4,7 @@ import { cast } from "apiServices/mocks";
 import { IProfession } from "shared/dtos/FilmDto";
 
 interface IProps {
-  actors: Array<Omit<IProfession, "category">>;
+  actors?: Array<Omit<IProfession, "category">>;
 }
 
 const Actors: React.FC<IProps> = ({ actors }) => {
@@ -13,7 +13,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
   );
 
   const [idArray, setIdArray] = useState<Array<number>>(
-    actors.map((a) => a.id)
+    actors === undefined ? [] : actors.map((a) => a.id)
   );
 
   const generateId = (): number => {
@@ -87,9 +87,11 @@ const Actors: React.FC<IProps> = ({ actors }) => {
 
   return (
     <>
-      {actors.map((a) => {
-        return <React.Fragment key={a.id}>{renderActor(a)}</React.Fragment>;
-      })}
+      {actors === undefined
+        ? null
+        : actors.map((a) => {
+            return <React.Fragment key={a.id}>{renderActor(a)}</React.Fragment>;
+          })}
       {newActorForm}
       <Button onClick={onAddNewActor}>Add new actor</Button>
     </>
