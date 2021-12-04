@@ -32,62 +32,63 @@ const Actors: React.FC<IProps> = ({ actors }) => {
     id: number;
   }) => {
     return (
-      <React.Fragment key={actor.id}>
-        <Row>
-          <Col span={12}>
-            <Form.Item
-              name={`actor_${actor.id}`}
-              initialValue={actor.name === "" ? undefined : actor.id}
+      <Row>
+        <Col span={12}>
+          <Form.Item
+            name={`actor_${actor.id}`}
+            initialValue={actor.name === "" ? undefined : actor.id}
+          >
+            <Select
+              showSearch
+              placeholder="Actor"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              filterSort={(optionA, optionB) =>
+                optionA.children
+                  .toLowerCase()
+                  .localeCompare(optionB.children.toLowerCase())
+              }
             >
-              <Select
-                showSearch
-                placeholder="Actor"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option?.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
-                filterSort={(optionA, optionB) =>
-                  optionA.children
-                    .toLowerCase()
-                    .localeCompare(optionB.children.toLowerCase())
-                }
-              >
-                {cast.map((a) => {
-                  return (
-                    <Select.Option value={a.id} key={a.id}>
-                      {a.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name={`character_${actor.id}`}
-              initialValue={actor.character}
-            >
-              <Input placeholder="Character" />
-            </Form.Item>
-          </Col>
-        </Row>
-      </React.Fragment>
+              {cast.map((a) => {
+                return (
+                  <Select.Option value={a.id} key={a.id}>
+                    {a.name}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name={`character_${actor.id}`}
+            initialValue={actor.character}
+          >
+            <Input placeholder="Character" />
+          </Form.Item>
+        </Col>
+      </Row>
     );
   };
 
   const onAddNewActor = () => {
+    const id = generateId();
+
     setNewActorForm(
       newActorForm?.concat(
-        <>{renderActor({ name: "", character: "", id: generateId() })}</>
+        <React.Fragment key={id}>
+          {renderActor({ name: "", character: "", id })}
+        </React.Fragment>
       )
     );
   };
 
   return (
     <>
-      {actors.map((e) => {
-        return <>{renderActor(e)}</>;
+      {actors.map((a) => {
+        return <React.Fragment key={a.id}>{renderActor(a)}</React.Fragment>;
       })}
       {newActorForm}
       <Button onClick={onAddNewActor}>Add new actor</Button>

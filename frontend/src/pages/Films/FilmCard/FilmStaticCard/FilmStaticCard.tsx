@@ -2,16 +2,22 @@ import React from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Row } from "antd";
-import { Professions } from "stores/FilmStore/FilmModel";
+import { ProfessionArray, Professions } from "stores/FilmStore/FilmModel";
 import DescriptionItem from "components/DescriptionItem";
 import Block from "components/Block";
 import noImage from "static/no_image.svg";
+import { toJS } from "mobx";
+import { getDeletedProfessions } from "utils/getDeletedProfessions";
+import filmsToFormFilms from "utils/filmsToFormFilms";
 import styles from "./FilmStaticCard.module.scss";
 
 const FilmStaticCard = () => {
   if (filmsStore.selectedFilm === null) {
     return null;
   }
+  const [, allProfessions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
+
+  const deletedProfessions = getDeletedProfessions(allProfessions);
 
   const renderCastBlock = (profession: Professions): React.ReactNode => {
     if (filmsStore.selectedFilm === null) return null;
@@ -29,6 +35,25 @@ const FilmStaticCard = () => {
             <pre>{`${lastIndex === index ? "" : ", "}`}</pre>
           </React.Fragment>
         ))}
+      </>
+    );
+  };
+
+  const renderCast = (): React.ReactNode => {
+    return (
+      <>
+        {ProfessionArray.map((e) => {
+          if (e === Professions.Actor) return null;
+
+          if (deletedProfessions.includes(e)) return null;
+
+          return (
+            <React.Fragment key={e}>
+              <Block title={`${e}(s)`} content={renderCastBlock(e)} />
+              <Divider />
+            </React.Fragment>
+          );
+        })}
       </>
     );
   };
@@ -68,22 +93,10 @@ const FilmStaticCard = () => {
 
       <Divider />
 
-      <Block
-        title={"Directed by"}
-        content={renderCastBlock(Professions.Director)}
-      />
-
-      <Divider />
+      {renderCast()}
 
       <Block
-        title={"Written by"}
-        content={renderCastBlock(Professions.Writer)}
-      />
-
-      <Divider />
-
-      <Block
-        title={"Cast"}
+        title={"Actors"}
         content={
           <>
             <Col span={12}>

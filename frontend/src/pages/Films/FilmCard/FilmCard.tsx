@@ -16,6 +16,14 @@ const FilmCard = () => {
     return null;
   }
 
+  const onCloseEditingForm = () => {
+    filmsStore.setEditingMode(false);
+    filmsStore.setCanSubmitForm(false);
+    filmsStore.selectedFilm?.setNewPoster(null);
+    infoForm.resetFields();
+    castForm.resetFields();
+  };
+
   const onSubmit = () => {
     if (haveErrors(castForm) || haveErrors(infoForm)) {
       return;
@@ -31,6 +39,8 @@ const FilmCard = () => {
       id: filmsStore.selectedFilm?.id,
     };
 
+    infoForm.submit();
+    castForm.submit();
     console.log(result);
 
     // TODO: submit form and do request
@@ -54,14 +64,7 @@ const FilmCard = () => {
               >
                 Save
               </Button>
-              <Button
-                onClick={() => {
-                  filmsStore.setEditingMode(false);
-                  filmsStore.selectedFilm?.setNewPoster(null);
-                }}
-              >
-                Cancel
-              </Button>
+              <Button onClick={onCloseEditingForm}>Cancel</Button>
             </Space>
           ) : (
             <Space>

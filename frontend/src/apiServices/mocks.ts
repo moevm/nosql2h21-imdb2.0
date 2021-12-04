@@ -87,6 +87,12 @@ const getMockFilm = (id: number): IFullFilmDto => {
         category: "Director",
         character: null,
       },
+      {
+        id: 13,
+        name: "Fake",
+        category: "Producer",
+        character: null,
+      },
     ],
   };
 };
