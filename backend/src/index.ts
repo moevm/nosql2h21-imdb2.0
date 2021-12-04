@@ -7,6 +7,7 @@ import router from "./router";
 import { FilmsMongoCollection } from "./models/mongoose/FilmModel";
 import { FilmsCrewMongoCollection } from "./models/mongoose/FilmsCrewModel";
 import { films } from "./testMock";
+import { dataInitializer } from "./initial_data/DataInitializer";
 
 dotenv.config();
 
