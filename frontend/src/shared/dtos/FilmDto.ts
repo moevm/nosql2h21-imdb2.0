@@ -8,8 +8,8 @@ export interface IFilmDto {
   poster: string | null;
 }
 
-export interface IProfession {
-  id: number;
+export interface IFilmProfession {
+  nameId: number;
   name: string;
   category: string;
   character: string | null;
@@ -23,5 +23,5 @@ export interface IFullFilmDto {
   duration: number;
   genres: Array<string>;
   poster: string | null;
-  professions: Array<IProfession>;
+  professions: Array<IFilmProfession>;
 }

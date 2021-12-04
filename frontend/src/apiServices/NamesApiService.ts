@@ -1,6 +1,7 @@
 import { ApiPaths } from "shared/constants/ApiPaths";
-import { INameDto } from "shared/dtos/NameDto";
+import { IFullNameDto, INameDto } from "shared/dtos/NameDto";
 import HTTPService from "./HTTPService";
+import { getMockName, names } from "./mocks";
 
 class FilmsApiService extends HTTPService {
   public constructor() {
@@ -10,34 +11,23 @@ class FilmsApiService extends HTTPService {
   // for mock requests
   private check = true;
 
+  private isMock = process.env.NODE_ENV === "development";
+
   public getMockNames(): Promise<Array<INameDto>> {
     this.check = false;
-    const names = [
-      {
-        id: 1,
-        name: "name1",
-        birthYear: "1994",
-        deathYear: null,
-        image: null,
-      },
-      {
-        id: 2,
-        name: "name2",
-        birthYear: "1965",
-        deathYear: "2020",
-        image: null,
-      },
-      {
-        id: 3,
-        name: "name3",
-        birthYear: "1996",
-        deathYear: null,
-        image: null,
-      },
-    ];
 
     return new Promise((resolve) => {
       setTimeout(() => resolve(names), 1000);
+    });
+  }
+
+  public getMockNameById(id: number): Promise<IFullNameDto> {
+    // TODO: add real request - film by id
+    if (!this.isMock) return this.GET("");
+    const mockName = getMockName(id);
+
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(mockName), 1000);
     });
   }
 }

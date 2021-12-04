@@ -1,37 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
-import { IFilmDto, IFullFilmDto, IProfession } from "shared/dtos/FilmDto";
-
-export enum Professions {
-  Director = "Director",
-  Writer = "Writer",
-  Actor = "Actor",
-  Producer = "Producer",
-  Composer = "Composer",
-}
-
-export const ProfessionArray: Array<Professions> = Object.entries(
-  Professions
-).map(([value]) => value as Professions);
-
-type ProfessionsListWithoutActor = Record<
-  Exclude<Professions, Professions.Actor>,
-  Array<Omit<IProfession, "category" | "character">>
->;
-
-export type ActorType = Record<
-  Professions.Actor,
-  Array<Omit<IProfession, "category">>
->;
-
-export type ProfessionsList = ProfessionsListWithoutActor & ActorType;
-
-export const emptyProfessionList: ProfessionsList = {
-  Director: [],
-  Writer: [],
-  Actor: [],
-  Producer: [],
-  Composer: [],
-};
+import { IFilmDto, IFullFilmDto, IFilmProfession } from "shared/dtos/FilmDto";
+import { Professions } from "../../shared/constants/professions";
 
 class FilmModel {
   constructor(filmDto?: IFilmDto | IFullFilmDto) {
@@ -80,14 +49,18 @@ class FilmModel {
 
   public newPoster: string | null = null;
 
-  public professions: Array<IProfession> = [];
+  public professions: Array<IFilmProfession> = [];
 
   public getNamesByProfession(
     profession: Professions
-  ): Array<Omit<IProfession, "category">> {
+  ): Array<Omit<IFilmProfession, "category">> {
     return this.professions
       .filter((el) => el.category === profession)
-      .map((pr) => ({ character: pr.character, name: pr.name, id: pr.id }));
+      .map((pr) => ({
+        character: pr.character,
+        name: pr.name,
+        nameId: pr.nameId,
+      }));
   }
 
   public setNewPoster(poster: string | null): void {

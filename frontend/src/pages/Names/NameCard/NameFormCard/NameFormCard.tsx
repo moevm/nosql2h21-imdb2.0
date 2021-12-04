@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
-import { filmsStore } from "stores";
+import { namesStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Form, FormInstance, Input, Row, Select } from "antd";
 import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { genres } from "apiServices/mocks";
-import filmsToFormFilms from "utils/filmsToFormFilms";
 import { haveErrors } from "utils/isFormHaveErrors";
-import { CardMode } from "stores/FilmStore/FilmsStore";
-import FilmModel, { ProfessionsList } from "stores/FilmStore/FilmModel";
-import styles from "./FilmEditingCard.module.scss";
+import { CardMode } from "shared/constants/common";
+import namesToFormNames from "utils/namesToFormNames";
+import { NameProfessionsList } from "shared/constants/professions";
+import NameModel from "stores/NameStore/NameModel";
+import styles from "./NameFormCard.module.scss";
 import Cast from "./Cast";
 import ModalMovieForm from "./ModalMovieForm/ModalMovieForm";
 
@@ -18,21 +19,21 @@ interface IProps {
   castForm: FormInstance;
 }
 
-const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
-  let films:
-    | Omit<FilmModel, "professions" | "getNamesByProfession" | "setNewPoster">
+const NameFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
+  let names:
+    | Omit<NameModel, "professions" | "getNamesByProfession" | "setNewAvatar">
     | undefined;
 
-  let professions: ProfessionsList | undefined;
+  let professions: NameProfessionsList | undefined;
 
-  if (filmsStore.mode === CardMode.Editing) {
-    [films, professions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
+  if (namesStore.mode === CardMode.Editing) {
+    [names, professions] = namesToFormNames(toJS(namesStore.selectedName));
   }
 
   const [urlForm] = Form.useForm<{ poster: string | null }>();
 
   const openModalUrlForm = () => {
-    filmsStore.setIsImageFormOpen(true);
+    namesStore.setIsModalUrlEditFormOpen(true);
   };
 
   useEffect(() => {
@@ -43,45 +44,45 @@ const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
   }, []);
 
   const closeModalUrlForm = () => {
-    filmsStore.setIsImageFormOpen(false);
+    namesStore.setIsModalUrlEditFormOpen(false);
   };
 
   const checkFormValidation = (): boolean => {
     if (haveErrors(castForm) || haveErrors(infoForm)) {
-      filmsStore.setCanSubmitForm(false);
+      namesStore.setCanSubmit(false);
       return false;
     }
-    filmsStore.setCanSubmitForm(true);
+    namesStore.setCanSubmit(true);
     return true;
   };
 
   const onSetImageUrl = () => {
     if (haveErrors(urlForm)) return;
-    filmsStore.selectedFilm?.setNewPoster(urlForm.getFieldsValue().poster);
+    namesStore.selectedName?.setNewAvatar(urlForm.getFieldsValue().poster);
 
     if (checkFormValidation()) {
-      filmsStore.setCanSubmitForm(true);
+      namesStore.setCanSubmit(true);
     }
     closeModalUrlForm();
   };
   return (
     <>
       <ModalMovieForm
-        visible={filmsStore.isImageFormOpen}
+        visible={namesStore.isModalUrlEditFormOpen}
         onOk={onSetImageUrl}
         onCancel={closeModalUrlForm}
-        defaultValue={{ poster: films?.poster || null }}
+        defaultValue={{ poster: names?.avatar || null }}
         form={urlForm}
       />
       <Form.Provider onFormChange={checkFormValidation}>
-        <Form initialValues={films} form={infoForm}>
+        <Form initialValues={names} form={infoForm}>
           <Row>
             <Col span={12}>
               <img
                 src={
-                  filmsStore.selectedFilm.newPoster === null
+                  namesStore.selectedName.newAvatar === null
                     ? noImage
-                    : filmsStore.selectedFilm.newPoster
+                    : namesStore.selectedName.newAvatar
                 }
                 alt="poster"
                 className={styles.imageWrapper}
@@ -139,4 +140,4 @@ const FilmEditingCard: React.FC<IProps> = ({ infoForm, castForm }) => {
   );
 };
 
-export default observer(FilmEditingCard);
+export default observer(NameFormCard);

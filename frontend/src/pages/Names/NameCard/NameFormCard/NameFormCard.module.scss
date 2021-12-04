@@ -1,0 +1,11 @@
+.imageWrapper {
+  height: 35vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.imageWrapper:hover {
+  cursor: pointer;
+  filter: brightness(1.1);
+}

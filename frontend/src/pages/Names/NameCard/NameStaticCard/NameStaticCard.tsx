@@ -1,5 +1,5 @@
 import React from "react";
-import { filmsStore } from "stores";
+import { namesStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Row } from "antd";
 import DescriptionItem from "components/DescriptionItem";
@@ -7,34 +7,26 @@ import Block from "components/Block";
 import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
-import filmsToFormFilms from "utils/filmsToFormFilms";
-import styles from "./FilmStaticCard.module.scss";
-import {
-  ProfessionArray,
-  Professions,
-} from "../../../../shared/constants/professions";
+import namesToFormNames from "utils/namesToFormNames";
+import { ProfessionArray, Professions } from "shared/constants/professions";
+import styles from "./NameStaticCard.module.scss";
 
-const FilmStaticCard = () => {
-  if (filmsStore.selectedFilm === null) {
-    return null;
-  }
-  const [, allProfessions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
+const NameStaticCard = () => {
+  const [, allProfessions] = namesToFormNames(toJS(namesStore.selectedName));
 
-  const deletedProfessions = getDeletedProfessions(allProfessions);
+  const deletedProfessions = getDeletedProfessions(allProfessions, false);
 
   const renderCastBlock = (profession: Professions): React.ReactNode => {
-    if (filmsStore.selectedFilm === null) return null;
-
     const professions =
-      filmsStore.selectedFilm.getNamesByProfession(profession);
+      namesStore.selectedName.getNamesByProfession(profession);
 
     const lastIndex = professions.length - 1;
 
     return (
       <>
         {professions.map((e, index) => (
-          <React.Fragment key={e.name}>
-            <a>{e.name}</a>
+          <React.Fragment key={e.title}>
+            <a>{e.title}</a>
             <pre>{`${lastIndex === index ? "" : ", "}`}</pre>
           </React.Fragment>
         ))}
@@ -52,7 +44,7 @@ const FilmStaticCard = () => {
 
           return (
             <React.Fragment key={e}>
-              <Block title={`${e}(s)`} content={renderCastBlock(e)} />
+              <Block title={e} content={renderCastBlock(e)} />
               <Divider />
             </React.Fragment>
           );
@@ -67,9 +59,9 @@ const FilmStaticCard = () => {
         <Col span={12}>
           <img
             src={
-              filmsStore.selectedFilm.poster === null
+              namesStore.selectedName.avatar === null
                 ? noImage
-                : filmsStore.selectedFilm.poster
+                : namesStore.selectedName.avatar
             }
             alt="poster"
             className={styles.imageWrapper}
@@ -78,19 +70,16 @@ const FilmStaticCard = () => {
 
         <Col span={12}>
           <DescriptionItem
-            title="Year"
-            content={filmsStore.selectedFilm.releaseYear}
+            title="Birth Year"
+            content={namesStore.selectedName.birthYear}
           />
-          <DescriptionItem
-            title="Certificate"
-            content={filmsStore.selectedFilm.isAdult ? "18+" : "6+"}
-          />
-          <DescriptionItem
-            title="Genres"
-            content={filmsStore.selectedFilm.genres
-              .map((g) => g.charAt(0).toUpperCase() + g.slice(1))
-              .join(", ")}
-          />
+
+          {namesStore.selectedName.deathYear !== null && (
+            <DescriptionItem
+              title="Death year"
+              content={namesStore.selectedName.deathYear}
+            />
+          )}
         </Col>
       </Row>
 
@@ -99,21 +88,21 @@ const FilmStaticCard = () => {
       {renderCast()}
 
       <Block
-        title={"Actors"}
+        title={"Actor"}
         content={
           <>
             <Col span={12}>
-              <b>Actor</b>
+              <b>Movie</b>
             </Col>
             <Col span={12}>
               <b>Role</b>
             </Col>
-            {filmsStore.selectedFilm
+            {namesStore.selectedName
               .getNamesByProfession(Professions.Actor)
               .map((a) => (
-                <React.Fragment key={a.name}>
+                <React.Fragment key={a.title}>
                   <Col span={12}>
-                    <a>{a.name}</a>
+                    <a>{a.title}</a>
                   </Col>
                   <Col span={12}>{a.character}</Col>
                 </React.Fragment>
@@ -125,4 +114,4 @@ const FilmStaticCard = () => {
   );
 };
 
-export default observer(FilmStaticCard);
+export default observer(NameStaticCard);

@@ -1,30 +1,29 @@
 import React from "react";
-
 import { Button, Drawer, Form, Space } from "antd";
-import { filmsStore } from "stores";
+import { namesStore } from "stores";
 import parseCast from "utils/castParsing";
 import { haveErrors } from "utils/isFormHaveErrors";
 import { observer } from "mobx-react";
 import { CardMode } from "shared/constants/common";
-import FilmStaticCard from "./FilmStaticCard";
-import FilmFormCard from "./FilmFormCard";
+import NameStaticCard from "./NameStaticCard";
+import NameFormCard from "./NameFormCard";
 
-const FilmCard = () => {
+const NameCard = () => {
   const [infoForm] = Form.useForm();
   const [castForm] = Form.useForm();
 
   const onCloseEditingForm = () => {
-    filmsStore.setMode(CardMode.Static);
-    filmsStore.setCanSubmitForm(false);
-    filmsStore.selectedFilm?.setNewPoster(null);
+    namesStore.setCardMode(CardMode.Static);
+    namesStore.setCanSubmit(false);
+    namesStore.selectedName?.setNewAvatar(null);
   };
 
   const onCloseCard = () => {
-    filmsStore.closeFilmCard();
+    namesStore.closeNameCard();
   };
 
   const onOpenEditingForm = () => {
-    filmsStore.setMode(CardMode.Editing);
+    namesStore.setCardMode(CardMode.Editing);
   };
 
   const onSubmit = () => {
@@ -38,8 +37,8 @@ const FilmCard = () => {
     const result = {
       ...movieInfo,
       professions: [...professions],
-      poster: filmsStore.selectedFilm?.newPoster,
-      id: filmsStore.selectedFilm?.id,
+      // poster: filmsStore.selectedFilm?.newPoster,
+      // id: filmsStore.selectedFilm?.id,
     };
 
     infoForm.submit();
@@ -52,18 +51,18 @@ const FilmCard = () => {
 
   return (
     <Drawer
-      title={filmsStore.selectedFilm.title}
+      title={namesStore.selectedName.name}
       placement="right"
       onClose={onCloseCard}
-      visible={filmsStore.mode !== CardMode.Closed}
+      visible={namesStore.mode !== CardMode.Closed}
       width={800}
       extra={
         <>
-          {filmsStore.mode === CardMode.Editing && (
+          {namesStore.mode === CardMode.Editing && (
             <Space>
               <Button
                 onClick={onSubmit}
-                disabled={!filmsStore.canSubmitForm}
+                disabled={!namesStore.canSubmit}
                 type="primary"
               >
                 Save
@@ -72,17 +71,17 @@ const FilmCard = () => {
             </Space>
           )}
 
-          {filmsStore.mode === CardMode.Static && (
+          {namesStore.mode === CardMode.Static && (
             <Space>
               <Button onClick={onOpenEditingForm}>Edit</Button>
             </Space>
           )}
 
-          {filmsStore.mode === CardMode.Creating && (
+          {namesStore.mode === CardMode.Creating && (
             <Space>
               <Button
                 type="primary"
-                disabled={!filmsStore.canSubmitForm}
+                disabled={!namesStore.canSubmit}
                 onClick={onSubmit}
               >
                 Create
@@ -93,13 +92,13 @@ const FilmCard = () => {
         </>
       }
     >
-      {filmsStore.mode === CardMode.Static && <FilmStaticCard />}
-      {(filmsStore.mode === CardMode.Editing ||
-        filmsStore.mode === CardMode.Creating) && (
-        <FilmFormCard castForm={castForm} infoForm={infoForm} />
+      {namesStore.mode === CardMode.Static && <NameStaticCard />}
+      {(namesStore.mode === CardMode.Editing ||
+        namesStore.mode === CardMode.Creating) && (
+        <NameFormCard castForm={castForm} infoForm={infoForm} />
       )}
     </Drawer>
   );
 };
 
-export default observer(FilmCard);
+export default observer(NameCard);

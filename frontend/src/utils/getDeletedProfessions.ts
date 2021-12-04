@@ -1,20 +1,25 @@
 import {
-  emptyProfessionList,
+  filmEmptyProfessionList,
   ProfessionArray,
   Professions,
-  ProfessionsList,
-} from "../stores/FilmStore/FilmModel";
+  FilmProfessionsList,
+  NameProfessionsList,
+} from "../shared/constants/professions";
 
-const getDeletedProfessions = (prof?: ProfessionsList): Professions[] => {
+const getDeletedProfessions = (
+  prof?: FilmProfessionsList | NameProfessionsList,
+  isFilmList = true
+): Professions[] => {
   const deletedProfessions: Professions[] = [];
 
-  if (!prof) prof = emptyProfessionList;
+  if (!prof) prof = filmEmptyProfessionList;
 
   ProfessionArray.forEach((p) => {
     if (
-      p === Professions.Actor ||
-      p === Professions.Director ||
-      p === Professions.Writer
+      isFilmList &&
+      (p === Professions.Actor ||
+        p === Professions.Director ||
+        p === Professions.Writer)
     )
       return;
 

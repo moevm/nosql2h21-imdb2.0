@@ -1,16 +1,17 @@
-import FilmModel, {
-  emptyProfessionList,
+import FilmModel from "../stores/FilmStore/FilmModel";
+import {
+  filmEmptyProfessionList,
+  FilmProfessionsList,
   Professions,
-  ProfessionsList,
-} from "stores/FilmStore/FilmModel";
+} from "../shared/constants/professions";
 
 const filmsToFormFilms = (
   films: FilmModel
 ): [
   Omit<FilmModel, "professions" | "getNamesByProfession" | "setNewPoster">,
-  ProfessionsList
+  FilmProfessionsList
 ] => {
-  const formProfessions: ProfessionsList = emptyProfessionList;
+  const formProfessions: FilmProfessionsList = filmEmptyProfessionList;
 
   // eslint-disable-next-line guard-for-in,no-restricted-syntax
   for (const key in formProfessions) {
@@ -18,14 +19,14 @@ const filmsToFormFilms = (
       films.professions
         .filter((f) => f.category === key)
         .map((el) => {
-          return { name: el.name, id: el.id };
+          return { name: el.name, nameId: el.nameId };
         });
   }
 
   formProfessions[Professions.Actor] = films.professions
     .filter((f) => f.category === Professions.Actor)
     .map((el) => {
-      return { name: el.name, character: el.character, id: el.id };
+      return { name: el.name, character: el.character, nameId: el.nameId };
     });
 
   const { professions, getNamesByProfession, setNewPoster, ...formFilms } =

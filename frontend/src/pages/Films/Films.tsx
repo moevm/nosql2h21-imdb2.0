@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Button, Table, Tag } from "antd";
-import FilmModel from "../../stores/FilmStore/FilmModel";
+import FilmModel from "stores/FilmStore/FilmModel";
 import FilmCard from "./FilmCard";
 import styles from "./Films.module.scss";
-import { CardMode } from "../../stores/FilmStore/FilmsStore";
 
 const Films = () => {
   useEffect(() => {
@@ -18,7 +17,6 @@ const Films = () => {
 
   const onOpenNewFilmCard = () => {
     filmsStore.openFilmCard();
-    filmsStore.setMode(CardMode.Creating);
   };
 
   const columns = [

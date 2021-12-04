@@ -1,4 +1,4 @@
-import { Professions } from "../stores/FilmStore/FilmModel";
+import { Professions } from "../shared/constants/professions";
 
 const parseCast = (
   cast: any

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Divider, Form, FormInstance, Row, Select } from "antd";
 
-import {
-  ProfessionArray,
-  Professions,
-  ProfessionsList,
-} from "stores/FilmStore/FilmModel";
 import { cast } from "apiServices/mocks";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import Actors from "./Actors";
+import {
+  ProfessionArray,
+  Professions,
+  FilmProfessionsList,
+} from "../../../../../shared/constants/professions";
 
 interface IProps {
-  professions?: ProfessionsList;
+  professions?: FilmProfessionsList;
   castForm: FormInstance;
 }
 
@@ -96,7 +96,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
           if (deletedProfessions.includes(e)) return null;
 
           const nameIdArray = professions
-            ? professions[e].map((p) => p.id)
+            ? professions[e].map((p) => p.nameId)
             : [];
 
           return renderProfession(e, nameIdArray);

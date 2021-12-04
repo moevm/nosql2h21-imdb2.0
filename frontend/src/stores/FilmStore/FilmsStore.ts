@@ -1,20 +1,14 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { filmsApiService } from "apiServices";
 import { IFilmDto } from "shared/dtos/FilmDto";
+import { CardMode } from "shared/constants/common";
 import FilmModel from "./FilmModel";
-
-export enum CardMode {
-  Static = "Static",
-  Editing = "Editing",
-  Creating = "Creating",
-}
 
 class FilmsStore {
   constructor() {
     makeObservable(this, {
       films: observable,
       isFetching: observable,
-      isCardOpen: observable,
       mode: observable,
       selectedFilm: observable,
       canSubmitForm: observable,
@@ -32,9 +26,7 @@ class FilmsStore {
 
   public isFetching = false;
 
-  public mode = CardMode.Static;
-
-  public isCardOpen = false;
+  public mode = CardMode.Closed;
 
   public isImageFormOpen = false;
 
@@ -83,16 +75,13 @@ class FilmsStore {
 
   public async openFilmCard(id?: number) {
     if (id === undefined) {
-      runInAction(() => {
-        this.isCardOpen = true;
-      });
+      this.mode = CardMode.Creating;
       return;
     }
 
     try {
       await this.getFilmById(id);
-      if (this.selectedFilm === null) return;
-      this.isCardOpen = true;
+      this.mode = CardMode.Static;
     } catch (err) {
       // ignore
     }
@@ -101,8 +90,7 @@ class FilmsStore {
   public closeFilmCard() {
     try {
       this.selectedFilm = new FilmModel();
-      this.isCardOpen = false;
-      this.mode = CardMode.Static;
+      this.mode = CardMode.Closed;
     } catch (err) {
       // ignore
     }

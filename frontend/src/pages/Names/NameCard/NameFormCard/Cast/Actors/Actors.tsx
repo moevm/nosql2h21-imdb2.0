@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Input, Row, Select } from "antd";
 import { cast } from "apiServices/mocks";
-import { IProfession } from "shared/dtos/FilmDto";
+import { INameProfession } from "shared/dtos/NameDto";
 
 interface IProps {
-  actors?: Array<Omit<IProfession, "category">>;
+  actors?: Array<Omit<INameProfession, "category">>;
 }
 
 const Actors: React.FC<IProps> = ({ actors }) => {
@@ -13,7 +13,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
   );
 
   const [idArray, setIdArray] = useState<Array<number>>(
-    actors === undefined ? [] : actors.map((a) => a.id)
+    actors === undefined ? [] : actors.map((a) => a.filmId)
   );
 
   const generateId = (): number => {
@@ -27,16 +27,16 @@ const Actors: React.FC<IProps> = ({ actors }) => {
   };
 
   const renderActor = (actor: {
-    name: string;
+    title: string;
     character: string | null;
-    id: number;
+    filmId: number;
   }) => {
     return (
       <Row>
         <Col span={12}>
           <Form.Item
-            name={`actor_${actor.id}`}
-            initialValue={actor.name === "" ? undefined : actor.id}
+            name={`actor_${actor.filmId}`}
+            initialValue={actor.title === "" ? undefined : actor.filmId}
           >
             <Select
               showSearch
@@ -63,7 +63,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
         </Col>
         <Col span={12}>
           <Form.Item
-            name={`character_${actor.id}`}
+            name={`character_${actor.filmId}`}
             initialValue={actor.character}
           >
             <Input placeholder="Character" />
@@ -79,7 +79,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
     setNewActorForm(
       newActorForm?.concat(
         <React.Fragment key={id}>
-          {renderActor({ name: "", character: "", id })}
+          {renderActor({ title: "", character: "", filmId: id })}
         </React.Fragment>
       )
     );
@@ -90,7 +90,9 @@ const Actors: React.FC<IProps> = ({ actors }) => {
       {actors === undefined
         ? null
         : actors.map((a) => {
-            return <React.Fragment key={a.id}>{renderActor(a)}</React.Fragment>;
+            return (
+              <React.Fragment key={a.filmId}>{renderActor(a)}</React.Fragment>
+            );
           })}
       {newActorForm}
       <Button onClick={onAddNewActor}>Add new actor</Button>
