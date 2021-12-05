@@ -34,6 +34,7 @@
                 "ts": "never"
             }
         ],
+        "no-nested-ternary": "off",
         "object-shorthand": "off",
         "no-console": "off",
         "no-unused-vars": "off",

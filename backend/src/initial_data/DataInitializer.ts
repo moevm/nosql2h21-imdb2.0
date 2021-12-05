@@ -47,6 +47,22 @@ class DataInitializer {
     await this.initializeFilms();
     await this.initializeFilmsCrew();
     await this.initializeWorkers();
+    await this.printUniqueGenres();
+    console.log("\n");
+    await this.printUniqueCategories();
+    console.log("\n");
+  }
+
+  private async printUniqueGenres() {
+    const genres = await FilmsMongoCollection.find().distinct("genres");
+    console.log(`GENRES\n${genres}`);
+  }
+
+  private async printUniqueCategories() {
+    const categories = await FilmsCrewMongoCollection.find().distinct(
+      "category"
+    );
+    console.log(`CATEGORIES or PROFESSIONS\n${categories}`);
   }
 
   private async initializeFilms(): Promise<void> {
@@ -139,7 +155,12 @@ class DataInitializer {
           results.push(<IFilmCrew>{
             filmId: mongoose.Types.ObjectId(filmId),
             workerId: mongoose.Types.ObjectId(workerId),
-            category: data.category === "\\N" ? null : data.category,
+            category:
+              data.category === "\\N"
+                ? null
+                : data.category === "actress"
+                ? "actor"
+                : data.category,
             characters: characters,
           });
         }
