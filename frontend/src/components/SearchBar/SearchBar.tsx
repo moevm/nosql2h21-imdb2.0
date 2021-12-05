@@ -10,6 +10,7 @@ const SearchBar: React.FC<IProps> = ({ className }) => {
     <Search
       placeholder="enter movie title or famous celebrity"
       className={className || ""}
+      disabled
     />
   );
 };

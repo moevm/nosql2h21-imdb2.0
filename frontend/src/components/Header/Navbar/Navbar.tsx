@@ -25,10 +25,10 @@ const Navbar: React.FC<IProps> = ({ theme = "dark", className }) => {
       <Menu.Item key={UiRoutes.Names}>
         <Link to={UiRoutes.Names}>Names</Link>
       </Menu.Item>
-      <Menu.Item key={UiRoutes.DbControl}>
+      <Menu.Item key={UiRoutes.DbControl} disabled>
         <Link to={UiRoutes.DbControl}>DB Control</Link>
       </Menu.Item>
-      <Menu.Item key={UiRoutes.Statistics}>
+      <Menu.Item key={UiRoutes.Statistics} disabled>
         <Link to={UiRoutes.Statistics}>Statistics</Link>
       </Menu.Item>
     </Menu>

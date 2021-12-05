@@ -11,8 +11,8 @@ import namesToFormNames from "utils/namesToFormNames";
 import { Professions } from "shared/constants/professions";
 import { useHistory } from "react-router-dom";
 import UiRoutes from "shared/constants/uiRoutes";
+import { capitalizeFirstLetter } from "utils/capitalizeFirstLetter";
 import styles from "./NameStaticCard.module.scss";
-import { capitalizeFirstLetter } from "../../../../utils/capitalizeFirstLetter";
 
 const NameStaticCard = () => {
   const [, allProfessions] = namesToFormNames(toJS(namesStore.selectedName));
