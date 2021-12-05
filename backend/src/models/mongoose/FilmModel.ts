@@ -1,7 +1,7 @@
-import { Schema, model, Document, Model } from "mongoose";
+import { Schema, model, Document, Model, Types } from "mongoose";
 
 export interface IFilm {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   title: string;
   isAdult: boolean;
   releaseYear: string;
@@ -11,7 +11,7 @@ export interface IFilm {
 }
 
 const FilmSchema = new Schema<IFilm, Model<IFilm>, IFilm>({
-  _id: { type: Schema.Types.ObjectId, auto: true },
+  _id: { type: Types.ObjectId, auto: true },
   title: { type: String, required: true },
   isAdult: { type: Boolean, required: true },
   releaseYear: { type: String, required: false },

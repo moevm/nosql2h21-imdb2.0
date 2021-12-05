@@ -1,14 +1,14 @@
-import { Schema, model, Document, Model } from "mongoose";
+import { Schema, model, Document, Model, Types } from "mongoose";
 
-interface IFilmCrew {
-  filmId: Schema.Types.ObjectId;
-  workerId: Schema.Types.ObjectId;
+export interface IFilmCrew {
+  filmId: Types.ObjectId;
+  workerId: Types.ObjectId;
   category: string;
   characters: string;
 }
 
 const FilmCrewSchema = new Schema<IFilmCrew, Model<IFilmCrew>, IFilmCrew>({
-  filmId: { type: Schema.Types.ObjectId },
+  filmId: { type: Types.ObjectId, required: true },
   workerId: { type: Schema.Types.ObjectId, required: true },
   category: { type: String, required: true },
   characters: { type: String, required: false },

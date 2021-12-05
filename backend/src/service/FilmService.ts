@@ -1,9 +1,12 @@
-import { FilmsMongoCollection } from "models/mongoose/FilmModel";
+import { FilmsMongoCollection, IFilm } from "models/mongoose/FilmModel";
 import { FilmShortInfoDto } from "models/dto/FilmShortInfoDto";
 import mongoose from "mongoose";
 import { filmDtoMapper } from "../models/mapper/FilmDtoMapper";
 import { FilmFullInfoDto } from "../models/dto/FilmFullInfoDto";
-import { FilmsCrewMongoCollection } from "../models/mongoose/FilmsCrewModel";
+import {
+  FilmsCrewMongoCollection,
+  IFilmCrew,
+} from "../models/mongoose/FilmsCrewModel";
 import { WorkersMongoCollection } from "../models/mongoose/WorkersModel";
 import { FilmWorkerDto } from "../models/dto/FilmWorkerDto";
 
@@ -22,28 +25,32 @@ class FilmService {
       throw new Error(`No film with id = ${id}`);
     }
 
-    const filmWorkers = await FilmsCrewMongoCollection.find({
+    const filmCrewData = await FilmsCrewMongoCollection.find({
       filmId: objId,
     });
 
-    const filmCrewInfo = (
-      await Promise.all(
-        filmWorkers.map(async (worker) => {
-          const workerInfo = await WorkersMongoCollection.findById(worker._id);
+    console.log(filmCrewData);
 
+    const filmWorkerInfo = (
+      await Promise.all(
+        filmCrewData.map(async (data) => {
+          const workerInfo = await WorkersMongoCollection.findById(
+            data.workerId
+          );
+          console.log(workerInfo);
           if (workerInfo === null) return null;
 
           return new FilmWorkerDto(
-            worker._id,
+            data._id,
             workerInfo.name,
-            worker.category,
-            worker.characters
+            data.category,
+            data.characters
           );
         })
       )
     ).filter((worker) => worker !== null) as FilmWorkerDto[];
 
-    return filmDtoMapper.mapToFullFilmInfoDto(film, filmCrewInfo);
+    return filmDtoMapper.mapToFullFilmInfoDto(film, filmWorkerInfo);
   }
 
   public async postFilm(
@@ -54,10 +61,12 @@ class FilmService {
     return filmDtoMapper.mapToShortFilmInfoDto(postedFilm[0]);
   }
 
-  public async updateFilm(film: FilmShortInfoDto): Promise<FilmShortInfoDto> {
+  public async updateFilm(film: FilmFullInfoDto): Promise<FilmShortInfoDto> {
+    const filmData = filmDtoMapper.mapFullFilmInfoToShortDto(film);
+
     const updatedFilm = await FilmsMongoCollection.findOneAndUpdate(
       { _id: film._id },
-      film,
+      filmData,
       { new: true }
     );
 
@@ -65,7 +74,22 @@ class FilmService {
       throw new Error(`No film with id = ${film._id}`);
     }
 
-    return filmDtoMapper.mapToShortFilmInfoDto(updatedFilm);
+    const crewData = film.crew.map((workerData) => {
+      return <IFilmCrew>{
+        filmId: filmData._id,
+        workerId: workerData.workerId,
+        category: workerData.category,
+        characters: workerData.character,
+      };
+    });
+
+    await FilmsCrewMongoCollection.deleteMany({
+      filmId: film._id,
+    });
+
+    await FilmsCrewMongoCollection.insertMany(crewData);
+
+    return filmDtoMapper.mapToFullFilmInfoDto(updatedFilm, film.crew);
   }
 }
 

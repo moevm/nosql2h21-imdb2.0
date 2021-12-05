@@ -32,6 +32,20 @@ class FilmDtoMapper {
       crew
     );
   }
+
+  public mapFullFilmInfoToShortDto(
+    fullFilmDto: FilmFullInfoDto
+  ): FilmShortInfoDto {
+    return new FilmShortInfoDto(
+      fullFilmDto._id,
+      fullFilmDto.title,
+      fullFilmDto.isAdult,
+      fullFilmDto.releaseYear,
+      fullFilmDto.duration,
+      fullFilmDto.genres,
+      fullFilmDto.poster
+    );
+  }
 }
 
 export const filmDtoMapper = new FilmDtoMapper();

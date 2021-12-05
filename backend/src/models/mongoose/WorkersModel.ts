@@ -1,7 +1,7 @@
-import { Schema, model, Document, Model } from "mongoose";
+import { Schema, model, Document, Model, Types } from "mongoose";
 
 interface IWorker {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   name: string;
   birthYear: string;
   deathYear: string;
@@ -10,7 +10,7 @@ interface IWorker {
 
 const WorkerSchema = new Schema<IWorker, Model<IWorker>, IWorker>(
   {
-    _id: { type: Schema.Types.ObjectId },
+    _id: { type: Types.ObjectId },
     name: { type: String, required: true },
     birthYear: { type: String, required: true },
     deathYear: { type: String, required: true },
