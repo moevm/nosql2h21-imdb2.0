@@ -21,6 +21,7 @@ class DataInitializer {
       columns: true,
       skip_lines_with_error: true,
       quote: false,
+      to: 80000,
     },
     (err, data) => {
       // console.log(data);
@@ -42,7 +43,9 @@ class DataInitializer {
       .on("data", (data) => {
         const idStr = this.fillTo12Symbols(data.tconst);
         const title = data.primaryTitle;
-        const filmGenres = data.genres?.split(",");
+        const filmGenres = (data.genres as String)
+          ?.split(",")
+          ?.filter((genre: String) => genre !== "\\N");
         const duration = Number(data.runtimeMinutes);
         // console.log(data.isAdult);
         if (title && (data.titleType as String) === "movie") {
