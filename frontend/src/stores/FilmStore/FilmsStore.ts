@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { filmsApiService } from "apiServices";
-import { IFilmDto, IFullFilmDto } from "shared/dtos/FilmDto";
+import { IFullFilmDto } from "shared/dtos/FilmDto";
 import { CardMode } from "shared/constants/common";
 import FilmModel from "./FilmModel";
 
@@ -50,7 +50,7 @@ class FilmsStore {
     }
   }
 
-  public async postFilm(film: Omit<IFilmDto, "_id">): Promise<void> {
+  public async postFilm(film: Omit<IFullFilmDto, "_id">): Promise<void> {
     try {
       await filmsApiService.postFilm(film);
 

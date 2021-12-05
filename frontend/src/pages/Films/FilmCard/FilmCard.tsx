@@ -8,6 +8,7 @@ import { observer } from "mobx-react";
 import { CardMode } from "shared/constants/common";
 import FilmStaticCard from "./FilmStaticCard";
 import FilmFormCard from "./FilmFormCard";
+import { IFullFilmDto } from "../../../shared/dtos/FilmDto";
 
 const FilmCard = () => {
   const [infoForm] = Form.useForm();
@@ -35,23 +36,25 @@ const FilmCard = () => {
     const cast = castForm.getFieldsValue();
     const professions = parseCast(cast);
     const movieInfo = infoForm.getFieldsValue();
-    const result = {
+    const result: Omit<IFullFilmDto, "_id"> = {
       ...movieInfo,
       crew: [...professions],
       poster: filmsStore.selectedFilm?.newPoster,
-      _id: filmsStore.selectedFilm?.id,
-      title: filmsStore.selectedFilm?.title,
       isAdult: filmsStore.selectedFilm?.isAdult !== "6+",
     };
 
     infoForm.submit();
     castForm.submit();
 
-    filmsStore.updateFilm(result);
+    // eslint-disable-next-line no-unused-expressions
+    filmsStore.mode === CardMode.Editing
+      ? filmsStore.updateFilm({
+          ...result,
+          _id: filmsStore.selectedFilm?.id || "",
+          title: filmsStore.selectedFilm?.title || "",
+        })
+      : filmsStore.postFilm(result);
     filmsStore.closeFilmCard();
-    console.log(result);
-
-    // TODO: submit form and do request
   };
 
   return (

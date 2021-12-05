@@ -91,6 +91,14 @@ const FilmFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
             </Col>
             <Col span={12}>
               <Form.Item
+                name="title"
+                hasFeedback
+                label="Title"
+                rules={[{ required: true, message: "Please enter title!" }]}
+              >
+                <Input placeholder="Release year" />
+              </Form.Item>
+              <Form.Item
                 name="releaseYear"
                 hasFeedback
                 label="Year"
@@ -113,11 +121,7 @@ const FilmFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
                 </Select>
               </Form.Item>
 
-              <Form.Item
-                name="genres"
-                label="Genres"
-                rules={[{ required: true, message: "Please select genres!" }]}
-              >
+              <Form.Item name="genres" label="Genres">
                 <Select
                   mode="multiple"
                   placeholder="Genres"
