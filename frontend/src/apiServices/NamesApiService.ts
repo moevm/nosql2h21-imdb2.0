@@ -14,6 +14,14 @@ class FilmsApiService extends HTTPService {
   public getNameById(id: string): Promise<IFullNameDto> {
     return this.GET(`${id}`);
   }
+
+  public postName(name: Omit<IFullNameDto, "_id">): Promise<IFullNameDto> {
+    return this.POST("", name);
+  }
+
+  public updateName(name: IFullNameDto): Promise<IFullNameDto> {
+    return this.PUT("", name);
+  }
 }
 
 export default new FilmsApiService();

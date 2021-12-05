@@ -17,16 +17,16 @@ const namesToFormNames = (
   for (const key in formProfessions) {
     formProfessions[key as Exclude<Professions, Professions.Actor>] =
       names.professions
-        .filter((f) => f.category === key)
+        .filter((f) => f.profession === key)
         .map((el) => {
           return { title: el.title, filmId: el.filmId };
         });
   }
 
   formProfessions[Professions.Actor] = names.professions
-    .filter((f) => f.category === Professions.Actor)
+    .filter((f) => f.profession === Professions.Actor)
     .map((el) => {
-      return { title: el.title, character: el.character, filmId: el.filmId };
+      return { title: el.title, characters: el.characters, filmId: el.filmId };
     });
 
   const { professions, getNamesByProfession, setNewAvatar, ...formNames } =

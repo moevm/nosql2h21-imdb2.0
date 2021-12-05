@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Drawer, Form, Space } from "antd";
 import { namesStore } from "stores";
-import parseCast from "utils/castParsing";
+import { parseNameCast } from "utils/castParsing";
 import { haveErrors } from "utils/isFormHaveErrors";
 import { observer } from "mobx-react";
 import { CardMode } from "shared/constants/common";
@@ -32,20 +32,25 @@ const NameCard = () => {
     }
 
     const cast = castForm.getFieldsValue();
-    const professions = parseCast(cast);
+    const professions = parseNameCast(cast);
     const movieInfo = infoForm.getFieldsValue();
     const result = {
       ...movieInfo,
       professions: [...professions],
-      // poster: filmsStore.selectedFilm?.newPoster,
-      // id: filmsStore.selectedFilm?.id,
+      image: namesStore.selectedName?.newAvatar,
     };
 
     infoForm.submit();
     castForm.submit();
 
-    console.log(result);
-
+    // eslint-disable-next-line no-unused-expressions
+    namesStore.mode === CardMode.Editing
+      ? namesStore.updateName({
+          ...result,
+          _id: namesStore.selectedName?.id || "",
+        })
+      : namesStore.postName(result);
+    namesStore.closeNameCard();
     // TODO: submit form and do request
   };
 

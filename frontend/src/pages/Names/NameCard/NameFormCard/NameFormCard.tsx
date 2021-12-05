@@ -70,7 +70,7 @@ const NameFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
         visible={namesStore.isModalUrlEditFormOpen}
         onOk={onSetImageUrl}
         onCancel={closeModalUrlForm}
-        defaultValue={{ poster: names?.avatar || null }}
+        defaultValue={{ poster: names?.image || null }}
         form={urlForm}
       />
       <Form.Provider onFormChange={checkFormValidation}>
@@ -89,6 +89,14 @@ const NameFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
               />
             </Col>
             <Col span={12}>
+              <Form.Item
+                name="name"
+                hasFeedback
+                label="Name"
+                rules={[{ required: true, message: "Please enter name!" }]}
+              >
+                <Input placeholder="Name" />
+              </Form.Item>
               <Form.Item
                 name="birthYear"
                 hasFeedback

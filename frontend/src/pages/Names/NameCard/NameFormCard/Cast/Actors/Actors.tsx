@@ -4,7 +4,7 @@ import { INameProfession } from "shared/dtos/NameDto";
 import { appStore } from "stores";
 
 interface IProps {
-  actors?: Array<Omit<INameProfession, "category">>;
+  actors?: Array<Omit<INameProfession, "profession">>;
 }
 
 const Actors: React.FC<IProps> = ({ actors }) => {
@@ -28,7 +28,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
 
   const renderActor = (actor: {
     title: string;
-    character: string | null;
+    characters: string | null;
     filmId: string;
   }) => {
     return (
@@ -68,7 +68,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
         <Col span={12}>
           <Form.Item
             name={`character_${actor.filmId}`}
-            initialValue={actor.character}
+            initialValue={actor.characters}
           >
             <Input placeholder="Character" />
           </Form.Item>
@@ -83,7 +83,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
     setNewActorForm(
       newActorForm?.concat(
         <React.Fragment key={id}>
-          {renderActor({ title: "", character: "", filmId: id })}
+          {renderActor({ title: "", characters: "", filmId: id })}
         </React.Fragment>
       )
     );

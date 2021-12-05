@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button, Drawer, Form, Space } from "antd";
 import { filmsStore } from "stores";
-import parseCast from "utils/castParsing";
+import { parseFilmCast } from "utils/castParsing";
 import { haveErrors } from "utils/isFormHaveErrors";
 import { observer } from "mobx-react";
 import { CardMode } from "shared/constants/common";
@@ -34,7 +34,7 @@ const FilmCard = () => {
     }
 
     const cast = castForm.getFieldsValue();
-    const professions = parseCast(cast);
+    const professions = parseFilmCast(cast);
     const movieInfo = infoForm.getFieldsValue();
     const result: Omit<IFullFilmDto, "_id"> = {
       ...movieInfo,
@@ -51,7 +51,6 @@ const FilmCard = () => {
       ? filmsStore.updateFilm({
           ...result,
           _id: filmsStore.selectedFilm?.id || "",
-          title: filmsStore.selectedFilm?.title || "",
         })
       : filmsStore.postFilm(result);
     filmsStore.closeFilmCard();

@@ -1,5 +1,5 @@
 import React from "react";
-import { appStore, filmsStore } from "stores";
+import { appStore, filmsStore, namesStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Row } from "antd";
 import DescriptionItem from "components/DescriptionItem";
@@ -9,13 +9,23 @@ import { toJS } from "mobx";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import filmsToFormFilms from "utils/filmsToFormFilms";
 import { Professions } from "shared/constants/professions";
+import { useHistory } from "react-router-dom";
+import { renderDuration } from "utils/renderDuration";
+import UiRoutes from "shared/constants/uiRoutes";
 import styles from "./FilmStaticCard.module.scss";
-import { renderDuration } from "../../../../utils/renderDuration";
 
 const FilmStaticCard = () => {
   if (filmsStore.selectedFilm === null) {
     return null;
   }
+
+  const history = useHistory();
+
+  const onNameClick = (nameId: string) => {
+    history.push(UiRoutes.Names);
+    namesStore.openNameCard(nameId);
+  };
+
   const [, allProfessions] = filmsToFormFilms(toJS(filmsStore.selectedFilm));
 
   const deletedProfessions = getDeletedProfessions(allProfessions);
@@ -32,7 +42,13 @@ const FilmStaticCard = () => {
       <>
         {professions.map((e, index) => (
           <React.Fragment key={e.name}>
-            <a>{e.name}</a>
+            <a
+              onClick={() => {
+                onNameClick(e.workerId);
+              }}
+            >
+              {e.name}
+            </a>
             <pre>{`${lastIndex === index ? "" : ", "}`}</pre>
           </React.Fragment>
         ))}
@@ -70,7 +86,13 @@ const FilmStaticCard = () => {
     .map((a) => (
       <React.Fragment key={a.name}>
         <Col span={12}>
-          <a>{a.name}</a>
+          <a
+            onClick={() => {
+              onNameClick(a.workerId);
+            }}
+          >
+            {a.name}
+          </a>
         </Col>
         <Col span={12}>{a.character}</Col>
       </React.Fragment>
@@ -98,7 +120,7 @@ const FilmStaticCard = () => {
           />
           <DescriptionItem
             title="Certificate"
-            content={filmsStore.selectedFilm.isAdult ? "18+" : "6+"}
+            content={filmsStore.selectedFilm.isAdult}
           />
           {genres.length > 0 && (
             <DescriptionItem title="Genres" content={genres} />

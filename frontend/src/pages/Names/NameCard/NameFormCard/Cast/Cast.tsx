@@ -140,7 +140,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
       <Divider />
       Actors:
       <p />
-      <Actors actors={professions?.Actor} />
+      <Actors actors={professions?.actor} />
     </Form>
   );
 };

@@ -64,8 +64,8 @@ class FilmsStore {
 
   public async updateFilm(film: IFullFilmDto): Promise<void> {
     try {
-      await filmsApiService.updateFilm(film);
-
+      const newFilm = await filmsApiService.updateFilm(film);
+      appStore.updateFilm({ title: newFilm.title, id: newFilm._id });
       await this.getAllFilms();
     } catch (err) {
       // ignore
@@ -75,7 +75,9 @@ class FilmsStore {
   public async getFilmById(id: string): Promise<void> {
     try {
       this.isFetching = true;
-      this.selectedFilm = new FilmModel(await filmsApiService.getFilmById(id));
+      const film = await filmsApiService.getFilmById(id);
+
+      this.selectedFilm = new FilmModel(film);
     } catch (err) {
       // ignore
     } finally {

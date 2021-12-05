@@ -13,7 +13,9 @@ class AppStore {
 
       initializeApp: action,
       addFilm: action,
+      updateFilm: action,
       addName: action,
+      updateName: action,
     });
   }
 
@@ -25,15 +27,28 @@ class AppStore {
 
   readonly ProfessionArray: Array<Professions> = Object.entries(
     Professions
-  ).map(([value]) => value as Professions);
+  ).map(([, value]) => value as Professions);
 
   readonly genres = [
-    "drama",
-    "crime",
-    "thriller",
-    "comedy",
-    "historical",
-    "horror",
+    "Action",
+    "Adventure",
+    "Biography",
+    "Comedy",
+    "Crime",
+    "Documentary",
+    "Drama",
+    "Family",
+    "Fantasy",
+    "History",
+    "Horror",
+    "Music",
+    "Mystery",
+    "Romance",
+    "Sci-Fi",
+    "Sport",
+    "Thriller",
+    "War",
+    "Western",
   ];
 
   public async initializeApp(): Promise<void> {
@@ -62,6 +77,18 @@ class AppStore {
 
   public addName(name: Pick<NameModel, "name" | "id">): void {
     this.names.push(name);
+  }
+
+  public updateFilm(film: Pick<FilmModel, "title" | "id">): void {
+    const updatedFilm = this.films.find((f) => f.id === film.id);
+    if (!updatedFilm) return;
+    updatedFilm.title = film.title;
+  }
+
+  public updateName(name: Pick<NameModel, "name" | "id">): void {
+    const updatedName = this.names.find((n) => n.id === name.id);
+    if (!updatedName) return;
+    updatedName.name = name.name;
   }
 }
 

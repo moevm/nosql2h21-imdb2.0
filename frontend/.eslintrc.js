@@ -35,6 +35,7 @@ module.exports = {
         endOfLine: "auto",
       },
     ],
+    camelcase: "off",
     "no-use-before-define": "off",
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",

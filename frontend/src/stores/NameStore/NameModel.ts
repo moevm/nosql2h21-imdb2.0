@@ -9,19 +9,19 @@ class NameModel {
       name: observable,
       birthYear: observable,
       deathYear: observable,
-      avatar: observable,
+      image: observable,
       professions: observable,
 
       getNamesByProfession: action.bound,
       setNewAvatar: action.bound,
     });
 
-    this.id = nameDto?.id || null;
+    this.id = nameDto?._id || null;
     this.name = nameDto?.name || null;
     this.birthYear = nameDto?.birthYear || null;
     this.deathYear = nameDto?.deathYear || null;
-    this.avatar = nameDto?.avatar || null;
-    this.newAvatar = nameDto?.avatar || null;
+    this.image = nameDto?.image || null;
+    this.newAvatar = nameDto?.image || null;
 
     if (nameDto !== undefined && "professions" in nameDto) {
       this.professions = nameDto.professions;
@@ -36,7 +36,7 @@ class NameModel {
 
   public deathYear: string | null = null;
 
-  public avatar: string | null = null;
+  public image: string | null = null;
 
   public newAvatar: string | null = null;
 
@@ -44,11 +44,11 @@ class NameModel {
 
   public getNamesByProfession(
     profession: Professions
-  ): Array<Omit<INameProfession, "category">> {
+  ): Array<Omit<INameProfession, "profession">> {
     return this.professions
-      .filter((el) => el.category === profession)
+      .filter((el) => el.profession === profession)
       .map((pr) => ({
-        character: pr.character,
+        characters: pr.characters,
         title: pr.title,
         filmId: pr.filmId,
       }));

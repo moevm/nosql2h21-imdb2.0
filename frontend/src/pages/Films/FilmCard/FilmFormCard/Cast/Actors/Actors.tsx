@@ -12,14 +12,14 @@ const Actors: React.FC<IProps> = ({ actors }) => {
     []
   );
 
-  const [idArray, setIdArray] = useState<Array<number>>(
+  const [idArray, setIdArray] = useState<Array<string>>(
     actors === undefined ? [] : actors.map((a) => a.workerId)
   );
 
-  const generateId = (): number => {
-    let newId = 0;
+  const generateId = (): string => {
+    let newId = "";
     while (true) {
-      newId = new Date().getTime();
+      newId = new Date().getTime().toString();
       if (!idArray.includes(newId)) break;
     }
     setIdArray([...idArray, newId]);
@@ -29,7 +29,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
   const renderActor = (actor: {
     name: string;
     character: string | null;
-    workerId: number;
+    workerId: string;
   }) => {
     return (
       <Row>

@@ -1,5 +1,5 @@
 import React from "react";
-import { appStore, namesStore } from "stores";
+import { appStore, filmsStore, namesStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Row } from "antd";
 import DescriptionItem from "components/DescriptionItem";
@@ -9,10 +9,19 @@ import { toJS } from "mobx";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import namesToFormNames from "utils/namesToFormNames";
 import { Professions } from "shared/constants/professions";
+import { useHistory } from "react-router-dom";
+import UiRoutes from "shared/constants/uiRoutes";
 import styles from "./NameStaticCard.module.scss";
 
 const NameStaticCard = () => {
   const [, allProfessions] = namesToFormNames(toJS(namesStore.selectedName));
+
+  const history = useHistory();
+
+  const onFilmClick = (filmId: string) => {
+    history.push(UiRoutes.Films);
+    filmsStore.openFilmCard(filmId);
+  };
 
   const deletedProfessions = getDeletedProfessions(allProfessions);
 
@@ -26,7 +35,7 @@ const NameStaticCard = () => {
       <>
         {professions.map((e, index) => (
           <React.Fragment key={e.title}>
-            <a>{e.title}</a>
+            <a onClick={() => onFilmClick(e.filmId)}>{e.title}</a>
             <pre>{`${lastIndex === index ? "" : ", "}`}</pre>
           </React.Fragment>
         ))}
@@ -56,11 +65,11 @@ const NameStaticCard = () => {
   const actor = namesStore.selectedName
     .getNamesByProfession(Professions.Actor)
     .map((a) => (
-      <React.Fragment key={`${a.filmId}${a.character}`}>
+      <React.Fragment key={`${a.filmId}${a.characters}`}>
         <Col span={12}>
-          <a>{a.title}</a>
+          <a onClick={() => onFilmClick(a.filmId)}>{a.title}</a>
         </Col>
-        <Col span={12}>{a.character}</Col>
+        <Col span={12}>{a.characters}</Col>
       </React.Fragment>
     ));
 
@@ -70,9 +79,9 @@ const NameStaticCard = () => {
         <Col span={12}>
           <img
             src={
-              namesStore.selectedName.avatar === null
+              namesStore.selectedName.image === null
                 ? noImage
-                : namesStore.selectedName.avatar
+                : namesStore.selectedName.image
             }
             alt="poster"
             className={styles.imageWrapper}

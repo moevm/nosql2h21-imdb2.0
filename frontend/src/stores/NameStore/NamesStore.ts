@@ -2,6 +2,8 @@ import { action, makeObservable, observable } from "mobx";
 import { CardMode } from "shared/constants/common";
 import { namesApiService } from "apiServices";
 import NameModel from "./NameModel";
+import { appStore } from "../index";
+import { IFullNameDto } from "../../shared/dtos/NameDto";
 
 class NamesStore {
   constructor() {
@@ -96,6 +98,28 @@ class NamesStore {
     try {
       this.selectedName = new NameModel();
       this.mode = CardMode.Closed;
+    } catch (err) {
+      // ignore
+    }
+  }
+
+  public async postName(name: Omit<IFullNameDto, "_id">): Promise<void> {
+    try {
+      const newName = await namesApiService.postName(name);
+
+      appStore.addName({ name: newName.name, id: newName._id });
+      await this.getAllNames();
+    } catch (err) {
+      // ignore
+    }
+  }
+
+  public async updateName(name: IFullNameDto): Promise<void> {
+    try {
+      const newName = await namesApiService.updateName(name);
+
+      appStore.updateName({ name: newName.name, id: newName._id });
+      await this.getAllNames();
     } catch (err) {
       // ignore
     }

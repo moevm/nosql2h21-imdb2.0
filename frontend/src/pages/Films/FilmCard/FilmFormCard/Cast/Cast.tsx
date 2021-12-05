@@ -29,7 +29,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
 
   const renderProfession = (
     profession: Professions,
-    initialNames: number[]
+    initialNames: string[]
   ) => {
     return (
       <Form.Item
@@ -139,7 +139,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
       <Divider />
       Actors:
       <p />
-      <Actors actors={professions?.Actor} />
+      <Actors actors={professions?.actor} />
     </Form>
   );
 };

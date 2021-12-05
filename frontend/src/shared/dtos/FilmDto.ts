@@ -9,7 +9,7 @@ export interface IFilmDto {
 }
 
 export interface IFilmProfession {
-  workerId: number;
+  workerId: string;
   name: string;
   category: string;
   character: string | null;

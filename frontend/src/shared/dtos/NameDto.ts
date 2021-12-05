@@ -1,16 +1,16 @@
 export interface INameDto {
-  id: string;
+  _id: string;
   name: string;
   birthYear: string;
   deathYear: string | null;
-  avatar: string | null;
+  image: string | null;
 }
 
 export interface INameProfession {
   filmId: string;
   title: string;
-  category: string;
-  character: string | null;
+  profession: string;
+  characters: string | null;
 }
 
 export interface IFullNameDto extends INameDto {
