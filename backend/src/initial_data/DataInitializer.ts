@@ -11,13 +11,17 @@ import {
   IWorker,
   WorkersMongoCollection,
 } from "../models/mongoose/WorkersModel";
+import {
+  FilmsCrewMongoCollection,
+  IFilmCrew,
+} from "../models/mongoose/FilmsCrewModel";
 
 class DataInitializer {
   readonly filmsFilename = `${__dirname}/films_data.tsv`;
 
   readonly workersFilename = `${__dirname}/workers_data.tsv`;
 
-  readonly filmsCrewFilename = "filmsCrew_data.tsv";
+  readonly filmsCrewFilename = `${__dirname}/filmCrew_data.tsv`;
 
   private static getTsvFormatParser(amountTo: number): parse.Parser {
     return parse(
@@ -36,9 +40,9 @@ class DataInitializer {
   }
 
   async initializeData() {
-    await this.initializeFilms();
-    await this.initializeWorkers();
-    this.initializeFilmsCrew();
+    // await this.initializeFilms();
+    // await this.initializeWorkers();
+    await this.initializeFilmsCrew();
   }
 
   private async initializeFilms() {
@@ -103,7 +107,32 @@ class DataInitializer {
       });
   }
 
-  private initializeFilmsCrew() {}
+  private initializeFilmsCrew() {
+    const results: IFilmCrew[] = [];
+    fileStream
+      .createReadStream(this.filmsCrewFilename)
+      .pipe(DataInitializer.getTsvFormatParser(60000))
+      .on("data", (data) => {
+        const filmId = DataInitializer.fillTo12Symbols(data.tconst);
+        const workerId = DataInitializer.fillTo12Symbols(data.nconst);
+        const characters =
+          data.characters === "\\N"
+            ? null
+            : JSON.parse(data.characters).join(", ");
+        results.push(<IFilmCrew>{
+          filmId: mongoose.Types.ObjectId(filmId),
+          workerId: mongoose.Types.ObjectId(workerId),
+          category: data.category === "\\N" ? null : data.category,
+          characters: characters,
+        });
+      })
+      .on("end", async () => {
+        // console.log(results);
+        await FilmsCrewMongoCollection.insertMany(results).catch((reason) => {
+          console.log(reason);
+        });
+      });
+  }
 
   private static fillTo12Symbols(initialString: string): string {
     let returnableString = initialString;

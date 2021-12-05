@@ -9,8 +9,8 @@ export interface IFilmCrew {
 
 const FilmCrewSchema = new Schema<IFilmCrew, Model<IFilmCrew>, IFilmCrew>({
   filmId: { type: Types.ObjectId, required: true },
-  workerId: { type: Schema.Types.ObjectId, required: true },
-  category: { type: String, required: true },
+  workerId: { type: Types.ObjectId, required: true },
+  category: { type: String, required: false },
   characters: { type: String, required: false },
 });
 
