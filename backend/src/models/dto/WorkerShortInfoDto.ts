@@ -1,4 +1,4 @@
-export class WorkerDto {
+export class WorkerShortInfoDto {
   constructor(
     readonly _id: string,
     readonly name: string,

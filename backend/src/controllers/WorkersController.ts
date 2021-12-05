@@ -20,7 +20,7 @@ export class WorkersController {
 
   static async getWorkerById(req: express.Request, res: express.Response) {
     try {
-      const worker = await workersService.getWorkerById(req.body.id);
+      const worker = await workersService.getWorkerById(req.params.id);
       res.json(worker);
     } catch (err) {
       if (err instanceof Error) {

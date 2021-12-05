@@ -9,7 +9,8 @@ router.get("/films/:id", FilmController.getFilmById);
 router.post("/films", FilmController.postFilm);
 router.put("/films", FilmController.updateFilm);
 
-router.get("/workers", WorkersController.getWorkers);
+router.get("/workers/overview", WorkersController.getWorkers);
+router.get("/workers/:id", WorkersController.getWorkerById);
 router.post("/workers", WorkersController.postWorker);
 router.put("/workers", WorkersController.updateWorker);
 
