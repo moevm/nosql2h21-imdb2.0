@@ -22,7 +22,7 @@ app.use("/api", router);
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.DB_URL!, {
+    await mongoose.connect("mongodb://localhost:27017/imdb2-0", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,

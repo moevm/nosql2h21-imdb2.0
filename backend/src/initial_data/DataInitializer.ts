@@ -16,9 +16,15 @@ class DataInitializer {
   readonly filmsCrewFilename = "filmsCrew_data.tsv";
 
   readonly tsvFormat = parse(
-    { delimiter: "\t", columns: true, to: 4000 },
+    {
+      delimiter: "\t",
+      columns: true,
+      skip_lines_with_error: true,
+      quote: false,
+    },
     (err, data) => {
       // console.log(data);
+      // console.log(err);
     }
   );
 
@@ -39,7 +45,6 @@ class DataInitializer {
         const filmGenres = data.genres?.split(",");
         const duration = Number(data.runtimeMinutes);
         // console.log(data.isAdult);
-        // console.log(title);
         if (title && (data.titleType as String) === "movie") {
           // console.log(title);
           results.push(<IFilm>{
@@ -70,7 +75,6 @@ class DataInitializer {
     while (returnableString.length !== 12) {
       returnableString += "_";
     }
-    console.log(returnableString);
 
     return returnableString;
   }
