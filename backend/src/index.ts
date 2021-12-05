@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 import router from "./router";
 import { FilmsMongoCollection } from "./models/mongoose/FilmModel";
 import { FilmsCrewMongoCollection } from "./models/mongoose/FilmsCrewModel";
-import { films } from "./testMock";
 import { dataInitializer } from "./initial_data/DataInitializer";
 import { WorkersMongoCollection } from "./models/mongoose/WorkersModel";
 
@@ -34,14 +33,10 @@ const start = async () => {
       { unique: true }
     );
 
-    // for testing
-    // await FilmsMongoCollection.deleteMany({});
-    // await FilmsMongoCollection.insertMany(films);
-
-    // await FilmsMongoCollection.deleteMany({});
-    // await WorkersMongoCollection.deleteMany({});
-    // await FilmsCrewMongoCollection.deleteMany({});
-    // await dataInitializer.initializeData();
+    await FilmsMongoCollection.deleteMany({});
+    await WorkersMongoCollection.deleteMany({});
+    await FilmsCrewMongoCollection.deleteMany({});
+    await dataInitializer.initializeData();
 
     app.listen(PORT, () => console.log(`Server started on PORT = ${PORT}`));
   } catch (e) {

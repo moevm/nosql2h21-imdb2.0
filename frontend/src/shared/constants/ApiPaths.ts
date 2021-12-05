@@ -1,5 +1,5 @@
 export const ApiPaths = {
   Films: "films",
-  Names: "names",
+  Names: "workers",
   Empty: "",
 };

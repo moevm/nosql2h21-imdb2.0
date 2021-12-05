@@ -2,7 +2,7 @@ import { IFilmProfession } from "../dtos/FilmDto";
 import { INameProfession } from "../dtos/NameDto";
 
 export enum Professions {
-  Director = "Director",
+  director = "director",
   Writer = "Writer",
   Actor = "Actor",
   Producer = "Producer",
@@ -36,7 +36,7 @@ export type NameProfessionsList = NameProfessionsListWithoutActor &
   NameActorType;
 
 export const filmEmptyProfessionList: FilmProfessionsList = {
-  Director: [],
+  director: [],
   Writer: [],
   Actor: [],
   Producer: [],
@@ -44,7 +44,7 @@ export const filmEmptyProfessionList: FilmProfessionsList = {
 };
 
 export const nameEmptyProfessionList: NameProfessionsList = {
-  Director: [],
+  director: [],
   Writer: [],
   Actor: [],
   Producer: [],

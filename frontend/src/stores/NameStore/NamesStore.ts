@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from "mobx";
+import { CardMode } from "shared/constants/common";
+import { namesApiService } from "apiServices";
 import NameModel from "./NameModel";
-import { CardMode } from "../../shared/constants/common";
-import { appStore } from "../index";
 
 class NamesStore {
   constructor() {
@@ -40,7 +40,7 @@ class NamesStore {
 
       this.names = [];
 
-      const nameDtos = appStore.mockNames;
+      const nameDtos = await namesApiService.getNames();
 
       this.names = nameDtos.map((n) => new NameModel(n));
 
@@ -56,7 +56,8 @@ class NamesStore {
   public async getNameById(id: string): Promise<void> {
     try {
       this.isFetching = true;
-      this.selectedName = new NameModel(await appStore.getMockName(id));
+      const name = await namesApiService.getNameById(id);
+      this.selectedName = new NameModel(name);
     } catch (err) {
       // ignore
     } finally {

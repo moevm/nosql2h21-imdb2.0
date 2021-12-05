@@ -3,6 +3,7 @@ import { filmsApiService } from "apiServices";
 import { IFullFilmDto } from "shared/dtos/FilmDto";
 import { CardMode } from "shared/constants/common";
 import FilmModel from "./FilmModel";
+import { appStore } from "../index";
 
 class FilmsStore {
   constructor() {
@@ -53,8 +54,8 @@ class FilmsStore {
 
   public async postFilm(film: Omit<IFullFilmDto, "_id">): Promise<void> {
     try {
-      await filmsApiService.postFilm(film);
-
+      const newFilm = await filmsApiService.postFilm(film);
+      appStore.addFilm({ title: newFilm.title, id: newFilm._id });
       await this.getAllFilms();
     } catch (err) {
       // ignore

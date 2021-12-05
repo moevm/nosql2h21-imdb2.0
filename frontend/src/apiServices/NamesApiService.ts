@@ -1,5 +1,5 @@
 import { ApiPaths } from "shared/constants/ApiPaths";
-import { INameDto } from "shared/dtos/NameDto";
+import { IFullNameDto, INameDto } from "shared/dtos/NameDto";
 import HTTPService from "./HTTPService";
 
 class FilmsApiService extends HTTPService {
@@ -8,7 +8,11 @@ class FilmsApiService extends HTTPService {
   }
 
   public getNames(): Promise<Array<INameDto>> {
-    return this.GET("");
+    return this.GET("overview/");
+  }
+
+  public getNameById(id: string): Promise<IFullNameDto> {
+    return this.GET(`${id}`);
   }
 }
 
