@@ -130,6 +130,9 @@ const FilmFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
                   ))}
                 </Select>
               </Form.Item>
+              <Form.Item name="duration" hasFeedback label="Duration">
+                <Input placeholder="Duration in minutes" />
+              </Form.Item>
             </Col>
           </Row>
           <Divider />
