@@ -23,14 +23,35 @@ class DataInitializer {
 
   readonly filmsCrewFilename = `${__dirname}/filmsCrew_data.tsv`;
 
-  private static getTsvFormatParser(amountTo: number | null): parse.Parser {
+  private static getTsvFormatParser(
+    amountFrom: number,
+    amountTo: number
+  ): parse.Parser {
     return parse(
       {
         delimiter: "\t",
         columns: true,
         skip_lines_with_error: true,
         quote: false,
-        to: amountTo || 100000,
+        from: amountFrom,
+        to: amountTo,
+      },
+      (err, data) => {
+        // console.log(data);
+        // console.log(err);
+      }
+    );
+  }
+
+  private static getFilmTsvParser(): parse.Parser {
+    return parse(
+      {
+        delimiter: "\t",
+        columns: true,
+        skip_lines_with_error: true,
+        quote: false,
+        from: 100000,
+        to: 105000,
       },
       (err, data) => {
         // console.log(data);
@@ -71,7 +92,7 @@ class DataInitializer {
     return new Promise((resolve) => {
       fileStream
         .createReadStream(this.filmsFilename)
-        .pipe(DataInitializer.getTsvFormatParser(5000))
+        .pipe(DataInitializer.getFilmTsvParser())
         .on("data", (data) => {
           const idStr = DataInitializer.fillTo12Symbols(data.tconst);
           const title = data.primaryTitle;
@@ -111,7 +132,7 @@ class DataInitializer {
     return new Promise((resolve) => {
       fileStream
         .createReadStream(this.workersFilename)
-        .pipe(DataInitializer.getTsvFormatParser(null))
+        .pipe(DataInitializer.getTsvFormatParser(100000, 600000))
         .on("data", (data) => {
           const idStr = DataInitializer.fillTo12Symbols(data.nconst);
           const name = data.primaryName;
@@ -128,7 +149,6 @@ class DataInitializer {
           }
         })
         .on("end", async () => {
-          // console.log(results);
           await WorkersMongoCollection.insertMany(results).catch((reason) => {
             console.log(reason);
           });
@@ -138,39 +158,54 @@ class DataInitializer {
     });
   }
 
-  private initializeFilmsCrew() {
+  private static parseCharacterStr(str: string): string | null {
+    try {
+      const returnable = JSON.parse(str).join(", ");
+
+      return returnable;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  private initializeFilmsCrew(): Promise<void> {
     const results: IFilmCrew[] = [];
-    fileStream
-      .createReadStream(this.filmsCrewFilename)
-      .pipe(DataInitializer.getTsvFormatParser(null))
-      .on("data", (data) => {
-        const filmId = DataInitializer.fillTo12Symbols(data.tconst);
-        const workerId = DataInitializer.fillTo12Symbols(data.nconst);
-        const characters =
-          data.characters === "\\N"
-            ? null
-            : JSON.parse(data.characters).join(", ");
-        if (this.filmsSet.has(data.tconst) && this.filmsSet.size <= 5000) {
-          this.workersSet.add(data.nconst);
-          results.push(<IFilmCrew>{
-            filmId: mongoose.Types.ObjectId(filmId),
-            workerId: mongoose.Types.ObjectId(workerId),
-            category:
-              data.category === "\\N"
-                ? null
-                : data.category === "actress"
-                ? "actor"
-                : data.category,
-            characters: characters,
+
+    return new Promise<void>((resolve) => {
+      fileStream
+        .createReadStream(this.filmsCrewFilename)
+        .pipe(DataInitializer.getTsvFormatParser(500000, 1500000))
+        .on("data", (data) => {
+          const filmId = DataInitializer.fillTo12Symbols(data.tconst);
+          const workerId = DataInitializer.fillTo12Symbols(data.nconst);
+          const characters =
+            data.characters === "\\N"
+              ? null
+              : DataInitializer.parseCharacterStr(data.characters);
+          if (this.filmsSet.has(data.tconst) && this.workersSet.size <= 5000) {
+            this.workersSet.add(data.nconst);
+            results.push(<IFilmCrew>{
+              filmId: mongoose.Types.ObjectId(filmId),
+              workerId: mongoose.Types.ObjectId(workerId),
+              category:
+                data.category === "\\N"
+                  ? null
+                  : data.category === "actress"
+                  ? "actor"
+                  : data.category,
+              characters: characters,
+            });
+          }
+        })
+        .on("end", async () => {
+          console.log(results);
+          await FilmsCrewMongoCollection.insertMany(results).catch((reason) => {
+            console.log(reason);
           });
-        }
-      })
-      .on("end", async () => {
-        // console.log(results);
-        await FilmsCrewMongoCollection.insertMany(results).catch((reason) => {
-          console.log(reason);
+
+          resolve();
         });
-      });
+    });
   }
 
   private static fillTo12Symbols(initialString: string): string {
