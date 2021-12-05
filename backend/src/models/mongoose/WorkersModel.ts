@@ -1,6 +1,6 @@
 import { Schema, model, Document, Model, Types } from "mongoose";
 
-interface IWorker {
+export interface IWorker {
   _id: Types.ObjectId;
   name: string;
   birthYear: string;
@@ -8,16 +8,13 @@ interface IWorker {
   image: string;
 }
 
-const WorkerSchema = new Schema<IWorker, Model<IWorker>, IWorker>(
-  {
-    _id: { type: Types.ObjectId },
-    name: { type: String, required: true },
-    birthYear: { type: String, required: true },
-    deathYear: { type: String, required: true },
-    image: { type: String, required: true },
-  },
-  { _id: false }
-);
+const WorkerSchema = new Schema<IWorker, Model<IWorker>, IWorker>({
+  _id: { type: Types.ObjectId, auto: true },
+  name: { type: String, required: true },
+  birthYear: { type: String, required: false },
+  deathYear: { type: String, required: false },
+  image: { type: String, required: false },
+});
 
 export type WorkersModelType = IWorker & Document;
 
