@@ -41,7 +41,7 @@ class FilmService {
           if (workerInfo === null) return null;
 
           return new FilmWorkerDto(
-            data._id,
+            workerInfo._id,
             workerInfo.name,
             data.category,
             data.characters
