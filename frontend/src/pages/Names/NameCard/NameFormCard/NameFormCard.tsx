@@ -4,7 +4,6 @@ import { observer } from "mobx-react";
 import { Col, Divider, Form, FormInstance, Input, Row, Select } from "antd";
 import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
-import { genres } from "apiServices/mocks";
 import { haveErrors } from "utils/isFormHaveErrors";
 import { CardMode } from "shared/constants/common";
 import namesToFormNames from "utils/namesToFormNames";
@@ -110,24 +109,6 @@ const NameFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
                 <Select placeholder="Certificate">
                   <Select.Option value={"18+"}>18+</Select.Option>
                   <Select.Option value={"6+"}>6+</Select.Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                name="genres"
-                label="Genres"
-                rules={[{ required: true, message: "Please select genres!" }]}
-              >
-                <Select
-                  mode="multiple"
-                  placeholder="Genres"
-                  style={{ width: "100%" }}
-                >
-                  {genres.map((g) => (
-                    <Select.Option value={g} key={g}>
-                      {g}
-                    </Select.Option>
-                  ))}
                 </Select>
               </Form.Item>
             </Col>

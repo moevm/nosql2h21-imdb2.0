@@ -34,7 +34,7 @@ class FilmsStore {
 
   public selectedFilm: FilmModel = new FilmModel();
 
-  public async getAllFilms(): Promise<void> {
+  public async getAllFilms(): Promise<FilmModel[]> {
     try {
       this.isFetching = true;
 
@@ -43,10 +43,15 @@ class FilmsStore {
       const filmDtos = await filmsApiService.getFilms();
 
       this.films = filmDtos.map((f) => new FilmModel(f));
+
+      return this.films;
     } catch (err) {
       // ignore
     } finally {
       this.isFetching = false;
+
+      // eslint-disable-next-line no-unsafe-finally
+      return [];
     }
   }
 

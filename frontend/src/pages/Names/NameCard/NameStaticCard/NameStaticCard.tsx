@@ -1,5 +1,5 @@
 import React from "react";
-import { namesStore } from "stores";
+import { appStore, namesStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Row } from "antd";
 import DescriptionItem from "components/DescriptionItem";
@@ -8,7 +8,7 @@ import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import namesToFormNames from "utils/namesToFormNames";
-import { ProfessionArray, Professions } from "shared/constants/professions";
+import { Professions } from "shared/constants/professions";
 import styles from "./NameStaticCard.module.scss";
 
 const NameStaticCard = () => {
@@ -37,7 +37,7 @@ const NameStaticCard = () => {
   const renderCast = (): React.ReactNode => {
     return (
       <>
-        {ProfessionArray.map((e) => {
+        {appStore.ProfessionArray.map((e) => {
           if (e === Professions.Actor) return null;
 
           if (deletedProfessions.includes(e)) return null;

@@ -1,5 +1,5 @@
 import React from "react";
-import { filmsStore } from "stores";
+import { appStore, filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Row } from "antd";
 import DescriptionItem from "components/DescriptionItem";
@@ -8,7 +8,7 @@ import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import filmsToFormFilms from "utils/filmsToFormFilms";
-import { ProfessionArray, Professions } from "shared/constants/professions";
+import { Professions } from "shared/constants/professions";
 import styles from "./FilmStaticCard.module.scss";
 import { renderDuration } from "../../../../utils/renderDuration";
 
@@ -43,7 +43,7 @@ const FilmStaticCard = () => {
   const renderCast = (): React.ReactNode => {
     return (
       <>
-        {ProfessionArray.map((e) => {
+        {appStore.ProfessionArray.map((e) => {
           if (e === Professions.Actor) return null;
 
           if (deletedProfessions.includes(e)) return null;

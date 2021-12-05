@@ -34,28 +34,32 @@ class NamesStore {
 
   public mode = CardMode.Closed;
 
-  public async getAllNames(): Promise<void> {
+  public async getAllNames(): Promise<NameModel[]> {
     try {
       this.isFetching = true;
 
       this.names = [];
 
-      const nameDtos = await namesApiService.getMockNames();
+      const nameDtos = await namesApiService.getNames();
 
       this.names = nameDtos.map((n) => new NameModel(n));
+
+      return this.names;
     } catch (err) {
       // ignore
     } finally {
       this.isFetching = false;
+
+      // eslint-disable-next-line no-unsafe-finally
+      return [];
     }
   }
 
   public async getNameById(id: number): Promise<void> {
     try {
       this.isFetching = true;
-      this.selectedName = new NameModel(
-        await namesApiService.getMockNameById(id.toString())
-      );
+      this.selectedName = new NameModel();
+      // await namesApiService.getMockNameById(id.toString())
     } catch (err) {
       // ignore
     } finally {

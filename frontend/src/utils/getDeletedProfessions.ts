@@ -1,10 +1,10 @@
 import {
   filmEmptyProfessionList,
-  ProfessionArray,
   Professions,
   FilmProfessionsList,
   NameProfessionsList,
-} from "../shared/constants/professions";
+} from "shared/constants/professions";
+import { appStore } from "../stores";
 
 const getDeletedProfessions = (
   prof?: FilmProfessionsList | NameProfessionsList
@@ -13,7 +13,7 @@ const getDeletedProfessions = (
 
   if (!prof) prof = filmEmptyProfessionList;
 
-  ProfessionArray.forEach((p) => {
+  appStore.ProfessionArray.forEach((p) => {
     if (!prof || prof[p].length <= 0) {
       deletedProfessions.push(p);
     }

@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Divider, Form, FormInstance, Row, Select } from "antd";
-
-import { cast } from "apiServices/mocks";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
+import { Professions, FilmProfessionsList } from "shared/constants/professions";
+import { appStore } from "stores";
 import Actors from "./Actors";
-import {
-  ProfessionArray,
-  Professions,
-  FilmProfessionsList,
-} from "../../../../../shared/constants/professions";
 
 interface IProps {
   professions?: FilmProfessionsList;
@@ -57,11 +52,15 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
               .localeCompare(optionB.children.toLowerCase())
           }
         >
-          {cast.map((d) => {
+          {appStore.names.map((d) => {
             return (
-              <Select.Option value={d.id} key={d.id}>
-                {d.name}
-              </Select.Option>
+              <>
+                {d.id && (
+                  <Select.Option value={d.id} key={d.id}>
+                    {d.name || "No name"}
+                  </Select.Option>
+                )}
+              </>
             );
           })}
         </Select>
@@ -80,7 +79,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
   const renderCast = (): React.ReactNode => {
     return (
       <>
-        {ProfessionArray.map((e) => {
+        {appStore.ProfessionArray.map((e) => {
           if (e === Professions.Actor) return null;
           if (deletedProfessions.includes(e)) return null;
 

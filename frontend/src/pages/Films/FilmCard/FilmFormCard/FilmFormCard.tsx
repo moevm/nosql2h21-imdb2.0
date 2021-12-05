@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { filmsStore } from "stores";
+import { appStore, filmsStore } from "stores";
 import { observer } from "mobx-react";
 import { Col, Divider, Form, FormInstance, Input, Row, Select } from "antd";
 import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
-import { genres } from "apiServices/mocks";
 import filmsToFormFilms from "utils/filmsToFormFilms";
 import { haveErrors } from "utils/isFormHaveErrors";
 import FilmModel from "stores/FilmStore/FilmModel";
@@ -127,7 +126,7 @@ const FilmFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
                   placeholder="Genres"
                   style={{ width: "100%" }}
                 >
-                  {genres.map((g) => (
+                  {appStore.genres.map((g) => (
                     <Select.Option value={g} key={g}>
                       {g}
                     </Select.Option>

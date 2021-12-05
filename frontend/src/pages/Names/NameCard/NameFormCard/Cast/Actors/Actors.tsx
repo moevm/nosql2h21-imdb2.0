@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Input, Row, Select } from "antd";
-import { cast } from "apiServices/mocks";
 import { INameProfession } from "shared/dtos/NameDto";
+import { appStore } from "../../../../../../stores";
 
 interface IProps {
   actors?: Array<Omit<INameProfession, "category">>;
@@ -51,11 +51,15 @@ const Actors: React.FC<IProps> = ({ actors }) => {
                   .localeCompare(optionB.children.toLowerCase())
               }
             >
-              {cast.map((a) => {
+              {appStore.names.map((a) => {
                 return (
-                  <Select.Option value={a.id} key={a.id}>
-                    {a.name}
-                  </Select.Option>
+                  <>
+                    {a.id && (
+                      <Select.Option value={a.id} key={a.id}>
+                        {a.name}
+                      </Select.Option>
+                    )}
+                  </>
                 );
               })}
             </Select>

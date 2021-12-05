@@ -6,9 +6,9 @@ import parseCast from "utils/castParsing";
 import { haveErrors } from "utils/isFormHaveErrors";
 import { observer } from "mobx-react";
 import { CardMode } from "shared/constants/common";
+import { IFullFilmDto } from "shared/dtos/FilmDto";
 import FilmStaticCard from "./FilmStaticCard";
 import FilmFormCard from "./FilmFormCard";
-import { IFullFilmDto } from "../../../shared/dtos/FilmDto";
 
 const FilmCard = () => {
   const [infoForm] = Form.useForm();

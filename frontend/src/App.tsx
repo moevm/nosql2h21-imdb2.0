@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
 import Router from "router/Router";
 import "./App.scss";
 import { Layout } from "antd";
 import Header from "components/Header";
+import { appStore } from "./stores";
 
 const App: React.FC = () => {
+  useEffect(() => {
+    appStore.initializeApp();
+  }, []);
+
   return (
     <BrowserRouter>
       <Switch>

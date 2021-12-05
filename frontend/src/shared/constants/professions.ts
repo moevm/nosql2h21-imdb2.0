@@ -9,10 +9,6 @@ export enum Professions {
   Composer = "Composer",
 }
 
-export const ProfessionArray: Array<Professions> = Object.entries(
-  Professions
-).map(([value]) => value as Professions);
-
 type FilmProfessionsListWithoutActor = Record<
   Exclude<Professions, Professions.Actor>,
   Array<Omit<IFilmProfession, "category" | "character">>
