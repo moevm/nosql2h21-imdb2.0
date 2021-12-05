@@ -21,7 +21,7 @@ class FilmsApiService extends HTTPService {
     });
   }
 
-  public getMockNameById(id: number): Promise<IFullNameDto> {
+  public getMockNameById(id: string): Promise<IFullNameDto> {
     // TODO: add real request - film by id
     if (!this.isMock) return this.GET("");
     const mockName = getMockName(id);

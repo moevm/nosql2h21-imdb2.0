@@ -32,7 +32,7 @@ class NamesStore {
 
   public selectedName = new NameModel();
 
-  public mode = CardMode.Static;
+  public mode = CardMode.Closed;
 
   public async getAllNames(): Promise<void> {
     try {
@@ -54,7 +54,7 @@ class NamesStore {
     try {
       this.isFetching = true;
       this.selectedName = new NameModel(
-        await namesApiService.getMockNameById(id)
+        await namesApiService.getMockNameById(id.toString())
       );
     } catch (err) {
       // ignore

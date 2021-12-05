@@ -10,19 +10,19 @@ class FilmsApiService extends HTTPService {
 
   private isMock = process.env.NODE_ENV === "development";
 
-  public updateFilm(film: IFilmDto): Promise<IFilmDto> {
+  public updateFilm(film: IFullFilmDto): Promise<IFullFilmDto> {
     return this.PUT("", film);
   }
 
-  public postFilm(film: Omit<IFilmDto, "id">): Promise<IFilmDto> {
+  public postFilm(film: Omit<IFilmDto, "_id">): Promise<IFilmDto> {
     return this.POST("", film);
   }
 
-  // public getFilms(): Promise<Array<IFilmDto>> {
-  //   return this.GET("");
-  // }
-
   public getFilms(): Promise<Array<IFilmDto>> {
+    return this.GET("overview/");
+  }
+
+  public getMockFilms(): Promise<Array<IFilmDto>> {
     if (!this.isMock) return this.GET("");
 
     const mockFilms = films;
@@ -32,7 +32,7 @@ class FilmsApiService extends HTTPService {
     });
   }
 
-  public getMockFilmById(id: number): Promise<IFullFilmDto> {
+  public getMockFilmById(id: string): Promise<IFullFilmDto> {
     // TODO: add real request - film by id
     if (!this.isMock) return this.GET("");
     const mockFilm = getMockFilm(id);
@@ -40,6 +40,10 @@ class FilmsApiService extends HTTPService {
     return new Promise((resolve) => {
       setTimeout(() => resolve(mockFilm), 1000);
     });
+  }
+
+  public getFilmById(id: string): Promise<IFullFilmDto> {
+    return this.GET(`${id}`);
   }
 }
 

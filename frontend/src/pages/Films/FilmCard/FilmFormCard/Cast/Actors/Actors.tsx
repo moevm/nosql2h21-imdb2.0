@@ -13,7 +13,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
   );
 
   const [idArray, setIdArray] = useState<Array<number>>(
-    actors === undefined ? [] : actors.map((a) => a.nameId)
+    actors === undefined ? [] : actors.map((a) => a.workerId)
   );
 
   const generateId = (): number => {
@@ -29,14 +29,14 @@ const Actors: React.FC<IProps> = ({ actors }) => {
   const renderActor = (actor: {
     name: string;
     character: string | null;
-    nameId: number;
+    workerId: number;
   }) => {
     return (
       <Row>
         <Col span={12}>
           <Form.Item
-            name={`actor_${actor.nameId}`}
-            initialValue={actor.name === "" ? undefined : actor.nameId}
+            name={`actor_${actor.workerId}`}
+            initialValue={actor.name === "" ? undefined : actor.workerId}
           >
             <Select
               showSearch
@@ -63,7 +63,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
         </Col>
         <Col span={12}>
           <Form.Item
-            name={`character_${actor.nameId}`}
+            name={`character_${actor.workerId}`}
             initialValue={actor.character}
           >
             <Input placeholder="Character" />
@@ -79,7 +79,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
     setNewActorForm(
       newActorForm?.concat(
         <React.Fragment key={id}>
-          {renderActor({ name: "", character: "", nameId: id })}
+          {renderActor({ name: "", character: "", workerId: id })}
         </React.Fragment>
       )
     );
@@ -91,7 +91,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
         ? null
         : actors.map((a) => {
             return (
-              <React.Fragment key={a.nameId}>{renderActor(a)}</React.Fragment>
+              <React.Fragment key={a.workerId}>{renderActor(a)}</React.Fragment>
             );
           })}
       {newActorForm}

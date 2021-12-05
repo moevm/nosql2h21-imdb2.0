@@ -1,27 +1,20 @@
 export interface IFilmDto {
-  id: number;
+  _id: string;
   title: string;
   isAdult: boolean;
-  releaseYear: number;
+  releaseYear: string;
   duration: number;
   genres: Array<string>;
-  poster: string | null;
+  poster: string;
 }
 
 export interface IFilmProfession {
-  nameId: number;
+  workerId: number;
   name: string;
   category: string;
   character: string | null;
 }
 
-export interface IFullFilmDto {
-  id: number;
-  title: string;
-  isAdult: boolean;
-  releaseYear: number;
-  duration: number;
-  genres: Array<string>;
-  poster: string | null;
-  professions: Array<IFilmProfession>;
+export interface IFullFilmDto extends IFilmDto {
+  crew: Array<IFilmProfession>;
 }

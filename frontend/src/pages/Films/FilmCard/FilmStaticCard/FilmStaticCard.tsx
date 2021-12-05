@@ -8,11 +8,9 @@ import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import filmsToFormFilms from "utils/filmsToFormFilms";
+import { ProfessionArray, Professions } from "shared/constants/professions";
 import styles from "./FilmStaticCard.module.scss";
-import {
-  ProfessionArray,
-  Professions,
-} from "../../../../shared/constants/professions";
+import { renderDuration } from "../../../../utils/renderDuration";
 
 const FilmStaticCard = () => {
   if (filmsStore.selectedFilm === null) {
@@ -61,6 +59,12 @@ const FilmStaticCard = () => {
     );
   };
 
+  const genres: string = filmsStore.selectedFilm.genres
+    .map((g) => g.charAt(0).toUpperCase() + g.slice(1))
+    .join(", ");
+
+  const duration: string = renderDuration(filmsStore.selectedFilm.duration);
+
   return (
     <>
       <Row>
@@ -85,12 +89,12 @@ const FilmStaticCard = () => {
             title="Certificate"
             content={filmsStore.selectedFilm.isAdult ? "18+" : "6+"}
           />
-          <DescriptionItem
-            title="Genres"
-            content={filmsStore.selectedFilm.genres
-              .map((g) => g.charAt(0).toUpperCase() + g.slice(1))
-              .join(", ")}
-          />
+          {genres.length > 0 && (
+            <DescriptionItem title="Genres" content={genres} />
+          )}
+          {duration !== "-" && (
+            <DescriptionItem title="Duration" content={duration} />
+          )}
         </Col>
       </Row>
 

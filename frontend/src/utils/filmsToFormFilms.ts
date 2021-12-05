@@ -19,14 +19,14 @@ const filmsToFormFilms = (
       films.professions
         .filter((f) => f.category === key)
         .map((el) => {
-          return { name: el.name, nameId: el.nameId };
+          return { name: el.name, workerId: el.workerId };
         });
   }
 
   formProfessions[Professions.Actor] = films.professions
     .filter((f) => f.category === Professions.Actor)
     .map((el) => {
-      return { name: el.name, character: el.character, nameId: el.nameId };
+      return { name: el.name, character: el.character, workerId: el.workerId };
     });
 
   const { professions, getNamesByProfession, setNewPoster, ...formFilms } =

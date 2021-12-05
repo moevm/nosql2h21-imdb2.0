@@ -20,7 +20,7 @@ class FilmModel {
     });
 
     this.title = filmDto?.title || null;
-    this.id = filmDto?.id || null;
+    this.id = filmDto?._id || null;
     this.genres = filmDto?.genres || [];
     this.duration = filmDto?.duration || null;
     this.poster = filmDto?.poster || null;
@@ -28,14 +28,14 @@ class FilmModel {
     this.isAdult = filmDto?.isAdult ? "18+" : "6+";
     this.releaseYear = filmDto?.releaseYear || null;
 
-    if (filmDto !== undefined && "professions" in filmDto) {
-      this.professions = filmDto.professions;
+    if (filmDto !== undefined && "crew" in filmDto) {
+      this.professions = filmDto.crew;
     }
   }
 
   public title: string | null = null;
 
-  public id: number | null = null;
+  public id: string | null = null;
 
   public duration: number | null = null;
 
@@ -43,7 +43,7 @@ class FilmModel {
 
   public genres: Array<string> = [];
 
-  public releaseYear: number | null = null;
+  public releaseYear: string | null = null;
 
   public poster: string | null = null;
 
@@ -59,7 +59,7 @@ class FilmModel {
       .map((pr) => ({
         character: pr.character,
         name: pr.name,
-        nameId: pr.nameId,
+        workerId: pr.workerId,
       }));
   }
 

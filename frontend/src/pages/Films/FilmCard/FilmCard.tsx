@@ -37,14 +37,18 @@ const FilmCard = () => {
     const movieInfo = infoForm.getFieldsValue();
     const result = {
       ...movieInfo,
-      professions: [...professions],
+      crew: [...professions],
       poster: filmsStore.selectedFilm?.newPoster,
-      id: filmsStore.selectedFilm?.id,
+      _id: filmsStore.selectedFilm?.id,
+      title: filmsStore.selectedFilm?.title,
+      isAdult: filmsStore.selectedFilm?.isAdult !== "6+",
     };
 
     infoForm.submit();
     castForm.submit();
 
+    filmsStore.updateFilm(result);
+    filmsStore.closeFilmCard();
     console.log(result);
 
     // TODO: submit form and do request

@@ -1,33 +1,33 @@
-import { IFullFilmDto } from "../shared/dtos/FilmDto";
+import { IFilmDto, IFullFilmDto } from "../shared/dtos/FilmDto";
 import { IFullNameDto, INameDto } from "../shared/dtos/NameDto";
 
-const films = [
+const films: IFilmDto[] = [
   {
-    id: 1,
+    _id: "1",
     title: "Film1",
     isAdult: true,
-    releaseYear: 2019,
+    releaseYear: "2019",
     duration: 132,
     genres: ["drama", "crime", "thriller"],
-    poster: null,
+    poster: "",
   },
   {
-    id: 2,
+    _id: "2",
     title: "Film2",
     isAdult: false,
-    releaseYear: 2009,
+    releaseYear: "2009",
     duration: 172,
     genres: ["comedy", "crime", "historical"],
-    poster: null,
+    poster: "",
   },
   {
-    id: 3,
+    _id: "3",
     title: "Film3",
     isAdult: false,
-    releaseYear: 2005,
+    releaseYear: "2005",
     duration: 140,
     genres: ["thriller", "horror"],
-    poster: null,
+    poster: "",
   },
 ];
 
@@ -131,11 +131,14 @@ function randomInteger(min: number, max: number): number {
   return Math.floor(rand);
 }
 
-const getMockName = (id: number): IFullNameDto => {
+const getMockName = (id: string): IFullNameDto => {
   // FIXME: for real data
-  if (id === undefined || (id < 1 && id > 13)) id = randomInteger(1, 13);
+  const intId = Number(id);
 
-  const name = names.find((n) => n.id === id);
+  if (id === undefined || (intId < 1 && intId > 13))
+    id = randomInteger(1, 13).toString();
+
+  const name = names.find((n) => n.id === intId);
 
   return {
     ...name!,
@@ -168,59 +171,60 @@ const getMockName = (id: number): IFullNameDto => {
   };
 };
 
-const getMockFilm = (id: number): IFullFilmDto => {
-  // FIXME: for real data
-  if (id === undefined || (id < 1 && id > 3)) id = randomInteger(1, 3);
+const getMockFilm = (id: string): IFullFilmDto => {
+  const intId = Number(id);
+  if (id === undefined || (intId < 1 && intId > 3))
+    id = randomInteger(1, 3).toString();
 
-  const film = films.find((f) => f.id === id);
+  const film = films.find((f) => f._id === id);
 
   return {
     ...film!,
-    professions: [
+    crew: [
       {
-        nameId: 1,
+        workerId: 1,
         name: "Jack",
         category: "Actor",
         character: "character1",
       },
       {
-        nameId: 2,
+        workerId: 2,
         name: "Bob",
         category: "Actor",
         character: "character2",
       },
       {
-        nameId: 3,
+        workerId: 3,
         name: "Teodor",
         category: "Actor",
         character: "character3",
       },
       {
-        nameId: 4,
+        workerId: 4,
         name: "Steven",
         category: "Writer",
         character: null,
       },
       {
-        nameId: 5,
+        workerId: 5,
         name: "Some",
         category: "Director",
         character: null,
       },
       {
-        nameId: 6,
+        workerId: 6,
         name: "Garry Oldman",
         category: "Director",
         character: null,
       },
       {
-        nameId: 7,
+        workerId: 7,
         name: "Henry Ford",
         category: "Director",
         character: null,
       },
       {
-        nameId: 13,
+        workerId: 13,
         name: "Fake",
         category: "Producer",
         character: null,

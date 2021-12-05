@@ -5,6 +5,7 @@ import { Button, Table, Tag } from "antd";
 import FilmModel from "stores/FilmStore/FilmModel";
 import FilmCard from "./FilmCard";
 import styles from "./Films.module.scss";
+import { renderDuration } from "../../utils/renderDuration";
 
 const Films = () => {
   useEffect(() => {
@@ -42,14 +43,7 @@ const Films = () => {
       title: "Runtime",
       dataIndex: "duration",
       key: "duration",
-      render: (duration: number) => {
-        const hours = Math.floor(duration / 60);
-        const minutes = duration - hours * 60;
-
-        return `${hours}${hours ? " hr " : ""}${minutes}${
-          minutes ? " min" : ""
-        }`;
-      },
+      render: (duration: number | null) => renderDuration(duration),
     },
     {
       title: (
@@ -62,13 +56,19 @@ const Films = () => {
       ),
       key: "henres",
       dataIndex: "genres",
-      render: (genres: Array<string>) => (
-        <>
-          {genres.map((genre) => (
-            <Tag key={genre}>{genre}</Tag>
-          ))}
-        </>
-      ),
+      render: (genres: Array<string>) => {
+        if (genres.length === 0) {
+          return "-";
+        }
+
+        return (
+          <>
+            {genres.map((genre) => (
+              <Tag key={genre}>{genre}</Tag>
+            ))}
+          </>
+        );
+      },
     },
   ];
 

@@ -3,13 +3,13 @@ import { Professions } from "../shared/constants/professions";
 const parseCast = (
   cast: any
 ): Array<{
-  profession: string;
-  id: number;
+  category: string;
+  workerId: number;
   character: string | null;
 }> => {
   const answer: Array<{
-    profession: string;
-    id: number;
+    category: string;
+    workerId: number;
     character: string | null;
   }> = [];
 
@@ -26,7 +26,7 @@ const parseCast = (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       cast[key].forEach((e) => {
-        answer.push({ id: e, profession: key, character: null });
+        answer.push({ workerId: e, category: key, character: null });
       });
     }
   }
@@ -38,8 +38,8 @@ const parseCast = (
         if (!characters[j].character || !actors[i].id) break;
 
         answer.push({
-          id: actors[i].id,
-          profession: Professions.Actor,
+          workerId: actors[i].id,
+          category: Professions.Actor,
           character: characters[j].character,
         });
         break;

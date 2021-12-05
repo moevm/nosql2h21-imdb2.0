@@ -5,7 +5,7 @@ export default class HTTPService {
 
   private readonly host: string;
 
-  constructor(basePath: string, host = "http://localhost:8080/api") {
+  constructor(basePath: string, host = "http://localhost:5000/api") {
     this.basePath = basePath;
     this.host = host;
   }

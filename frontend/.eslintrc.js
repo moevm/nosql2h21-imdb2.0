@@ -38,6 +38,7 @@ module.exports = {
     "no-use-before-define": "off",
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",
+    "no-underscore-dangle": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/jsx-filename-extension": [
       2,

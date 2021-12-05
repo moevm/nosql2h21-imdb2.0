@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { filmsApiService } from "apiServices";
-import { IFilmDto } from "shared/dtos/FilmDto";
+import { IFilmDto, IFullFilmDto } from "shared/dtos/FilmDto";
 import { CardMode } from "shared/constants/common";
 import FilmModel from "./FilmModel";
 
@@ -50,7 +50,7 @@ class FilmsStore {
     }
   }
 
-  public async postFilm(film: Omit<IFilmDto, "id">): Promise<void> {
+  public async postFilm(film: Omit<IFilmDto, "_id">): Promise<void> {
     try {
       await filmsApiService.postFilm(film);
 
@@ -60,12 +60,20 @@ class FilmsStore {
     }
   }
 
-  public async getFilmById(id: number): Promise<void> {
+  public async updateFilm(film: IFullFilmDto): Promise<void> {
+    try {
+      await filmsApiService.updateFilm(film);
+
+      await this.getAllFilms();
+    } catch (err) {
+      // ignore
+    }
+  }
+
+  public async getFilmById(id: string): Promise<void> {
     try {
       this.isFetching = true;
-      this.selectedFilm = new FilmModel(
-        await filmsApiService.getMockFilmById(id)
-      );
+      this.selectedFilm = new FilmModel(await filmsApiService.getFilmById(id));
     } catch (err) {
       // ignore
     } finally {
@@ -73,7 +81,7 @@ class FilmsStore {
     }
   }
 
-  public async openFilmCard(id?: number) {
+  public async openFilmCard(id?: string) {
     if (id === undefined) {
       this.mode = CardMode.Creating;
       return;

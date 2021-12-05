@@ -41,17 +41,17 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
         key={profession}
         name={profession}
         label={profession}
-        rules={
-          profession === Professions.Writer ||
-          profession === Professions.Director
-            ? [
-                {
-                  required: true,
-                  message: `Pls write ${profession}`,
-                },
-              ]
-            : undefined
-        }
+        // rules={
+        //   profession === Professions.Writer ||
+        //   profession === Professions.Director
+        //     ? [
+        //         {
+        //           required: true,
+        //           message: `Pls write ${profession}`,
+        //         },
+        //       ]
+        //     : undefined
+        // }
         initialValue={initialNames}
       >
         <Select
@@ -96,7 +96,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
           if (deletedProfessions.includes(e)) return null;
 
           const nameIdArray = professions
-            ? professions[e].map((p) => p.nameId)
+            ? professions[e].map((p) => p.workerId)
             : [];
 
           return renderProfession(e, nameIdArray);
