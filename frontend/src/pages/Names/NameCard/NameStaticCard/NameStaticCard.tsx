@@ -53,6 +53,17 @@ const NameStaticCard = () => {
     );
   };
 
+  const actor = namesStore.selectedName
+    .getNamesByProfession(Professions.Actor)
+    .map((a) => (
+      <React.Fragment key={`${a.filmId}${a.character}`}>
+        <Col span={12}>
+          <a>{a.title}</a>
+        </Col>
+        <Col span={12}>{a.character}</Col>
+      </React.Fragment>
+    ));
+
   return (
     <>
       <Row>
@@ -86,30 +97,22 @@ const NameStaticCard = () => {
       <Divider />
 
       {renderCast()}
-
-      <Block
-        title={"Actor"}
-        content={
-          <>
-            <Col span={12}>
-              <b>Movie</b>
-            </Col>
-            <Col span={12}>
-              <b>Role</b>
-            </Col>
-            {namesStore.selectedName
-              .getNamesByProfession(Professions.Actor)
-              .map((a) => (
-                <React.Fragment key={a.title}>
-                  <Col span={12}>
-                    <a>{a.title}</a>
-                  </Col>
-                  <Col span={12}>{a.character}</Col>
-                </React.Fragment>
-              ))}
-          </>
-        }
-      />
+      {actor.length > 0 && (
+        <Block
+          title={"Actor"}
+          content={
+            <>
+              <Col span={12}>
+                <b>Movie</b>
+              </Col>
+              <Col span={12}>
+                <b>Role</b>
+              </Col>
+              {actor}
+            </>
+          }
+        />
+      )}
     </>
   );
 };

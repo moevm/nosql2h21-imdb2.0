@@ -38,20 +38,16 @@ class FilmsStore {
     try {
       this.isFetching = true;
 
-      this.films = [];
-
       const filmDtos = await filmsApiService.getFilms();
 
       this.films = filmDtos.map((f) => new FilmModel(f));
 
       return this.films;
     } catch (err) {
+      return [];
       // ignore
     } finally {
       this.isFetching = false;
-
-      // eslint-disable-next-line no-unsafe-finally
-      return [];
     }
   }
 

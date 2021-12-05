@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Input, Row, Select } from "antd";
 import { INameProfession } from "shared/dtos/NameDto";
-import { appStore } from "../../../../../../stores";
+import { appStore } from "stores";
 
 interface IProps {
   actors?: Array<Omit<INameProfession, "category">>;
@@ -12,14 +12,14 @@ const Actors: React.FC<IProps> = ({ actors }) => {
     []
   );
 
-  const [idArray, setIdArray] = useState<Array<number>>(
+  const [idArray, setIdArray] = useState<Array<string>>(
     actors === undefined ? [] : actors.map((a) => a.filmId)
   );
 
-  const generateId = (): number => {
-    let newId = 0;
+  const generateId = (): string => {
+    let newId = "";
     while (true) {
-      newId = new Date().getTime();
+      newId = new Date().getTime().toString();
       if (!idArray.includes(newId)) break;
     }
     setIdArray([...idArray, newId]);
@@ -29,7 +29,7 @@ const Actors: React.FC<IProps> = ({ actors }) => {
   const renderActor = (actor: {
     title: string;
     character: string | null;
-    filmId: number;
+    filmId: string;
   }) => {
     return (
       <Row>
@@ -51,12 +51,12 @@ const Actors: React.FC<IProps> = ({ actors }) => {
                   .localeCompare(optionB.children.toLowerCase())
               }
             >
-              {appStore.names.map((a) => {
+              {appStore.films.map((a) => {
                 return (
                   <>
                     {a.id && (
                       <Select.Option value={a.id} key={a.id}>
-                        {a.name}
+                        {a.title}
                       </Select.Option>
                     )}
                   </>

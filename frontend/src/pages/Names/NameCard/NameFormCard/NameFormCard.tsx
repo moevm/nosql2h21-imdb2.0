@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { namesStore } from "stores";
 import { observer } from "mobx-react";
-import { Col, Divider, Form, FormInstance, Input, Row, Select } from "antd";
+import { Col, Divider, Form, FormInstance, Input, Row } from "antd";
 import noImage from "static/no_image.svg";
 import { toJS } from "mobx";
 import { haveErrors } from "utils/isFormHaveErrors";
@@ -90,26 +90,18 @@ const NameFormCard: React.FC<IProps> = ({ infoForm, castForm }) => {
             </Col>
             <Col span={12}>
               <Form.Item
-                name="releaseYear"
+                name="birthYear"
                 hasFeedback
-                label="Year"
+                label="Birth year"
                 rules={[
-                  { required: true, message: "Please enter release year!" },
+                  { required: true, message: "Please enter birth year!" },
                 ]}
               >
-                <Input placeholder="Release year" />
+                <Input placeholder="Birth year" />
               </Form.Item>
-              <Form.Item
-                name="isAdult"
-                label="Certificate"
-                rules={[
-                  { required: true, message: "Please enter certificate!" },
-                ]}
-              >
-                <Select placeholder="Certificate">
-                  <Select.Option value={"18+"}>18+</Select.Option>
-                  <Select.Option value={"6+"}>6+</Select.Option>
-                </Select>
+
+              <Form.Item name="deathYear" hasFeedback label="Death year">
+                <Input placeholder="Death year" />
               </Form.Item>
             </Col>
           </Row>

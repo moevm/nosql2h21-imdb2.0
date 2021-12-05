@@ -1,5 +1,5 @@
 export interface INameDto {
-  id: number;
+  id: string;
   name: string;
   birthYear: string;
   deathYear: string | null;
@@ -7,17 +7,12 @@ export interface INameDto {
 }
 
 export interface INameProfession {
-  filmId: number;
+  filmId: string;
   title: string;
   category: string;
   character: string | null;
 }
 
-export interface IFullNameDto {
-  id: number;
-  name: string;
-  birthYear: string;
-  deathYear: string | null;
-  avatar: string | null;
+export interface IFullNameDto extends INameDto {
   professions: Array<INameProfession>;
 }

@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from "mobx";
-import { namesApiService } from "apiServices";
 import NameModel from "./NameModel";
 import { CardMode } from "../../shared/constants/common";
+import { appStore } from "../index";
 
 class NamesStore {
   constructor() {
@@ -40,26 +40,23 @@ class NamesStore {
 
       this.names = [];
 
-      const nameDtos = await namesApiService.getNames();
+      const nameDtos = appStore.mockNames;
 
       this.names = nameDtos.map((n) => new NameModel(n));
 
       return this.names;
     } catch (err) {
+      return [];
       // ignore
     } finally {
       this.isFetching = false;
-
-      // eslint-disable-next-line no-unsafe-finally
-      return [];
     }
   }
 
-  public async getNameById(id: number): Promise<void> {
+  public async getNameById(id: string): Promise<void> {
     try {
       this.isFetching = true;
-      this.selectedName = new NameModel();
-      // await namesApiService.getMockNameById(id.toString())
+      this.selectedName = new NameModel(await appStore.getMockName(id));
     } catch (err) {
       // ignore
     } finally {
@@ -79,7 +76,7 @@ class NamesStore {
     this.isModalUrlEditFormOpen = isModalUrlEditFormOpen;
   }
 
-  public async openNameCard(id?: number) {
+  public async openNameCard(id?: string) {
     if (!id) {
       this.mode = CardMode.Creating;
       return;

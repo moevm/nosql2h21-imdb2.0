@@ -28,7 +28,7 @@ class NameModel {
     }
   }
 
-  public id: number | null = null;
+  public id: string | null = null;
 
   public name: string | null = null;
 

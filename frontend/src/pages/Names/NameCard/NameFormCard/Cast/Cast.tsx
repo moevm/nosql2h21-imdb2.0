@@ -30,24 +30,13 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
 
   const renderProfession = (
     profession: Professions,
-    initialNames: number[]
+    initialNames: string[]
   ) => {
     return (
       <Form.Item
         key={profession}
         name={profession}
         label={profession}
-        rules={
-          profession === Professions.Writer ||
-          profession === Professions.Director
-            ? [
-                {
-                  required: true,
-                  message: `Pls write ${profession}`,
-                },
-              ]
-            : undefined
-        }
         initialValue={initialNames}
       >
         <Select
@@ -64,12 +53,12 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
               .localeCompare(optionB.children.toLowerCase())
           }
         >
-          {appStore.names.map((d) => {
+          {appStore.films.map((d) => {
             return (
               <>
                 {d.id && (
                   <Select.Option value={d.id} key={d.id}>
-                    {d.name || "No name"}
+                    {d.title || "No title"}
                   </Select.Option>
                 )}
               </>
