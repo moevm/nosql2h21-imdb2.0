@@ -37,8 +37,8 @@ const start = async () => {
     // await FilmsMongoCollection.deleteMany({});
     // await FilmsMongoCollection.insertMany(films);
 
-    await FilmsMongoCollection.deleteMany({});
-    // await dataInitializer.initializeData();
+    // await FilmsMongoCollection.deleteMany({});
+    await dataInitializer.initializeData();
 
     app.listen(PORT, () => console.log(`Server started on PORT = ${PORT}`));
   } catch (e) {

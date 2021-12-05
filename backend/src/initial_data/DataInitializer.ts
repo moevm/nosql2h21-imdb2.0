@@ -2,17 +2,21 @@ import parse from "csv-parse";
 import fileStream from "fs";
 import mongoose, { AnyObject } from "mongoose";
 import { FilmShortInfoDto } from "../models/dto/FilmShortInfoDto";
-import { FilmsMongoCollection, IFilm } from "../models/mongoose/FilmModel";
+import {
+  FilmModelType,
+  FilmsMongoCollection,
+  IFilm,
+} from "../models/mongoose/FilmModel";
 
 class DataInitializer {
-  readonly filmsFilename = `${__dirname}/test_data.tsv`;
+  readonly filmsFilename = `${__dirname}/films_data.tsv`;
 
   readonly workersFilename = "workers_data.tsv";
 
   readonly filmsCrewFilename = "filmsCrew_data.tsv";
 
   readonly tsvFormat = parse(
-    { delimiter: "\t", columns: true },
+    { delimiter: "\t", columns: true, to: 4000 },
     (err, data) => {
       // console.log(data);
     }
@@ -32,9 +36,11 @@ class DataInitializer {
       .on("data", (data) => {
         const idStr = this.fillTo12Symbols(data.tconst);
         const title = data.primaryTitle;
-        const filmGenres = (data.genres as String).split(",");
+        const filmGenres = data.genres?.split(",");
         const duration = Number(data.runtimeMinutes);
-        if (title !== null && (data.titleType as String) !== "movie") {
+        // console.log(data.isAdult);
+        // console.log(title);
+        if (title && (data.titleType as String) === "movie") {
           // console.log(title);
           results.push(<IFilm>{
             _id: mongoose.Types.ObjectId(idStr),
@@ -64,6 +70,7 @@ class DataInitializer {
     while (returnableString.length !== 12) {
       returnableString += "_";
     }
+    console.log(returnableString);
 
     return returnableString;
   }
