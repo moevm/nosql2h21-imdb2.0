@@ -54,11 +54,37 @@ class FilmService {
   }
 
   public async postFilm(
-    newFilm: Omit<FilmShortInfoDto, "_id">
-  ): Promise<FilmShortInfoDto> {
-    const postedFilm = await FilmsMongoCollection.insertMany([newFilm]);
+    newFilm: Omit<FilmFullInfoDto, "_id">
+  ): Promise<FilmFullInfoDto> {
+    const mainNewFilmData = {
+      title: newFilm.title,
+      isAdult: newFilm.isAdult,
+      releaseYear: newFilm.releaseYear,
+      duration: newFilm.duration,
+      genres: newFilm.genres,
+      poster: newFilm.poster,
+    };
 
-    return filmDtoMapper.mapToShortFilmInfoDto(postedFilm[0]);
+    const postedFilm = (
+      await FilmsMongoCollection.insertMany([mainNewFilmData])
+    )[0];
+
+    const crewData = newFilm.crew;
+
+    const addingCrewData: IFilmCrew[] = [];
+
+    crewData.forEach((data) => {
+      addingCrewData.push(<IFilmCrew>{
+        filmId: postedFilm._id,
+        workerId: data.workerId,
+        category: data.category,
+        characters: data.character,
+      });
+    });
+
+    await FilmsCrewMongoCollection.insertMany(addingCrewData);
+
+    return filmDtoMapper.mapToFullFilmInfoDto(postedFilm, crewData);
   }
 
   public async updateFilm(film: FilmFullInfoDto): Promise<FilmShortInfoDto> {
