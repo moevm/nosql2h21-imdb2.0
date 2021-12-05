@@ -52,11 +52,35 @@ class WorkersService {
   }
 
   public async postWorker(
-    newFilm: Omit<WorkerShortInfoDto, "id">
-  ): Promise<WorkerShortInfoDto> {
-    const postedFilm = await WorkersMongoCollection.insertMany([newFilm]);
+    newFilm: Omit<WorkerFullInfoDto, "_id">
+  ): Promise<WorkerFullInfoDto> {
+    const mainNewWorkerData = {
+      name: newFilm.name,
+      birthYear: newFilm.birthYear,
+      deathYear: newFilm.deathYear,
+      image: newFilm.image,
+    };
 
-    return workerDtoMapper.mapToWorkerDto(postedFilm[0]);
+    const postedWorker = (
+      await WorkersMongoCollection.insertMany([mainNewWorkerData])
+    )[0];
+
+    const castedData = newFilm.professions;
+
+    const addingCrewData: IFilmCrew[] = [];
+
+    castedData.forEach((data) => {
+      addingCrewData.push(<IFilmCrew>{
+        filmId: data.filmId,
+        workerId: postedWorker._id,
+        category: data.profession,
+        characters: data.characters,
+      });
+    });
+
+    await FilmsCrewMongoCollection.insertMany(addingCrewData);
+
+    return workerDtoMapper.mapToWorkerFullInfoDto(postedWorker, castedData);
   }
 
   public async updateWorker(
