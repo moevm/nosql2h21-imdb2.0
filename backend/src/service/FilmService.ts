@@ -55,12 +55,17 @@ class FilmService {
   }
 
   public async updateFilm(film: FilmShortInfoDto): Promise<FilmShortInfoDto> {
-    const updatedFilm: any = await FilmsMongoCollection.updateOne(
+    const updatedFilm = await FilmsMongoCollection.findOneAndUpdate(
       { _id: film._id },
-      film
+      film,
+      { new: true }
     );
 
-    return updatedFilm;
+    if (updatedFilm == null) {
+      throw new Error(`No film with id = ${film._id}`);
+    }
+
+    return filmDtoMapper.mapToShortFilmInfoDto(updatedFilm);
   }
 }
 

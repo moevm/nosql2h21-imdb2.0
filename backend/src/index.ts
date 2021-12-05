@@ -25,6 +25,7 @@ const start = async () => {
     await mongoose.connect(process.env.DB_URL!, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     });
 
     await FilmsCrewMongoCollection.collection.createIndex(
@@ -33,8 +34,11 @@ const start = async () => {
     );
 
     // for testing
+    // await FilmsMongoCollection.deleteMany({});
+    // await FilmsMongoCollection.insertMany(films);
+
     await FilmsMongoCollection.deleteMany({});
-    await FilmsMongoCollection.insertMany(films);
+    // await dataInitializer.initializeData();
 
     app.listen(PORT, () => console.log(`Server started on PORT = ${PORT}`));
   } catch (e) {
