@@ -42,7 +42,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
         <Select
           showSearch
           mode="multiple"
-          placeholder={profession}
+          placeholder={capitalizeFirstLetter(profession)}
           optionFilterProp="children"
           filterOption={(input, option) =>
             option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

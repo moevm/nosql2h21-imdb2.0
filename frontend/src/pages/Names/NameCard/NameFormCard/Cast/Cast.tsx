@@ -5,6 +5,7 @@ import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import { NameProfessionsList, Professions } from "shared/constants/professions";
 import { appStore } from "stores";
 import Actors from "./Actors";
+import { capitalizeFirstLetter } from "../../../../../utils/capitalizeFirstLetter";
 
 interface IProps {
   professions?: NameProfessionsList;
@@ -36,13 +37,13 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
       <Form.Item
         key={profession}
         name={profession}
-        label={profession}
+        label={capitalizeFirstLetter(profession)}
         initialValue={initialNames}
       >
         <Select
           showSearch
           mode="multiple"
-          placeholder={profession}
+          placeholder={capitalizeFirstLetter(profession)}
           optionFilterProp="children"
           filterOption={(input, option) =>
             option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -120,7 +121,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
                 {deletedProfessions.map((p) => {
                   return (
                     <Select.Option value={p} key={p}>
-                      {p}
+                      {capitalizeFirstLetter(p)}
                     </Select.Option>
                   );
                 })}

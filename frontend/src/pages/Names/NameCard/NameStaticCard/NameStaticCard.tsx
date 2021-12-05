@@ -12,6 +12,7 @@ import { Professions } from "shared/constants/professions";
 import { useHistory } from "react-router-dom";
 import UiRoutes from "shared/constants/uiRoutes";
 import styles from "./NameStaticCard.module.scss";
+import { capitalizeFirstLetter } from "../../../../utils/capitalizeFirstLetter";
 
 const NameStaticCard = () => {
   const [, allProfessions] = namesToFormNames(toJS(namesStore.selectedName));
@@ -53,7 +54,10 @@ const NameStaticCard = () => {
 
           return (
             <React.Fragment key={e}>
-              <Block title={e} content={renderCastBlock(e)} />
+              <Block
+                title={capitalizeFirstLetter(e)}
+                content={renderCastBlock(e)}
+              />
               <Divider />
             </React.Fragment>
           );
