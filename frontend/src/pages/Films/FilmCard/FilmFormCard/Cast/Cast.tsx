@@ -3,6 +3,7 @@ import { Button, Col, Divider, Form, FormInstance, Row, Select } from "antd";
 import { getDeletedProfessions } from "utils/getDeletedProfessions";
 import { Professions, FilmProfessionsList } from "shared/constants/professions";
 import { appStore } from "stores";
+import { capitalizeFirstLetter } from "utils/capitalizeFirstLetter";
 import Actors from "./Actors";
 
 interface IProps {
@@ -35,7 +36,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
       <Form.Item
         key={profession}
         name={profession}
-        label={profession}
+        label={capitalizeFirstLetter(profession)}
         initialValue={initialNames}
       >
         <Select
@@ -119,7 +120,7 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
                 {deletedProfessions.map((p) => {
                   return (
                     <Select.Option value={p} key={p}>
-                      {p}
+                      {capitalizeFirstLetter(p)}
                     </Select.Option>
                   );
                 })}

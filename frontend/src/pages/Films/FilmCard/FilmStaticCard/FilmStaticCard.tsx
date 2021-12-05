@@ -12,6 +12,7 @@ import { Professions } from "shared/constants/professions";
 import { useHistory } from "react-router-dom";
 import { renderDuration } from "utils/renderDuration";
 import UiRoutes from "shared/constants/uiRoutes";
+import { capitalizeFirstLetter } from "utils/capitalizeFirstLetter";
 import styles from "./FilmStaticCard.module.scss";
 
 const FilmStaticCard = () => {
@@ -66,7 +67,10 @@ const FilmStaticCard = () => {
 
           return (
             <React.Fragment key={e}>
-              <Block title={`${e}(s)`} content={renderCastBlock(e)} />
+              <Block
+                title={`${capitalizeFirstLetter(e)}(s)`}
+                content={renderCastBlock(e)}
+              />
               <Divider />
             </React.Fragment>
           );
@@ -76,7 +80,7 @@ const FilmStaticCard = () => {
   };
 
   const genres: string = filmsStore.selectedFilm.genres
-    .map((g) => g.charAt(0).toUpperCase() + g.slice(1))
+    .map((g) => capitalizeFirstLetter(g))
     .join(", ");
 
   const duration: string = renderDuration(filmsStore.selectedFilm.duration);
