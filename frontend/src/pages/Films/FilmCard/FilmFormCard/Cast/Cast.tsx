@@ -41,17 +41,6 @@ const Cast: React.FC<IProps> = ({ professions, castForm }) => {
         key={profession}
         name={profession}
         label={profession}
-        // rules={
-        //   profession === Professions.Writer ||
-        //   profession === Professions.Director
-        //     ? [
-        //         {
-        //           required: true,
-        //           message: `Pls write ${profession}`,
-        //         },
-        //       ]
-        //     : undefined
-        // }
         initialValue={initialNames}
       >
         <Select

@@ -14,7 +14,7 @@ import styles from "./NameStaticCard.module.scss";
 const NameStaticCard = () => {
   const [, allProfessions] = namesToFormNames(toJS(namesStore.selectedName));
 
-  const deletedProfessions = getDeletedProfessions(allProfessions, false);
+  const deletedProfessions = getDeletedProfessions(allProfessions);
 
   const renderCastBlock = (profession: Professions): React.ReactNode => {
     const professions =
