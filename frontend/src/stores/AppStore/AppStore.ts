@@ -31,7 +31,9 @@ class AppStore {
 
   readonly genres = [
     "Action",
+    "Adult",
     "Adventure",
+    "Animation",
     "Biography",
     "Comedy",
     "Crime",
@@ -42,6 +44,7 @@ class AppStore {
     "History",
     "Horror",
     "Music",
+    "Musical",
     "Mystery",
     "Romance",
     "Sci-Fi",

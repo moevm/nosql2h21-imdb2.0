@@ -16,10 +16,6 @@ import { capitalizeFirstLetter } from "utils/capitalizeFirstLetter";
 import styles from "./FilmStaticCard.module.scss";
 
 const FilmStaticCard = () => {
-  if (filmsStore.selectedFilm === null) {
-    return null;
-  }
-
   const history = useHistory();
 
   const onNameClick = (nameId: string) => {

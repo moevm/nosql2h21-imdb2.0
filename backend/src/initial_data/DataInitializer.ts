@@ -1,12 +1,7 @@
 import parse from "csv-parse";
 import fileStream from "fs";
-import mongoose, { AnyObject } from "mongoose";
-import { FilmShortInfoDto } from "../models/dto/FilmShortInfoDto";
-import {
-  FilmModelType,
-  FilmsMongoCollection,
-  IFilm,
-} from "../models/mongoose/FilmModel";
+import mongoose from "mongoose";
+import { FilmsMongoCollection, IFilm } from "../models/mongoose/FilmModel";
 import {
   IWorker,
   WorkersMongoCollection,
@@ -68,10 +63,10 @@ class DataInitializer {
     await this.initializeFilms();
     await this.initializeFilmsCrew();
     await this.initializeWorkers();
-    await this.printUniqueGenres();
-    console.log("\n");
-    await this.printUniqueCategories();
-    console.log("\n");
+    // await this.printUniqueGenres();
+    // console.log("\n");
+    // await this.printUniqueCategories();
+    // console.log("\n");
   }
 
   private async printUniqueGenres() {
@@ -118,7 +113,7 @@ class DataInitializer {
         .on("end", async () => {
           // console.log(results);
           await FilmsMongoCollection.insertMany(results).catch((reason) => {
-            console.log(reason);
+            // console.log(reason);
           });
 
           resolve();
@@ -150,7 +145,7 @@ class DataInitializer {
         })
         .on("end", async () => {
           await WorkersMongoCollection.insertMany(results).catch((reason) => {
-            console.log(reason);
+            //  console.log(reason);
           });
 
           resolve();
@@ -198,9 +193,9 @@ class DataInitializer {
           }
         })
         .on("end", async () => {
-          console.log(results);
+          // console.log(results);
           await FilmsCrewMongoCollection.insertMany(results).catch((reason) => {
-            console.log(reason);
+            // console.log(reason);
           });
 
           resolve();
